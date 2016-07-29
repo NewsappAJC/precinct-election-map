@@ -10,18 +10,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.1/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <style type="text/css">
-      .axis path,
-      .axis line {
-        shape-rendering: crispEdges;
-        fill: none;
-        width: 1px;
-      }
-    </style>
+    <link type="text/css" rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="main">
+        <div id="app"></div>
+        <div id="canvas"></div>
+        <!--
+        <svg class="progressBar"></svg>
+        -->
+    </div>
 		<script type="text/babel" src="script.jsx"></script>
-    <div id="progress"></div>
   </body>
 </html>
