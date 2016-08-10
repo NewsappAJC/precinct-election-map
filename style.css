@@ -69,6 +69,13 @@ body {
 .desc { 
   position: absolute;
   transition: opacity 1s; 
+  width: 175px;
+}
+
+.desc > span {
+  left: 25px;
+  top: 20px;
+  position: relative;
 }
 
 #next {
