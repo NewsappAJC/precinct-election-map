@@ -25,8 +25,8 @@ class Canvas {
       .data(data)
         .enter()
       .append('foreignObject')
-      .append('xhtml:body')
-        .html(d => '<span>' + d.desc + '</span>')
+      .append('html:div')
+        .html(d => '<div>' + d.desc + '</div>')
         .attr('class', 'desc')
         .style('left', d => d.x + '%')
         .style('top', d => d.y + '%')
@@ -55,7 +55,7 @@ class App extends React.Component {
         desc: 'The rover takes a cool picture of a Martian dune',
         x: 43, y: 80}
     ]
-    this.state = { x: 0, started: false };
+    this.state = { step: 0, started: false };
     this.handleClick = this.handleClick.bind(this);
     this.start = this.start.bind(this);
     this.canvas = new Canvas(data);
@@ -63,27 +63,27 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.canvas.step = () => {
+    this.canvas.advance = (dir) => {
+      this.setState({step: this.state.step += dir})
       this.canvas.points.attr('display', (d,i) => {
-        return (this.state.x == i) ? null : 'none'
+        return (this.state.step == i) ? null : 'none'
       })
       this.canvas.descs.style('display', (d,i) => {
-        return (this.state.x == i) ? null : 'none'
+        return (this.state.step == i) ? null : 'none'
       })
       this.canvas.descs.style('opacity', (d,i) => {
-        return (this.state.x == i) ? 1 : 0
+        return (this.state.step == i) ? 1 : 0
       })
-      this.setState({x: this.state.x += 1})
     }
   }
   
-  handleClick() {
-    this.canvas.step(this.state.x)
+  handleClick(i) {
+    this.canvas.advance(i)
   }
 
   start() {
-    this.setState({x: 1})
-    this.canvas.step(this.state.x)
+    this.setState({step: 1})
+    this.canvas.advance(this.state.step)
     this.setState({started: !this.state.started})
   }
 
@@ -93,7 +93,10 @@ class App extends React.Component {
         <img className="backgroundImg" 
           style={this.state.started ? this.faded : null} src="http://cdn.phys.org/newman/gfx/news/hires/2015/18-nasascuriosi.jpg"/>
         { !this.state.started ? <button id="start" onClick={this.start}>Begin</button> : null}
-        <button id="next" onClick={this.handleClick}>Next</button>
+        <div id="buttons">
+          <button id="next" onClick={this.handleClick.bind(this, -1)}>Back</button>
+          <button id="back" onClick={this.handleClick.bind(this, 1)}>Next</button>
+        </div>
       </div>
     )
   }
