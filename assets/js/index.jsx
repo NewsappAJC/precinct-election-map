@@ -1,7 +1,10 @@
-import { ProgressBar } from './progress-bar';
-import { Canvas } from './canvas';
+//import ProgressBar from './progress-bar';
+import Canvas from './canvas';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import '../css/style.css';
 
-var App = React.createClass({
+class App extends React.Component {
   constructor() {
     super();
     var data = [
@@ -62,6 +65,6 @@ var App = React.createClass({
       </div>
     )
   }
-})
+}
 
 ReactDOM.render(<App/>, document.getElementById('app'))

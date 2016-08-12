@@ -18,13 +18,19 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader', 
         query: {
-          presets: ['react']
+          presets: ['es2015', 'react']
         }
+      },
+      {
+        test: /\.css$/,
+        exculte: /node_modules/,
+        loader: 'style-loader!css-loader'
       }
     ]
   },
 
   resolve: {
+    root: __dirname,
     modulesDirectories: ['node_modules'],
     extensions: ['', '.js', '.jsx']
   }
