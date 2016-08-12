@@ -1,0 +1,25 @@
+{
+  "name": "stepr",
+  "version": "1.0.0",
+  "description": "Render a sequence of events over a map or image",
+  "main": "assets/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://_jonathancox@bitbucket.org/_jonathancox/stepr.git"
+  },
+  "keywords": [
+    "React",
+    "webpack",
+    "d3"
+  ],
+  "author": "Jonathan Cox",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/_jonathancox/stepr#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "webpack": "^1.13.1"
+  }
+}
