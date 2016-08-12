@@ -8,6 +8,15 @@ body {
   height: 100%;
 }
 
+#main {
+  position: relative;
+  top: 20px;
+  width: 700px;
+  height: 100%;
+  left: 50%;
+  margin-left: -350px;
+}
+
 #progressBar {
   position: fixed;
   top: 0;
@@ -16,6 +25,7 @@ body {
 }
 
 .backgroundImg {
+  z-index: -1;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -34,23 +44,16 @@ body {
 }
 
 #canvas{ 
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 90%;
   top: 0;
-}
-#main {
-  position: absolute;
-  width: 700px;
-  height: 100%;
-  left: 50%;
-  margin-left: -350px;
 }
 
 #start {
   z-index: 9999;
   position:absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   height: 50px;
   width: 100px;
@@ -58,17 +61,17 @@ body {
 }
 
 .desc { 
+  font-size: 20px;
+  font-weight: bold;
   position: relative;
-  bottom: 5px;
-  max-width: 400px;
-  margin-left: -200px;
-  left: 50%;
-	font-family: sans-serif;
+  bottom: 0;
+  width: 100%;
   position: absolute;
   transition: opacity 1s; 
 	background-color: white;
-	padding: 10px;
-	border-radius: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+  text-align: center;
 }
 
 #buttons {
@@ -77,9 +80,18 @@ body {
   top: 90%;
   left: 50%;
   height: 50px;
-  width: 100px;
-  margin-left: -50px;
+  width: 220px;
+  margin-left: -110px;
 }
+
+button {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px;
+}
+
 .axis path,
 .axis line {
   shape-rendering: crispEdges;
@@ -88,5 +100,31 @@ body {
 }
 
 svg { 
+  z-index: -1;
   position: absolute;
+}
+
+.point {
+  transition: r 1s;
+  stroke-width: 2px;
+  stroke: red;
+  fill: red;
+  fill-opacity: .2;
+}
+
+#splash {
+  color: white;
+  width: 400px;
+  left: 50%;
+  position: absolute;
+  margin-left: -200px;
+  top: 100px;
+}
+
+#splash h1 {
+  font-size: 80px;
+}
+
+#splash p {
+  font-size: 35px;
 }

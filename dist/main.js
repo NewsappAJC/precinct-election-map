@@ -79,15 +79,16 @@
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
 	
-	    var data = [{ desc: 'One of the aluminum wheels on the rover is damaged by a rock',
+	    _this.data = [{ desc: 'One of the aluminum wheels on the rover is damaged by a rock',
 	      x: 20, y: 50 }, { desc: 'The rover uses laser spectroscopy to analyze a piece of rock',
 	      x: 50, y: 40 }, { desc: 'The rover takes a selfie and sends it back to adoring fans on Earth',
 	      x: 75, y: 20 }, { desc: 'The rover takes a cool picture of a Martian dune',
 	      x: 43, y: 80 }];
 	    _this.state = { step: -1, started: false };
-	    _this.canvas = new _canvas2.default(data);
+	    _this.canvas = new _canvas2.default(_this.data);
 	    _this.faded = { opacity: .4, transition: 'opacity 1s' };
 	    _this.active = { opacity: 1, transition: 'opacity 1s' };
+	    _this.hidden = { display: 'none' };
 	    return _this;
 	  }
 	
@@ -116,24 +117,46 @@
 	        'div',
 	        null,
 	        _react2.default.createElement('img', { className: 'backgroundImg',
-	          style: this.state.started ? this.active : this.faded, src: 'http://cdn.phys.org/newman/gfx/news/hires/2015/18-nasascuriosi.jpg' }),
+	          style: this.state.started ? this.active : this.faded, src: './img/middle_earth_cropped.jpg' }),
 	        !this.state.started ? _react2.default.createElement(
-	          'button',
-	          { id: 'start', onClick: this.start.bind(this) },
-	          'Begin'
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'button',
+	            { id: 'start', onClick: this.start.bind(this) },
+	            'Begin'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'splash' },
+	            _react2.default.createElement(
+	              'h1',
+	              null,
+	              'Title Goes Here'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Brief explanatory text goes right here. Keep it under 100 characters.'
+	            )
+	          )
 	        ) : null,
 	        _react2.default.createElement(
 	          'div',
-	          { id: 'buttons' },
+	          { id: 'buttons', style: this.state.started ? null : this.hidden },
 	          _react2.default.createElement(
 	            'button',
-	            { id: 'next', onClick: this.handleClick.bind(this, -1) },
+	            { id: 'Back',
+	              disabled: this.state.step <= 0,
+	              onClick: this.handleClick.bind(this, -1) },
 	            'Back'
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { id: 'back', onClick: this.handleClick.bind(this, 1) },
-	            'Next'
+	            { id: 'Next',
+	              disabled: this.state.step >= this.data.length,
+	              onClick: this.handleClick.bind(this, 1) },
+	            this.state.step < this.data.length - 1 ? 'Next' : 'Finish'
 	          )
 	        )
 	      );
@@ -181,11 +204,11 @@
 	
 	      var svg = d3.select('div#canvas').append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).attr('position', 'absolute').append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 	
-	      this.points = svg.selectAll('circle').data(this.data).enter().append('circle').attr('fill', 'black').attr('r', 8).attr('cx', function (d) {
+	      this.points = svg.selectAll('circle').data(this.data).enter().append('circle').attr('class', 'point').attr('r', 10).attr('cx', function (d) {
 	        return d.x + '%';
 	      }).attr('cy', function (d) {
 	        return d.y + '%';
-	      }).attr('display', 'none');
+	      }).attr('r', 0);
 	
 	      this.descs = d3.select('#canvas').selectAll('div').data(this.data).enter().append('div').html(function (d) {
 	        return '<div>' + d.desc + '</div>';
@@ -194,8 +217,8 @@
 	  }, {
 	    key: 'advance',
 	    value: function advance(step) {
-	      this.points.attr('display', function (d, i) {
-	        return step === i ? null : 'none';
+	      this.points.attr('r', function (d, i) {
+	        return step === i ? 10 : 0;
 	      });
 	      this.descs.style('opacity', function (d, i) {
 	        return step === i ? 1 : 0;
@@ -37882,7 +37905,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html {\n  height: 100%;\n  background-color: #585858;\n}\n\nbody {\n  position: relative;\n  height: 100%;\n}\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 20px;\n}\n\n.backgroundImg {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%;\n}\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n\n.fade {\n  opacity: .2;\n}\n\n#canvas{ \n  position: relative;\n  width: 100%;\n  height: 90%;\n  top: 0;\n}\n#main {\n  position: absolute;\n  width: 700px;\n  height: 100%;\n  left: 50%;\n  margin-left: -350px;\n}\n\n#start {\n  z-index: 9999;\n  position:absolute;\n  top: 50%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n}\n\n.desc { \n  position: relative;\n  bottom: 5px;\n  max-width: 400px;\n  margin-left: -200px;\n  left: 50%;\n\tfont-family: sans-serif;\n  position: absolute;\n  transition: opacity 1s; \n\tbackground-color: white;\n\tpadding: 10px;\n\tborder-radius: 10px;\n}\n\n#buttons {\n  z-index: 9999;\n  position:absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n}\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px;\n}\n\nsvg { \n  position: absolute;\n}\n", ""]);
+	exports.push([module.id, "html {\n  height: 100%;\n  background-color: #585858;\n}\n\nbody {\n  position: relative;\n  height: 100%;\n}\n\n#main {\n  position: relative;\n  top: 20px;\n  width: 700px;\n  height: 100%;\n  left: 50%;\n  margin-left: -350px;\n}\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 20px;\n}\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%;\n}\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n\n.fade {\n  opacity: .2;\n}\n\n#canvas{ \n  position: absolute;\n  width: 100%;\n  height: 90%;\n  top: 0;\n}\n\n#start {\n  z-index: 9999;\n  position:absolute;\n  top: 60%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n}\n\n.desc { \n  font-size: 20px;\n  font-weight: bold;\n  position: relative;\n  bottom: 0;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s; \n\tbackground-color: white;\n\tpadding-top: 10px;\n\tpadding-bottom: 10px;\n  text-align: center;\n}\n\n#buttons {\n  z-index: 9999;\n  position:absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px;\n}\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px;\n}\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px;\n}\n\nsvg { \n  z-index: -1;\n  position: absolute;\n}\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2;\n}\n\n#splash {\n  color: white;\n  width: 400px;\n  left: 50%;\n  position: absolute;\n  margin-left: -200px;\n  top: 100px;\n}\n\n#splash h1 {\n  font-size: 80px;\n}\n\n#splash p {\n  font-size: 35px;\n}\n", ""]);
 	
 	// exports
 
