@@ -8,7 +8,7 @@ body {
   height: 100%;
 }
 
-.progressBar {
+#progressBar {
   position: fixed;
   top: 0;
   width: 100%;
@@ -24,7 +24,8 @@ body {
 }
 
 #app {
-  position: relative;
+  position: absolute;
+  width: 100%;
   height: 100%;
 }
 
@@ -33,13 +34,13 @@ body {
 }
 
 #canvas{ 
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 90%;
   top: 0;
 }
 #main {
-  position: relative;
+  position: absolute;
   width: 700px;
   height: 100%;
   left: 50%;
@@ -57,20 +58,17 @@ body {
 }
 
 .desc { 
+  position: relative;
+  bottom: 5px;
+  max-width: 400px;
+  margin-left: -200px;
+  left: 50%;
 	font-family: sans-serif;
   position: absolute;
   transition: opacity 1s; 
-  width: 175px;
-}
-
-.desc > div {
-  left: 25px;
-  top: 20px;
-  position: relative;
 	background-color: white;
 	padding: 10px;
 	border-radius: 10px;
-	opacity: .7;
 }
 
 #buttons {
@@ -87,4 +85,8 @@ body {
   shape-rendering: crispEdges;
   fill: none;
   width: 1px;
+}
+
+svg { 
+  position: absolute;
 }

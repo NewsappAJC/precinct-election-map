@@ -11,6 +11,9 @@ module.exports = {
     filename: 'main.js'
   },
 
+  debug: true,
+  devtool: 'source-map', 
+
   module: {
     loaders: [
       {

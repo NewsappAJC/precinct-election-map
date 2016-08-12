@@ -14,6 +14,7 @@ export default class {
       .append('svg')
         .attr('width', width + margin.left + margin.right) 
         .attr('height', height + margin.top + margin.bottom)
+        .attr('position', 'absolute')
       .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
@@ -27,19 +28,22 @@ export default class {
         .attr('cy', d => d.y + '%')
         .attr('display', 'none')
 
-    this.descs = d3.select('#canvas').selectAll('foreignObject')
+    this.descs = d3.select('#canvas').selectAll('div')
       .data(this.data)
         .enter()
-      .append('foreignObject')
-      .append('html:div')
+      .append('div')
         .html(d => '<div>' + d.desc + '</div>')
         .attr('class', 'desc')
-        .style('left', d => d.x + '%')
-        .style('top', d => d.y + '%')
-        .style('display', 'none')
         .style('transition', 'opacity 1s')
         .style('opacity', 0)
   }
 
-  advance() {}
+ advance(step) {
+    this.points.attr('display', (d,i) => {
+      return (step === i) ? null : 'none'
+    })
+    this.descs.style('opacity', (d,i) => {
+      return (step === i) ? 1 : 0
+    })
+  }
 }
