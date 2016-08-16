@@ -11,6 +11,14 @@ module.exports = {
     filename: 'main.js'
   },
 
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jquery': 'jquery'
+    })
+  ],
+
   debug: true,
   devtool: 'source-map', 
 
@@ -26,8 +34,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exculte: /node_modules/,
-        loader: 'style-loader!css-loader'
+        exclude: /node_modules/,
+        loader: ['style', 'css']
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loader: ['style', 'css', 'sass']
+      },
+      {
+        test: /\.jpg$/, 
+        exclude: /node_modules/,
+        loader: 'file-loader?name=img/[name].[ext]'
       }
     ]
   },

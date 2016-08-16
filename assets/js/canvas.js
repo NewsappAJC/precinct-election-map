@@ -3,20 +3,19 @@ import * as d3 from 'd3';
 export default class {
   constructor(data) {
     this.data = data
+    this.width = parseInt(d3.select('#canvas').style('width'));
   }
 
   build() {
-    var margin = {top: 20, right: 20, bottom: 20, left: 20},
-      width = parseInt(d3.select('#canvas').style('width')) - margin.left - margin.right,
-      height = parseInt(d3.select('#canvas').style('height')) - margin.top - margin.bottom;
+    d3.select('window').on('resize', () => {
+      this.width = parseInt(d3.select('#canvas').style('width'));
+      console.log('resizing')
+    })
 
-    var svg = d3.select('div#canvas')
-      .append('svg')
-        .attr('width', width + margin.left + margin.right) 
-        .attr('height', height + margin.top + margin.bottom)
+    var svg = d3.select('div#canvas').append('svg')
+        .attr('width', this.width) 
+        .attr('height', '100%')
         .attr('position', 'absolute')
-      .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
     this.points = svg.selectAll('circle')
       .data(this.data)
@@ -40,7 +39,7 @@ export default class {
 
  advance(step) {
     this.points.attr('r', (d,i) => {
-      return (step === i) ? 10 : 0
+      return (step === i) ? '.7em' : 0
     })
     this.descs.style('opacity', (d,i) => {
       return (step === i) ? 1 : 0

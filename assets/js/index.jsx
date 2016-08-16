@@ -1,8 +1,8 @@
-//import ProgressBar from './progress-bar';
+import ProgressBar from './progress-bar';
 import Canvas from './canvas';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../css/style.css';
+import '!style!css!sass!../css/style.scss';
 
 class App extends React.Component {
   constructor() {
@@ -18,20 +18,46 @@ class App extends React.Component {
         x: 43, y: 80}
     ]
     this.state = { step: -1, started: false };
+
     this.canvas = new Canvas(this.data);
+    this.progressBar = new ProgressBar()
+
     this.faded = {opacity: .4, transition: 'opacity 1s'};
     this.active = {opacity: 1, transition: 'opacity 1s'};
     this.hidden = {display: 'none'};
+
+    $(document).keydown((e) => {
+      if (this.state.started) {
+        switch(e.which) {
+          case 37: 
+            this.handleClick(-1);
+            console.log('left clicked')
+            break;
+
+          case 39:
+            this.handleClick(1);
+            console.log('right clicked')
+            break;
+
+          default: return;
+        }
+        e.preventDefault()
+      }
+      else pass;
+    })
   }
 
   componentDidMount() {
     this.canvas.build()
+    this.progressBar.build(this.data.length)
     this.canvas.advance(this.state.step)
+    this.progressBar.fill(this.state.step)
   }
   
   handleClick(i) {
     this.setState({step: this.state.step += i})
     this.canvas.advance(this.state.step)
+    this.progressBar.fill(this.state.step)
   }
 
   start() {
@@ -42,9 +68,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <img className="backgroundImg" 
-          style={this.state.started ? this.active : this.faded } src="./img/middle_earth_cropped.jpg"/>
-
         {!this.state.started ? 
         <div>
           <button id="start" onClick={this.start.bind(this)}>Begin</button> 
@@ -54,17 +77,6 @@ class App extends React.Component {
           </div>
         </div>
         : null}
-
-        <div id="buttons" style={this.state.started ? null : this.hidden}>
-          <button id="Back" 
-            disabled={this.state.step <= 0}
-            onClick={this.handleClick.bind(this, -1)}>Back</button>
-          <button id="Next" 
-            disabled={this.state.step >= this.data.length}
-            onClick={this.handleClick.bind(this, 1)}>
-              {(this.state.step < this.data.length - 1) ? 'Next' : 'Finish'} 
-            </button>
-        </div>
       </div>
     )
   }

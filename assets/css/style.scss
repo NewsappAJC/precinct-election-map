@@ -1,0 +1,167 @@
+#wrapper {
+  max-width: 500px;
+}
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+html {
+  height: 100%;
+  background-color: #585858;
+}
+
+body {
+  position: relative;
+  height: 100%;
+}
+
+#buttons {
+  display: none;
+}
+
+@media (min-width: 500px) {
+  body {
+    text-align: left;
+  }
+
+  #buttons {
+    display: block;
+  }
+  #wrapper {
+    position: relative;
+    left: 50%;
+    margin-left: -250px;
+  }
+}
+
+#main {
+  @include aspect-ratio(5,7.5);
+  position: relative;
+}
+
+#progressBar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 8px;
+  left: 0;
+}
+
+.backgroundImg {
+  z-index: -1;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 90%;
+}
+
+#app {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.fade {
+  opacity: .2;
+}
+
+#canvas{ 
+  background-image: url('../img/middle_earth_cropped.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+#start {
+  z-index: 9999;
+  position:absolute;
+  top: 60%;
+  left: 50%;
+  height: 50px;
+  width: 100px;
+  margin-left: -50px;
+}
+
+.desc { 
+  font-size: 1em;
+  font-weight: bold;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  transition: opacity 1s; 
+	background-color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+  text-align: center;
+}
+
+#buttons {
+  z-index: 9999;
+  position:absolute;
+  top: 90%;
+  left: 50%;
+  height: 50px;
+  width: 220px;
+  margin-left: -110px;
+}
+
+button {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.axis path,
+.axis line {
+  shape-rendering: crispEdges;
+  fill: none;
+  width: 1px;
+}
+
+svg { 
+  z-index: -1;
+  position: absolute;
+}
+
+.point {
+  transition: r 1s;
+  stroke-width: 2px;
+  stroke: red;
+  fill: red;
+  fill-opacity: .2;
+}
+
+#splash {
+  color: black;
+  font-weight: bold;
+  width: 100%;
+  position: absolute;
+  top: 100px;
+  text-align: center;
+}
+
+#splash h1 {
+  font-size: 2.5em;
+}
+
+#splash p {
+  font-size: 1.5em;
+}
