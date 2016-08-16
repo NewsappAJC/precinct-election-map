@@ -48,6 +48,10 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _progressBar = __webpack_require__(181);
+	
+	var _progressBar2 = _interopRequireDefault(_progressBar);
+	
 	var _canvas = __webpack_require__(1);
 	
 	var _canvas2 = _interopRequireDefault(_canvas);
@@ -68,8 +72,7 @@
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //import ProgressBar from './progress-bar';
-	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -85,7 +88,10 @@
 	      x: 75, y: 20 }, { desc: 'The rover takes a cool picture of a Martian dune',
 	      x: 43, y: 80 }];
 	    _this.state = { step: -1, started: false };
+	
 	    _this.canvas = new _canvas2.default(_this.data);
+	    _this.progressBar = new _progressBar2.default();
+	
 	    _this.faded = { opacity: .4, transition: 'opacity 1s' };
 	    _this.active = { opacity: 1, transition: 'opacity 1s' };
 	    _this.hidden = { display: 'none' };
@@ -96,13 +102,16 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.canvas.build();
+	      this.progressBar.build(this.data.length);
 	      this.canvas.advance(this.state.step);
+	      this.progressBar.fill(this.state.step);
 	    }
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(i) {
 	      this.setState({ step: this.state.step += i });
 	      this.canvas.advance(this.state.step);
+	      this.progressBar.fill(this.state.step);
 	    }
 	  }, {
 	    key: 'start',
@@ -116,8 +125,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('img', { className: 'backgroundImg',
-	          style: this.state.started ? this.active : this.faded, src: './img/middle_earth_cropped.jpg' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'backgroundImg' },
+	          _react2.default.createElement('img', { style: this.state.started ? this.active : this.faded, src: './img/middle_earth_cropped.jpg' })
+	        ),
 	        !this.state.started ? _react2.default.createElement(
 	          'div',
 	          null,
@@ -193,16 +205,20 @@
 	    _classCallCheck(this, _class);
 	
 	    this.data = data;
+	    this.width = parseInt(d3.select('#canvas').style('width'));
 	  }
 	
 	  _createClass(_class, [{
 	    key: 'build',
 	    value: function build() {
-	      var margin = { top: 20, right: 20, bottom: 20, left: 20 },
-	          width = parseInt(d3.select('#canvas').style('width')) - margin.left - margin.right,
-	          height = parseInt(d3.select('#canvas').style('height')) - margin.top - margin.bottom;
+	      var _this = this;
 	
-	      var svg = d3.select('div#canvas').append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).attr('position', 'absolute').append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+	      d3.select('window').on('resize', function () {
+	        _this.width = parseInt(d3.select('#canvas').style('width'));
+	        console.log('resizing');
+	      });
+	
+	      var svg = d3.select('div#canvas').append('svg').attr('width', this.width).attr('height', '100%').attr('position', 'absolute');
 	
 	      this.points = svg.selectAll('circle').data(this.data).enter().append('circle').attr('class', 'point').attr('r', 10).attr('cx', function (d) {
 	        return d.x + '%';
@@ -218,7 +234,7 @@
 	    key: 'advance',
 	    value: function advance(step) {
 	      this.points.attr('r', function (d, i) {
-	        return step === i ? 10 : 0;
+	        return step === i ? '.7em' : 0;
 	      });
 	      this.descs.style('opacity', function (d, i) {
 	        return step === i ? 1 : 0;
@@ -37905,7 +37921,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html {\n  height: 100%;\n  background-color: #585858;\n}\n\nbody {\n  position: relative;\n  height: 100%;\n}\n\n#main {\n  position: relative;\n  top: 20px;\n  width: 700px;\n  height: 100%;\n  left: 50%;\n  margin-left: -350px;\n}\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 20px;\n}\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%;\n}\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n\n.fade {\n  opacity: .2;\n}\n\n#canvas{ \n  position: absolute;\n  width: 100%;\n  height: 90%;\n  top: 0;\n}\n\n#start {\n  z-index: 9999;\n  position:absolute;\n  top: 60%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n}\n\n.desc { \n  font-size: 20px;\n  font-weight: bold;\n  position: relative;\n  bottom: 0;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s; \n\tbackground-color: white;\n\tpadding-top: 10px;\n\tpadding-bottom: 10px;\n  text-align: center;\n}\n\n#buttons {\n  z-index: 9999;\n  position:absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px;\n}\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px;\n}\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px;\n}\n\nsvg { \n  z-index: -1;\n  position: absolute;\n}\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2;\n}\n\n#splash {\n  color: white;\n  width: 400px;\n  left: 50%;\n  position: absolute;\n  margin-left: -200px;\n  top: 100px;\n}\n\n#splash h1 {\n  font-size: 80px;\n}\n\n#splash p {\n  font-size: 35px;\n}\n", ""]);
+	exports.push([module.id, "html {\n  height: 100%;\n  background-color: #585858;\n}\n\nbody {\n  position: relative;\n  height: 100%;\n}\n\n@media (max-width: 600px) {\n  #buttons {\n    display: none;\n  }\n}\n\n#main {\n  position: relative;\n  top: 20px;\n  max-width: 550px;\n  max-height: 700px;\n  height: 100%;\n}\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 10px;\n  left: 0;\n}\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%;\n}\n\nimg {\n  display: block;\n  max-height: 700px;\n  max-width: 550px;\n  width: auto;\n  height: auto;\n}\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n\n.fade {\n  opacity: .2;\n}\n\n#canvas{ \n  background: url(" + __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../img/middle_earth_cropped.jpg\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())) + ");\n  position: absolute;\n  width: 100%;\n  height: 90%;\n  top: 0;\n}\n\n#start {\n  z-index: 9999;\n  position:absolute;\n  top: 60%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n}\n\n.desc { \n  font-size: 1.5em;\n  font-weight: bold;\n  position: relative;\n  bottom: 0;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s; \n\tbackground-color: white;\n\tpadding-top: 10px;\n\tpadding-bottom: 10px;\n  text-align: center;\n}\n\n#buttons {\n  z-index: 9999;\n  position:absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px;\n}\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px;\n}\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px;\n}\n\nsvg { \n  z-index: -1;\n  position: absolute;\n}\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2;\n}\n\n#splash {\n  color: white;\n  width: 400px;\n  left: 50%;\n  position: absolute;\n  margin-left: -200px;\n  top: 100px;\n}\n\n#splash h1 {\n  font-size: 80px;\n}\n\n#splash p {\n  font-size: 35px;\n}\n", ""]);
 	
 	// exports
 
@@ -38217,6 +38233,58 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _d = __webpack_require__(2);
+	
+	var d3 = _interopRequireWildcard(_d);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var _class = function () {
+	  function _class() {
+	    _classCallCheck(this, _class);
+	
+	    this.progressWidth = 0;
+	  }
+	
+	  _createClass(_class, [{
+	    key: 'build',
+	    value: function build(len) {
+	      this.totalWidth = parseInt(d3.select('#progressBar').style('width'));
+	      var height = parseInt(d3.select('#progressBar').style('height'));
+	
+	      var svg = d3.select('#progressBar').append('svg').attr('width', this.totalWidth).attr('height', height);
+	
+	      this.x = d3.scaleLinear().range([0, this.totalWidth]).domain([0, len]);
+	
+	      this.bar = svg.append('rect').attr('width', this.progressWidth).attr('height', height).style('transition', 'width .5s');
+	    }
+	  }, {
+	    key: 'fill',
+	    value: function fill(step) {
+	      console.log('filling progress bar ' + step + ', ' + this.x(step));
+	      this.bar.attr('width', this.x(step + 1));
+	    }
+	  }]);
+
+	  return _class;
+	}();
+
+	exports.default = _class;
 
 /***/ }
 /******/ ]);
