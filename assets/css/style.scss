@@ -1,5 +1,6 @@
 #wrapper {
   max-width: 500px;
+  padding: 0em .7em 0em .7em;
 }
 
 @mixin aspect-ratio($width, $height) {
@@ -12,7 +13,7 @@
   }
   > .content {
     position: absolute;
-    top: 20px;
+    top: 10px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -37,10 +38,6 @@ body {
   body {
     text-align: left;
   }
-
-  #buttons {
-    display: block;
-  }
   #wrapper {
     position: relative;
     left: 50%;
@@ -49,7 +46,7 @@ body {
 }
 
 #main {
-  @include aspect-ratio(5,7.5);
+  @include aspect-ratio(5,7.7);
   position: relative;
 }
 
@@ -57,7 +54,7 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 8px;
+  height: 3px;
   left: 0;
 }
 
@@ -81,7 +78,7 @@ body {
 }
 
 #canvas{ 
-  background-image: url('../img/middle_earth_cropped.jpg');
+  background-image: url('../img/bak.png');
   background-size: contain;
   background-repeat: no-repeat;
   z-index: -1;
@@ -98,10 +95,10 @@ body {
 }
 
 .desc { 
+  top: 92.5%;
   font-size: 1em;
   font-weight: bold;
   position: relative;
-  bottom: 0;
   width: 100%;
   position: absolute;
   transition: opacity 1s; 

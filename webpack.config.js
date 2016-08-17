@@ -43,7 +43,7 @@ module.exports = {
         loader: ['style', 'css', 'sass']
       },
       {
-        test: /\.jpg$/, 
+        test: /\.jpg$|\.png$/, 
         exclude: /node_modules/,
         loader: 'file-loader?name=img/[name].[ext]'
       }
