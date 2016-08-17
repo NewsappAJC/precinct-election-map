@@ -156,6 +156,7 @@
 	      $(document).mouseup(function () {
 	        _this2.handleClick(1);
 	      });
+	      $('#cover').style.opacity = .2;
 	    }
 	  }, {
 	    key: 'render',
@@ -172,12 +173,12 @@
 	            _react2.default.createElement(
 	              'h1',
 	              null,
-	              'Title Goes Here'
+	              'Stepr'
 	            ),
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              'Brief explanatory text goes right here. Keep it under 100 characters.'
+	              'Tap or click to advance'
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -10313,7 +10314,7 @@
 	
 	      this.x = d3.scaleLinear().range([0, this.totalWidth]).domain([0, len]);
 	
-	      this.bar = svg.append('rect').attr('width', this.progressWidth).attr('height', height).attr('fill', 'red').style('transition', 'width .5s');
+	      this.bar = svg.append('rect').attr('width', this.progressWidth).attr('height', height).attr('fill', 'white').style('transition', 'width .5s');
 	    }
 	  }, {
 	    key: 'fill',
@@ -48044,7 +48045,7 @@
 	var content = __webpack_require__(180);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(183)(content, {});
+	var update = __webpack_require__(184)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -48069,7 +48070,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#wrapper {\n  max-width: 500px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(182) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  top: 70%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2; }\n\n#splash {\n  color: black;\n  font-weight: bold;\n  width: 100%;\n  position: relative;\n  top: 100px;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(182) + "); }\n\n#wrapper {\n  max-width: 500px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  font-family: 'Boomer', serif;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(183) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  top: 70%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center;\n  box-sizing: border-box; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: black;\n  fill: black;\n  fill-opacity: .2; }\n\n#splash {\n  width: 100%;\n  position: relative;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n\n#cover {\n  height: 91.5%;\n  background-color: white;\n  opacity: 0.25; }\n", ""]);
 	
 	// exports
 
@@ -48134,10 +48135,16 @@
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "img/bak.png";
+	module.exports = __webpack_require__.p + "fonts/Boomer-Bold.otf";
 
 /***/ },
 /* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "img/bak.png";
+
+/***/ },
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

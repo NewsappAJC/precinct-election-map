@@ -46,6 +46,11 @@ module.exports = {
         test: /\.jpg$|\.png$/, 
         exclude: /node_modules/,
         loader: 'file-loader?name=img/[name].[ext]'
+      },
+      {
+        test: /\.otf$/, 
+        exclude: /node_modules/,
+        loader: 'file-loader?name=fonts/[name].[ext]'
       }
     ]
   },

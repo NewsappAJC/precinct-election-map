@@ -1,3 +1,7 @@
+@font-face {
+  font-family: 'Boomer';
+  src: url('../fonts/boomer/Boomer-Bold.otf');
+}
 #wrapper {
   max-width: 500px;
   padding: 0em .7em 0em .7em;
@@ -27,6 +31,7 @@ html {
 
 body {
   position: relative;
+  font-family: 'Boomer', serif;
   height: 100%;
 }
 
@@ -112,6 +117,7 @@ body {
 	background-color: white;
 	padding: 10px 5px 10px 5px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 #buttons {
@@ -147,17 +153,14 @@ svg {
 .point {
   transition: r 1s;
   stroke-width: 2px;
-  stroke: red;
-  fill: red;
+  stroke: black;
+  fill: black;
   fill-opacity: .2;
 }
 
 #splash {
-  color: black;
-  font-weight: bold;
   width: 100%;
   position: relative;
-  top: 100px;
   text-align: center;
 }
 
@@ -167,4 +170,10 @@ svg {
 
 #splash p {
   font-size: 1.5em;
+}
+
+#cover {
+  height: 91.5%;
+  background-color: white;
+  opacity: 0.25;
 }
