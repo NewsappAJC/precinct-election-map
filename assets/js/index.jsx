@@ -17,14 +17,14 @@ class App extends React.Component {
       {desc: 'The rover takes a cool picture of a Martian dune',
         x: 43, y: 80}
     ]
-    this.state = { step: -1, started: false };
+    this.state = { step: -1, started: false, finished: false };
 
     this.canvas = new Canvas(this.data);
     this.progressBar = new ProgressBar()
 
     this.faded = {opacity: .4, transition: 'opacity 1s'};
     this.active = {opacity: 1, transition: 'opacity 1s'};
-    this.hidden = {display: 'none'};
+    this.hidden = {opacity: 0, transition: 'opacity 1s'};
 
 
     $(document).keydown((e) => {
@@ -58,7 +58,7 @@ class App extends React.Component {
     switch(i) {
       case -1: 
         if (this.state.step > 0) {
-          this.setState({step: this.state.step += i});
+          this.setState({step: this.state.step += i, finished:false});
           this.canvas.advance(this.state.step);
           this.progressBar.fill(this.state.step);
         }
@@ -68,6 +68,11 @@ class App extends React.Component {
           this.setState({step: this.state.step += i});
           this.canvas.advance(this.state.step);
           this.progressBar.fill(this.state.step);
+        }
+        else if (this.state.step == this.data.length - 1){
+          this.setState({step: this.state.step += i});
+          this.canvas.advance(this.state.step);
+          this.setState({finished: true});
         }
         break;
     }
@@ -94,6 +99,9 @@ class App extends React.Component {
           </div>
         </div>
         : null}
+        <h1 id="outro" style={!this.state.finished ? this.hidden : this.active}>
+          Finished
+        </h1>
       </div>
     )
   }
