@@ -4,20 +4,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '!style!css!sass!../css/style.scss';
 
+const DATA = [
+  {desc: 'This is Stepr. It\'s a responsive single-page app that displays a sequence of events',
+    x: 20, y: 50},
+  {desc: 'The user clicks, taps, or uses the arrow keys to step through the events',
+    x: 50, y: 40},
+  {desc: 'Circles overlaid on a map/aerial photo show where each event took place', 
+    x: 75, y: 20},
+  {desc: 'A progress bar at the top of the screen tracks how far the user has left to go',
+    x: 43, y: 80},
+  {desc: 'It can be hard to convey spatial logic with words. But with Stepr it\'s easy',
+    x: 15, y: 40},
+  {desc: 'Try it out on mobile - it\'s responsive!',
+    x: 43, y: 80},
+  {desc: 'Just make sure that the photo you upload has an aspect ratio of 5:7',
+    x: 90, y: 20},
+  {desc: 'That\'s it - nothing fancy here. Try it out in one of your stories!',
+    x: 14, y: 30}
+]
+
+
 class App extends React.Component {
   constructor() {
     super();
-    this.data = [
-      {desc: 'One of the aluminum wheels on the rover is damaged by a rock',
-        x: 20, y: 50},
-      {desc: 'The rover uses laser spectroscopy to analyze a piece of rock',
-        x: 50, y: 40},
-      {desc: 'The rover takes a selfie and sends it back to adoring fans on Earth', 
-        x: 75, y: 20},
-      {desc: 'The rover takes a cool picture of a Martian dune',
-        x: 43, y: 80}
-    ]
-    this.state = { step: -1, started: false, finished: false };
+    this.data = DATA;
 
     this.canvas = new Canvas(this.data);
     this.progressBar = new ProgressBar()
@@ -25,6 +35,8 @@ class App extends React.Component {
     this.faded = {opacity: .4, transition: 'opacity 1s'};
     this.active = {opacity: 1, transition: 'opacity 1s'};
     this.hidden = {opacity: 0, transition: 'opacity 1s'};
+
+    this.state = {started: false, finished: false, step: -1};
 
 
     $(document).keydown((e) => {
