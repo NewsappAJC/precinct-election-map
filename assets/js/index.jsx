@@ -86,10 +86,10 @@ class App extends React.Component {
       <div>
         {!this.state.started ? 
         <div>
-          <div id="start" onClick={this.start.bind(this)}>Begin</div> 
           <div id="splash">
             <h1>Title Goes Here</h1>
             <p>Brief explanatory text goes right here. Keep it under 100 characters.</p>
+            <div id="start" onClick={this.start.bind(this)}>Begin</div> 
           </div>
         </div>
         : null}

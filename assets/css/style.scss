@@ -86,7 +86,7 @@ body {
 
 #start {
   z-index: 9999;
-  position:absolute;
+  position: relative;
   left: 50%;
   top:70%;
   opacity: .7;
@@ -156,7 +156,7 @@ svg {
   color: black;
   font-weight: bold;
   width: 100%;
-  position: absolute;
+  position: relative;
   top: 100px;
   text-align: center;
 }
