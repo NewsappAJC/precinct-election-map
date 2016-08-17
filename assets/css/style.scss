@@ -87,11 +87,18 @@ body {
 #start {
   z-index: 9999;
   position:absolute;
-  top: 60%;
   left: 50%;
+  top:70%;
+  opacity: .7;
+  border-radius: 5px;
   height: 50px;
   width: 100px;
   margin-left: -50px;
+  line-height: 50px;
+  background: white;
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 
 .desc { 
@@ -103,8 +110,7 @@ body {
   position: absolute;
   transition: opacity 1s; 
 	background-color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding: 10px 5px 10px 5px;
   text-align: center;
 }
 

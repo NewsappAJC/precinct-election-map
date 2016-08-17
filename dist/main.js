@@ -113,7 +113,7 @@
 	            return;
 	        }
 	        e.preventDefault();
-	      } else pass;
+	      }
 	    });
 	    return _this;
 	  }
@@ -129,15 +129,33 @@
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(i) {
-	      this.setState({ step: this.state.step += i });
-	      this.canvas.advance(this.state.step);
-	      this.progressBar.fill(this.state.step);
+	      switch (i) {
+	        case -1:
+	          if (this.state.step > 0) {
+	            this.setState({ step: this.state.step += i });
+	            this.canvas.advance(this.state.step);
+	            this.progressBar.fill(this.state.step);
+	          }
+	          break;
+	        case 1:
+	          if (this.state.step < this.data.length - 1) {
+	            this.setState({ step: this.state.step += i });
+	            this.canvas.advance(this.state.step);
+	            this.progressBar.fill(this.state.step);
+	          }
+	          break;
+	      }
 	    }
 	  }, {
 	    key: 'start',
 	    value: function start() {
+	      var _this2 = this;
+	
 	      this.handleClick(1);
 	      this.setState({ started: !this.state.started });
+	      $(document).mouseup(function () {
+	        _this2.handleClick(1);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -149,7 +167,7 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(
-	            'button',
+	            'div',
 	            { id: 'start', onClick: this.start.bind(this) },
 	            'Begin'
 	          ),
@@ -48051,7 +48069,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#wrapper {\n  max-width: 500px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(182) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: absolute;\n  top: 60%;\n  left: 50%;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding-top: 10px;\n  padding-bottom: 10px;\n  text-align: center; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2; }\n\n#splash {\n  color: black;\n  font-weight: bold;\n  width: 100%;\n  position: absolute;\n  top: 100px;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n", ""]);
+	exports.push([module.id, "#wrapper {\n  max-width: 500px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(182) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: absolute;\n  left: 50%;\n  top: 70%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: red;\n  fill: red;\n  fill-opacity: .2; }\n\n#splash {\n  color: black;\n  font-weight: bold;\n  width: 100%;\n  position: absolute;\n  top: 100px;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n", ""]);
 	
 	// exports
 

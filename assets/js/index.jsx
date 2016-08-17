@@ -26,6 +26,7 @@ class App extends React.Component {
     this.active = {opacity: 1, transition: 'opacity 1s'};
     this.hidden = {display: 'none'};
 
+
     $(document).keydown((e) => {
       if (this.state.started) {
         switch(e.which) {
@@ -43,7 +44,6 @@ class App extends React.Component {
         }
         e.preventDefault()
       }
-      else pass;
     })
   }
 
@@ -55,14 +55,30 @@ class App extends React.Component {
   }
   
   handleClick(i) {
-    this.setState({step: this.state.step += i})
-    this.canvas.advance(this.state.step)
-    this.progressBar.fill(this.state.step)
+    switch(i) {
+      case -1: 
+        if (this.state.step > 0) {
+          this.setState({step: this.state.step += i});
+          this.canvas.advance(this.state.step);
+          this.progressBar.fill(this.state.step);
+        }
+        break;
+      case 1:
+        if (this.state.step < this.data.length - 1) {
+          this.setState({step: this.state.step += i});
+          this.canvas.advance(this.state.step);
+          this.progressBar.fill(this.state.step);
+        }
+        break;
+    }
   }
 
   start() {
     this.handleClick(1)
     this.setState({started: !this.state.started})
+    $(document).mouseup(() => {
+      this.handleClick(1)
+    })
   }
 
   render() {
@@ -70,7 +86,7 @@ class App extends React.Component {
       <div>
         {!this.state.started ? 
         <div>
-          <button id="start" onClick={this.start.bind(this)}>Begin</button> 
+          <div id="start" onClick={this.start.bind(this)}>Begin</div> 
           <div id="splash">
             <h1>Title Goes Here</h1>
             <p>Brief explanatory text goes right here. Keep it under 100 characters.</p>
