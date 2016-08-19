@@ -19,7 +19,7 @@ const DATA = [
     x: 43, y: 80},
   {desc: 'Just make sure that the photo you upload has an aspect ratio of 5:7',
     x: 90, y: 20},
-  {desc: 'That\'s it - nothing fancy here. Try it out in one of your stories!',
+  {desc: 'That\'s it. Try it out in one of your stories!',
     x: 14, y: 30}
 ]
 
@@ -37,31 +37,11 @@ class App extends React.Component {
     this.hidden = {opacity: 0, transition: 'opacity 1s'};
 
     this.state = {started: false, finished: false, step: -1};
-
-
-    $(document).keydown((e) => {
-      if (this.state.started) {
-        switch(e.which) {
-          case 37: 
-            this.handleClick(-1);
-            console.log('left clicked')
-            break;
-
-          case 39:
-            this.handleClick(1);
-            console.log('right clicked')
-            break;
-
-          default: return;
-        }
-        e.preventDefault()
-      }
-    })
   }
 
   componentDidMount() {
     this.canvas.build()
-    this.progressBar.build(this.data.length)
+    this.progressBar.build(this.data.length + 1)
     this.canvas.advance(this.state.step)
     this.progressBar.fill(this.state.step)
   }
@@ -82,9 +62,9 @@ class App extends React.Component {
           this.progressBar.fill(this.state.step);
         }
         else if (this.state.step == this.data.length - 1){
-          this.setState({step: this.state.step += i});
+          this.setState({step: this.state.step += i, finished: true});
           this.canvas.advance(this.state.step);
-          this.setState({finished: true});
+          this.progressBar.fill(this.state.step);
         }
         break;
     }
@@ -93,27 +73,49 @@ class App extends React.Component {
   start() {
     this.handleClick(1)
     this.setState({started: !this.state.started})
+
     $(document).mouseup(() => {
       this.handleClick(1)
     })
+
+    $(document).keydown((e) => {
+      switch(e.which) {
+        case 37: 
+          this.handleClick(-1);
+          console.log('left clicked')
+          break;
+
+        case 39:
+          this.handleClick(1);
+          console.log('right clicked')
+          break;
+
+        default: return;
+      }
+      e.preventDefault()
+    })
+
     $('#cover').style.opacity = .2;
   }
 
   render() {
     return (
       <div>
+
         {!this.state.started ? 
-        <div>
-          <div id="splash">
-            <h1>Stepr</h1>
-            <p>Tap or click to advance</p>
-            <div id="start" onClick={this.start.bind(this)}>Begin</div> 
+          <div>
+            <div id="splash">
+              <h1>Stepr</h1>
+              <p>Tap or click to advance</p>
+              <div id="start" onClick={this.start.bind(this)}>Begin</div> 
+            </div>
           </div>
-        </div>
         : null}
+
         <h1 id="outro" style={!this.state.finished ? this.hidden : this.active}>
           Finished
         </h1>
+
       </div>
     )
   }

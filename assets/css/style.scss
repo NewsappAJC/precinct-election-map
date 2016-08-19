@@ -2,8 +2,11 @@
   font-family: 'Boomer';
   src: url('../fonts/boomer/Boomer-Bold.otf');
 }
+
 #wrapper {
-  max-width: 500px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 400px;
   padding: 0em .7em 0em .7em;
 }
 
@@ -93,7 +96,6 @@ body {
   z-index: 9999;
   position: relative;
   left: 50%;
-  top:70%;
   opacity: .7;
   border-radius: 5px;
   height: 50px;
@@ -159,8 +161,11 @@ svg {
 }
 
 #splash {
+  top: 50%;
+  margin-top: -200px;
+  height: 400px;
   width: 100%;
-  position: relative;
+  position: absolute;
   text-align: center;
 }
 
@@ -180,6 +185,10 @@ svg {
 
 #outro {
   width: 100%;
-  position: relative;
+  height: 400px;
+  line-height: 400px;
+  margin-top: -200px;
+  top: 50%;
+  position: absolute;
   text-align: center;
 }

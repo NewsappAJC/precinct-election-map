@@ -81,7 +81,7 @@
 	  x: 43, y: 80 }, { desc: 'It can be hard to convey spatial logic with words. But with Stepr it\'s easy',
 	  x: 15, y: 40 }, { desc: 'Try it out on mobile - it\'s responsive!',
 	  x: 43, y: 80 }, { desc: 'Just make sure that the photo you upload has an aspect ratio of 5:7',
-	  x: 90, y: 20 }, { desc: 'That\'s it - nothing fancy here. Try it out in one of your stories!',
+	  x: 90, y: 20 }, { desc: 'That\'s it. Try it out in one of your stories!',
 	  x: 14, y: 30 }];
 	
 	var App = function (_React$Component) {
@@ -102,26 +102,6 @@
 	    _this.hidden = { opacity: 0, transition: 'opacity 1s' };
 	
 	    _this.state = { started: false, finished: false, step: -1 };
-	
-	    $(document).keydown(function (e) {
-	      if (_this.state.started) {
-	        switch (e.which) {
-	          case 37:
-	            _this.handleClick(-1);
-	            console.log('left clicked');
-	            break;
-	
-	          case 39:
-	            _this.handleClick(1);
-	            console.log('right clicked');
-	            break;
-	
-	          default:
-	            return;
-	        }
-	        e.preventDefault();
-	      }
-	    });
 	    return _this;
 	  }
 	
@@ -129,7 +109,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.canvas.build();
-	      this.progressBar.build(this.data.length);
+	      this.progressBar.build(this.data.length + 1);
 	      this.canvas.advance(this.state.step);
 	      this.progressBar.fill(this.state.step);
 	    }
@@ -150,9 +130,9 @@
 	            this.canvas.advance(this.state.step);
 	            this.progressBar.fill(this.state.step);
 	          } else if (this.state.step == this.data.length - 1) {
-	            this.setState({ step: this.state.step += i });
+	            this.setState({ step: this.state.step += i, finished: true });
 	            this.canvas.advance(this.state.step);
-	            this.setState({ finished: true });
+	            this.progressBar.fill(this.state.step);
 	          }
 	          break;
 	      }
@@ -164,9 +144,29 @@
 	
 	      this.handleClick(1);
 	      this.setState({ started: !this.state.started });
+	
 	      $(document).mouseup(function () {
 	        _this2.handleClick(1);
 	      });
+	
+	      $(document).keydown(function (e) {
+	        switch (e.which) {
+	          case 37:
+	            _this2.handleClick(-1);
+	            console.log('left clicked');
+	            break;
+	
+	          case 39:
+	            _this2.handleClick(1);
+	            console.log('right clicked');
+	            break;
+	
+	          default:
+	            return;
+	        }
+	        e.preventDefault();
+	      });
+	
 	      $('#cover').style.opacity = .2;
 	    }
 	  }, {
@@ -48086,7 +48086,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(182) + "); }\n\n#wrapper {\n  max-width: 500px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  font-family: 'Boomer', serif;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(183) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  top: 70%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center;\n  box-sizing: border-box; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: black;\n  fill: black;\n  fill-opacity: .2; }\n\n#splash {\n  width: 100%;\n  position: relative;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n\n#cover {\n  height: 91.5%;\n  background-color: white;\n  opacity: 0.25; }\n\n#outro {\n  width: 100%;\n  position: relative;\n  text-align: center; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(182) + "); }\n\n#wrapper {\n  top: 50%;\n  transform: translateY(-50%);\n  max-width: 400px;\n  padding: 0em .7em 0em .7em; }\n\nhtml {\n  height: 100%;\n  background-color: #585858; }\n\nbody {\n  position: relative;\n  font-family: 'Boomer', serif;\n  height: 100%; }\n\n#buttons {\n  display: none; }\n\n@media (min-width: 500px) {\n  body {\n    text-align: left; }\n  #wrapper {\n    position: relative;\n    left: 50%;\n    margin-left: -250px; } }\n\n#main {\n  position: relative;\n  position: relative; }\n  #main:before {\n    display: block;\n    content: \"\";\n    width: 100%;\n    padding-top: 154%; }\n  #main > .content {\n    position: absolute;\n    top: 10px;\n    left: 0;\n    right: 0;\n    bottom: 0; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(183) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  top: 92.5%;\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center;\n  box-sizing: border-box; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  transition: r 1s;\n  stroke-width: 2px;\n  stroke: black;\n  fill: black;\n  fill-opacity: .2; }\n\n#splash {\n  top: 50%;\n  margin-top: -200px;\n  height: 400px;\n  width: 100%;\n  position: absolute;\n  text-align: center; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n\n#cover {\n  height: 91.5%;\n  background-color: white;\n  opacity: 0.25; }\n\n#outro {\n  width: 100%;\n  height: 400px;\n  line-height: 400px;\n  margin-top: -200px;\n  top: 50%;\n  position: absolute;\n  text-align: center; }\n", ""]);
 	
 	// exports
 
