@@ -17,7 +17,7 @@ const DATA = [
     x: 15, y: 40},
   {desc: 'Try it out on mobile - it\'s responsive!',
     x: 43, y: 80},
-  {desc: 'Just make sure that the photo you upload has an aspect ratio of 5:7',
+  {desc: 'Just make sure that the photo you upload has an aspect ratio of 5:6',
     x: 90, y: 20},
   {desc: 'That\'s it. Try it out in one of your stories!',
     x: 14, y: 30}
@@ -82,12 +82,10 @@ class App extends React.Component {
       switch(e.which) {
         case 37: 
           this.handleClick(-1);
-          console.log('left clicked')
           break;
 
         case 39:
           this.handleClick(1);
-          console.log('right clicked')
           break;
 
         default: return;

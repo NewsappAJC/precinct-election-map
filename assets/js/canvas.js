@@ -22,10 +22,10 @@ export default class {
         .enter()
       .append('circle')
         .attr('class', 'point')
-        .attr('r', 10)
+        .attr('r', '.4em')
+        .attr('opacity', 0)
         .attr('cx', d => d.x + '%')
         .attr('cy', d => d.y + '%')
-        .attr('r', 0)
 
     this.descs = d3.select('#canvas').selectAll('div')
       .data(this.data)
@@ -38,11 +38,11 @@ export default class {
   }
 
  advance(step) {
-    this.points.attr('r', (d,i) => {
-      return (step === i) ? '.7em' : 0
+    this.points.attr('opacity', (d,i) => {
+      return (step === i) ? 1 : 0;
     })
     this.descs.style('opacity', (d,i) => {
-      return (step === i) ? 1 : 0
+      return (step === i) ? 1 : 0;
     })
   }
 }

@@ -26,7 +26,6 @@ export default class {
   }
     
   fill(step) {
-    console.log('filling progress bar ' + step + ', ' + this.x(step))
     this.bar.attr('width', this.x(step + 1))
   }
 }

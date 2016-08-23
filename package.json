@@ -26,6 +26,7 @@
     "babel-preset-react": "^6.11.1",
     "css-loader": "^0.23.1",
     "d3": "^4.2.1",
+    "template-style": "git://github.com/NewsappAJC/digital-design-guide.git#master",
     "file-loader": "^0.9.0",
     "jquery": "^3.1.0",
     "react": "^15.3.0",
