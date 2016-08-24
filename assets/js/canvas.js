@@ -26,22 +26,10 @@ export default class {
         .attr('opacity', 0)
         .attr('cx', d => d.x + '%')
         .attr('cy', d => d.y + '%')
-
-    this.descs = d3.select('#canvas').selectAll('div')
-      .data(this.data)
-        .enter()
-      .append('div')
-        .html(d => '<div>' + d.desc + '</div>')
-        .attr('class', 'desc')
-        .style('transition', 'opacity 1s')
-        .style('opacity', 0)
   }
 
  advance(step) {
     this.points.attr('opacity', (d,i) => {
-      return (step === i) ? 1 : 0;
-    })
-    this.descs.style('opacity', (d,i) => {
       return (step === i) ? 1 : 0;
     })
   }

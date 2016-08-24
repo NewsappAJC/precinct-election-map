@@ -81,15 +81,15 @@
 	var DATA = [{ desc: 'This is Stepr. It\'s a responsive single-page app that displays a sequence of events',
 	  title: 'First step',
 	  x: 20, y: 50 }, { desc: 'The user clicks, taps, or uses the arrow keys to step through the events',
-	  title: 'Second step is really cool',
+	  title: 'Second step',
 	  x: 50, y: 40 }, { desc: 'Circles overlaid on a map/aerial photo show where each event took place',
-	  title: 'Wow what a great third step',
+	  title: 'Third step',
 	  x: 75, y: 20 }, { desc: 'A progress bar at the top of the screen tracks how far the user has left to go',
-	  title: 'Fourth step deserves a medal',
+	  title: 'Fourth step',
 	  x: 43, y: 80 }, { desc: 'It can be hard to convey spatial logic with words. But with Stepr it\'s easy',
-	  title: 'Hi I\'m the fifth step',
+	  title: 'Fifth step',
 	  x: 15, y: 40 }, { desc: 'Try it out on mobile - it\'s responsive!',
-	  title: 'Sixth step reporting for duty',
+	  title: 'Sixth step',
 	  x: 43, y: 80 }, { desc: 'Just make sure that the photo you upload has an aspect ratio of 5:6',
 	  title: 'Seven here',
 	  x: 90, y: 20 }, { desc: 'That\'s it. Try it out in one of your stories!',
@@ -117,24 +117,56 @@
 	
 	    // Add titles
 	    _this.data.forEach(function (s) {
-	      $('#titles').append('<div class="title">' + s.title + '</div>');
+	      $('#titles').append('<div class="title"><span class="caret">&raquo;</span>' + s.title + '</div>');
 	    });
 	
 	    _this.titles = document.getElementsByClassName('title');
 	
-	    for (var i = 0; i < _this.data.length; i++) {
+	    // Add event handlers
+	    var beginButton = document.getElementById('begin-button');
+	
+	    beginButton.addEventListener('click', function () {
+	      var splash = document.getElementById('splash');
+	      splash.style.display = 'none';
+	    });
+	
+	    for (var i = _this.data.length - 1; i >= 0; i--) {
+	      $('<div class="desc"><div class="box">' + _this.data[i].desc + '</box></div>').insertAfter('#main');
+	
 	      (function (j) {
 	        _this.titles[j].addEventListener('mouseenter', function (e) {
-	          e.target.style['margin-left'] = '10px';
+	          e.target.style['padding-left'] = '10px';
 	        });
 	        _this.titles[j].addEventListener('mouseout', function (e) {
-	          e.target.style['margin-left'] = '0';
+	          e.target.style['padding-left'] = '0';
 	        });
 	        _this.titles[j].addEventListener('click', function (e) {
 	          _this.setStep(j);
 	        });
 	      })(i);
 	    }
+	
+	    _this.descs = document.getElementsByClassName('desc');
+	
+	    $('#app').mouseup(function () {
+	      _this.handleClick(1);
+	    });
+	
+	    $(document).keydown(function (e) {
+	      switch (e.which) {
+	        case 37:
+	          _this.handleClick(-1);
+	          break;
+	
+	        case 39:
+	          _this.handleClick(1);
+	          break;
+	
+	        default:
+	          return;
+	      }
+	      e.preventDefault();
+	    });
 	    return _this;
 	  }
 	
@@ -160,74 +192,15 @@
 	
 	      for (var i = 0; i < this.data.length; i++) {
 	        this.titles[i].style.color = '#fff';
+	        this.descs[i].style.display = 'none';
 	      }
 	      this.titles[this.state.step].style.color = '#49709F';
-	    }
-	  }, {
-	    key: 'start',
-	    value: function start() {
-	      var _this2 = this;
-	
-	      this.handleClick(1);
-	      this.setState({ started: !this.state.started });
-	
-	      $(document).mouseup(function () {
-	        _this2.handleClick(1);
-	      });
-	
-	      $(document).keydown(function (e) {
-	        switch (e.which) {
-	          case 37:
-	            _this2.handleClick(-1);
-	            break;
-	
-	          case 39:
-	            _this2.handleClick(1);
-	            break;
-	
-	          default:
-	            return;
-	        }
-	        e.preventDefault();
-	      });
-	
-	      $('#cover').style.opacity = .2;
+	      this.descs[this.state.step].style.display = 'initial';
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        !this.state.started ? _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'div',
-	            { id: 'splash' },
-	            _react2.default.createElement(
-	              'h1',
-	              null,
-	              'Stepr'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Tap or click to advance'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { id: 'start', onClick: this.start.bind(this) },
-	              'Begin'
-	            )
-	          )
-	        ) : null,
-	        _react2.default.createElement(
-	          'h1',
-	          { id: 'outro', style: !this.state.finished ? this.hidden : this.active },
-	          'Finished'
-	        )
-	      );
+	      return _react2.default.createElement('div', null);
 	    }
 	  }]);
 	
@@ -26646,18 +26619,11 @@
 	      }).attr('cy', function (d) {
 	        return d.y + '%';
 	      });
-	
-	      this.descs = d3.select('#canvas').selectAll('div').data(this.data).enter().append('div').html(function (d) {
-	        return '<div>' + d.desc + '</div>';
-	      }).attr('class', 'desc').style('transition', 'opacity 1s').style('opacity', 0);
 	    }
 	  }, {
 	    key: 'advance',
 	    value: function advance(step) {
 	      this.points.attr('opacity', function (d, i) {
-	        return step === i ? 1 : 0;
-	      });
-	      this.descs.style('opacity', function (d, i) {
 	        return step === i ? 1 : 0;
 	      });
 	    }
@@ -48109,7 +48075,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Publico';\n  src: url(" + __webpack_require__(182) + "); }\n\n@font-face {\n  font-family: 'Boomer-Bold';\n  src: url(" + __webpack_require__(183) + "); }\n\n@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(187) + "); }\n\n/******************** \nBegin positioning\n********************/\nhtml, body {\n  margin: 0px;\n  height: 100%;\n  position: relative; }\n\nbody {\n  background-color: #333; }\n\n#jumbotron {\n  position: relative;\n  top: 1em; }\n\n#wrapper {\n  position: relative;\n  padding-bottom: 150%;\n  height: 0; }\n\n.content {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#buttons {\n  display: none; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n#app {\n  position: absolute;\n  width: 100%;\n  height: 80%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(184) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1;\n  height: 80%; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  font-family: 'Publico';\n  top: 100%;\n  font-size: 1em;\n  font-weight: bold;\n  width: 100%;\n  position: absolute;\n  transition: opacity 1s;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center;\n  box-sizing: border-box; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  fill: #003366;\n  transition: opacity 1s; }\n\n#splash {\n  top: 50%;\n  margin-top: -200px;\n  height: 400px;\n  width: 100%;\n  position: absolute;\n  text-align: center;\n  font-family: 'Boomer'; }\n\n#splash h1 {\n  font-size: 2.5em; }\n\n#splash p {\n  font-size: 1.5em; }\n\n#cover {\n  height: 80%;\n  background-color: white;\n  opacity: 0.25; }\n\n#outro {\n  font-family: 'Boomer';\n  width: 100%;\n  height: 400px;\n  line-height: 400px;\n  margin-top: -200px;\n  top: 50%;\n  position: absolute;\n  text-align: center; }\n\n/******************** \nBegin Navbar style \n********************/\n#nav-logo {\n  padding: 5px;\n  height: 50px;\n  vertical-align: middle;\n  display: inline-block; }\n\n#nav-title {\n  display: inline-block;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff; }\n\n/******************** \nEnd Navbar style \n********************/\n/******************** \nTitles\n********************/\n#titles {\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff; }\n\n.title {\n  transition: margin .25s;\n  cursor: pointer; }\n\n/******************** \nEnd titles\n********************/\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Publico';\n  src: url(" + __webpack_require__(182) + "); }\n\n@font-face {\n  font-family: 'Boomer-Bold';\n  src: url(" + __webpack_require__(183) + "); }\n\n@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(187) + "); }\n\n/******************** \nBegin positioning\n********************/\nhtml, body {\n  margin: 0px;\n  height: 100%;\n  position: relative; }\n\nbody {\n  background-color: #333; }\n\n#jumbotron {\n  position: relative;\n  max-width: 1000px;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 1em; }\n\n#main {\n  width: 100%;\n  max-width: 500px;\n  float: left; }\n\n#wrapper {\n  position: relative;\n  padding-bottom: 120%;\n  height: 0; }\n\n.content {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#buttons {\n  display: none; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n.fade {\n  opacity: .2; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(184) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  display: none;\n  float: left;\n  top: 100%;\n  width: 100%;\n  box-sizing: border-box; }\n\n.box {\n  max-width: 500px;\n  font-family: 'Publico';\n  font-size: 1em;\n  font-weight: bold;\n  position: relative;\n  background-color: white;\n  padding: 10px 5px 10px 5px;\n  text-align: center;\n  box-sizing: border-box; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  fill: #003366;\n  stroke: #fff;\n  stroke-width: 2px;\n  transition: opacity 1s; }\n\n#splash {\n  position: fixed;\n  background-color: black;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 9999;\n  color: #fff; }\n\n#splash-holder {\n  position: relative;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  width: 50em; }\n\n#splash-title {\n  font-family: 'Boomer-Bold';\n  font-size: 10em;\n  line-height: 1em; }\n\n#splash-text {\n  font-family: 'Publico';\n  font-size: 2em; }\n\n#begin-button {\n  position: absolute;\n  font-family: 'Boomer';\n  height: 100px;\n  font-size: 5em;\n  margin-top: 10px;\n  width: 100%;\n  border-top: 3px solid #fff;\n  text-align: center;\n  transition: background-color .5s;\n  transition: color .5s;\n  bottom: 0; }\n\n.caret {\n  font-family: serif;\n  padding-right: 10px;\n  font-size: 1.7em;\n  line-height: 1em; }\n\n#high {\n  color: #49709F; }\n\n#begin-button:hover {\n  color: black;\n  background-color: white; }\n\n#cover {\n  background-color: white;\n  opacity: 0.25; }\n\n#outro {\n  font-family: 'Boomer';\n  width: 100%;\n  height: 400px;\n  line-height: 400px;\n  margin-top: -200px;\n  top: 50%;\n  position: absolute;\n  text-align: center; }\n\n/******************** \nBegin Navbar style \n********************/\n#nav-logo {\n  padding: 5px;\n  height: 50px;\n  vertical-align: middle;\n  display: inline-block; }\n\n#nav-title {\n  display: inline-block;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff; }\n\n/******************** \nEnd Navbar style \n********************/\n/******************** \nTitles\n********************/\n#titles {\n  z-index: -1;\n  position: relative;\n  margin-left: 20px;\n  width: 300px;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff; }\n\n@media (min-width: 510px) {\n  #jumbotron {\n    margin-left: 10px; } }\n\n@media (min-width: 820px) {\n  #titles {\n    position: absolute;\n    left: 520px; } }\n\n.title {\n  transition: padding .25s;\n  cursor: pointer; }\n\n/******************** \nEnd titles\n********************/\n", ""]);
 	
 	// exports
 

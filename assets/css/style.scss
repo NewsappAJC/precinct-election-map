@@ -28,13 +28,22 @@ body {
 
 #jumbotron {
   position: relative;
+  max-width: 1000px;
+  left: 50%;
+  transform: translateX(-50%);
   top: 1em;
+}
+
+#main {
+  width: 100%;
+  max-width: 500px;
+  float: left;
 }
 
 // Set fixed aspect ratio for canvas
 #wrapper {
   position: relative;
-  padding-bottom: 150%;
+  padding-bottom: 120%;
   height: 0;
 }
 
@@ -67,12 +76,6 @@ body {
   height: 90%;
 }
 
-#app {
-  position: absolute;
-  width: 100%;
-  height: 80%;
-}
-
 .fade {
   opacity: .2;
 }
@@ -82,7 +85,6 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   z-index: -1;
-  height: 80%;
 }
 
 #start {
@@ -101,14 +103,20 @@ body {
   cursor: pointer;
 }
 
-.desc { 
-  font-family: 'Publico';
+.desc {
+  display: none;
+  float: left;
   top: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.box { 
+  max-width: 500px;
+  font-family: 'Publico';
   font-size: 1em;
   font-weight: bold;
-  width: 100%;
-  position: absolute;
-  transition: opacity 1s; 
+  position: relative;
 	background-color: white;
 	padding: 10px 5px 10px 5px;
   text-align: center;
@@ -147,29 +155,71 @@ svg {
 
 .point {
   fill: #003366;
+  stroke: #fff;
+  stroke-width: 2px;
   transition: opacity 1s;
 }
 
 #splash {
-  top: 50%;
-  margin-top: -200px;
-  height: 400px;
+  position: fixed;
+  background-color: black;
+  top: 0;
   width: 100%;
+  height: 100%;
+  z-index: 9999;
+  color: #fff;
+}
+
+#splash-holder {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 50em;
+}
+
+#splash-title {
+  font-family: 'Boomer-Bold';
+  font-size: 10em;
+  line-height: 1em;
+}
+
+#splash-text {
+  font-family: 'Publico';
+  font-size: 2em;
+}
+
+#begin-button {
   position: absolute;
-  text-align: center;
   font-family: 'Boomer';
+  height: 100px;
+  font-size: 5em;
+  margin-top: 10px;
+  width: 100%;
+  border-top: 3px solid #fff;
+  text-align: center;
+  transition: background-color .5s;
+  transition: color .5s;
+  bottom: 0;
 }
 
-#splash h1 {
-  font-size: 2.5em;
+.caret {
+  font-family: serif;
+  padding-right: 10px;
+  font-size: 1.7em;
+  line-height: 1em;
 }
 
-#splash p {
-  font-size: 1.5em;
+#high {
+  color: #49709F
+}
+
+#begin-button:hover {
+  color:black;
+  background-color:white;
 }
 
 #cover {
-  height: 80%;
   background-color: white;
   opacity: 0.25;
 }
@@ -211,7 +261,13 @@ End Navbar style
 /******************** 
 Titles
 ********************/
+
+
 #titles {
+  z-index: -1;
+  position: relative;
+  margin-left: 20px;
+  width: 300px;
   font-size: 20px;
   font-weight: 700;
   vertical-align: middle;
@@ -219,8 +275,21 @@ Titles
   text-transform: uppercase;
   color: #fff;
 }
+
+@media (min-width: 510px) {
+  #jumbotron {
+    margin-left: 10px;
+  }
+}
+@media (min-width: 820px) {
+  #titles {
+    position: absolute;
+    left: 520px;
+  }
+}
+
 .title {
-  transition: margin .25s;
+  transition: padding .25s;
   cursor: pointer;
 }
 /******************** 
