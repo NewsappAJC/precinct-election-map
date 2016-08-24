@@ -4,27 +4,38 @@
 }
 
 @font-face {
-  font-family: 'Boomer';
+  font-family: 'Boomer-Bold';
   src: url('./fonts/boomer/Boomer-Bold.otf')
 }
 
+@font-face {
+  font-family: 'Boomer';
+  src: url('./fonts/boomer/Boomer-Regular.otf')
+}
+
+/******************** 
+Begin positioning
+********************/
+html, body {
+  margin: 0px;
+  height: 100%;
+  position: relative;
+}
+
+body {
+  background-color: #333;
+}
+
+#jumbotron {
+  position: relative;
+  top: 1em;
+}
+
+// Set fixed aspect ratio for canvas
 #wrapper {
   position: relative;
   padding-bottom: 150%;
   height: 0;
-}
-
-#main {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-@media (min-width: 400px) {
-  #main {
-    max-width: 400px;
-  }
 }
 
 .content {
@@ -33,16 +44,6 @@
   height: 100%;
   left: 0;
   top: 0;
-}
-
-html {
-  height: 100%;
-  background-color: #585858;
-}
-
-body {
-  position: relative;
-  height: 100%;
 }
 
 #buttons {
@@ -145,7 +146,7 @@ svg {
 }
 
 .point {
-  fill: red;
+  fill: #003366;
   transition: opacity 1s;
 }
 
@@ -183,3 +184,46 @@ svg {
   position: absolute;
   text-align: center;
 }
+
+/******************** 
+Begin Navbar style 
+********************/
+#nav-logo {
+  padding: 5px;
+  height: 50px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+#nav-title {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  vertical-align: middle;
+  font-family: 'Boomer-Bold';
+  text-transform: uppercase;
+  color: #fff;
+}
+/******************** 
+End Navbar style 
+********************/
+
+/******************** 
+Titles
+********************/
+#titles {
+  font-size: 20px;
+  font-weight: 700;
+  vertical-align: middle;
+  font-family: 'Boomer-Bold';
+  text-transform: uppercase;
+  color: #fff;
+}
+.title {
+  transition: margin .25s;
+  cursor: pointer;
+}
+/******************** 
+End titles
+********************/
+
