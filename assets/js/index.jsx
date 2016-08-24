@@ -1,5 +1,6 @@
 import ProgressBar from './progress-bar';
 import Canvas from './canvas';
+import Stories from './stories';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '!style!css!sass!../css/vendor/foundation.min.css';
@@ -32,7 +33,6 @@ const DATA = [
     title: 'Wow eight',
     x: 14, y: 30}
 ]
-
 
 class App extends React.Component {
   constructor() {
@@ -133,3 +133,4 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'))
+ReactDOM.render(<Stories/>, document.getElementById('related-content'))
