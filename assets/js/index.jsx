@@ -113,26 +113,41 @@ class App extends React.Component {
   }
   
   handleClick(i) {
-    this.setStep(this.state.step += i)
+    this.setStep(this.state.step + i)
   }
 
   setStep(step) {
-    // Perform cool flash animation
-    this.cover.style.opacity = 0.5;
-    setTimeout(() => {
-      this.cover.style.opacity = 0.25;
-    }, 250)
-    this.setState({step: step, finished:false});
-    this.canvas.advance(this.state.step);
-    this.progressBar.fill(this.state.step);
-
     for (var i=0; i<this.data.length; i++) {
       this.titles[i].style.color = '#fff';
       this.descs[i].style.display = 'none';
     }
-    this.titles[this.state.step].style.color = '#49709F';
-    this.descs[this.state.step].style.display = 'initial';
-    this.setState({started: true})
+
+    if (step === this.data.length) {
+      this.setState({step: step})
+      this.setState({finished: true})
+    }
+    else if (step < this.data.length){
+      this.setState({step: step})
+      this.setState({started: true, finished: false})
+
+      // Perform cool flash animation
+      this.cover.style.opacity = 0.5;
+      setTimeout(() => {
+        this.cover.style.opacity = 0.25;
+      }, 250)
+
+
+      this.canvas.advance(this.state.step);
+
+      this.titles[this.state.step].style.color = '#49709F';
+      this.descs[this.state.step].style.display = 'initial';
+    }
+    else {
+      return
+    }
+
+    this.canvas.advance(this.state.step);
+    this.progressBar.fill(this.state.step);
   }
 
   render() {
@@ -142,6 +157,13 @@ class App extends React.Component {
         <div>
           <div className="content" id="instructions" onClick={this.setStep.bind(this)}>
             Tap or click this photo to advance
+          </div>
+        </div>
+        : null}
+      {this.state.finished ?
+        <div>
+          <div className="content" id="finished">
+            Finished. <a href="http://ajc.com" id="finished-link">Read more.</a>
           </div>
         </div>
         : null}

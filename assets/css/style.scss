@@ -46,7 +46,6 @@ body {
 
 // Set fixed aspect ratio for canvas
 #wrapper {
-  cursor: pointer;
   border: 3px solid white;
   position: relative;
   padding-bottom: 120%;
@@ -86,12 +85,20 @@ body {
   opacity: .2;
 }
 
-#instructions {
+#instructions, #finished {
   padding: 2em;
   font-family: 'Boomer-Bold';
   font-size: 3em;
   text-align: center;
-  cursor: pointer;
+}
+
+#finished-link {
+  text-decoration: underline;
+  color: black;
+}
+
+#finished-link:hover {
+  color: #49709F;
 }
 
 #canvas{ 
@@ -430,11 +437,14 @@ Social sharing
 Mobile styles
 ********************/
 @media (max-width: 400px) {
-  #instructions {
+  #instructions, #finished {
     padding: 10px;
     font-size: 1.5em;
   }
   #splash-text {
     display: none;
+  }
+  .desc {
+    font-size: .8em
   }
 }
