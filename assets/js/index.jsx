@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import '!style!css!sass!../css/vendor/foundation.min.css';
 import '!style!css!sass!../css/style.scss';
 import '../img/ajc-logo.png';
+import '../img/title-card.png';
 
 const DATA = [
   {desc: 'This is Stepr. It\'s a responsive single-page app that displays a sequence of events',
@@ -42,18 +43,12 @@ class App extends React.Component {
     this.canvas = new Canvas(this.data);
     this.progressBar = new ProgressBar()
 
-    this.faded = {opacity: .4, transition: 'opacity 1s'};
-    this.active = {opacity: 1, transition: 'opacity 1s'};
-    this.hidden = {opacity: 0, transition: 'opacity 1s'};
-
     this.state = {started: false, finished: false, step: -1};
 
     // Add titles
     this.data.forEach((s) => {
       $('#titles').append(`<div class="title"><span class="caret">&raquo;</span>${s.title}</div>`)
     })
-
-    this.titles = document.getElementsByClassName('title');
 
     // Add event handlers
     var beginButton = document.getElementById('begin-button');
@@ -63,9 +58,13 @@ class App extends React.Component {
       splash.style.display = 'none';
     })
 
+    this.titles = document.getElementsByClassName('title');
+
     for (var i = this.data.length - 1; i >= 0; i--) {
+      // Append divs with the event descriptions after the #main div
       $(`<div class="desc"><div class="box">${this.data[i].desc}</box></div>`).insertAfter('#main');
 
+      // An IIFE that adds event listeners for hover to each of the event titles
       ((j) => {
         this.titles[j].addEventListener('mouseenter', (e) => {
           e.target.style['padding-left'] = '10px'
@@ -79,12 +78,11 @@ class App extends React.Component {
       })(i)
     }
 
-    this.descs = document.getElementsByClassName('desc');
-
     $('#app').mouseup(() => {
       this.handleClick(1)
     })
 
+    // Handle arrow keys as well as clicks.
     $(document).keydown((e) => {
       switch(e.which) {
         case 37: 
@@ -99,6 +97,12 @@ class App extends React.Component {
       }
       e.preventDefault()
     })
+
+    // Add instance variables referring to elements on the page that we'll want to
+    // manipulate later.
+    this.cover = document.getElementById('cover');
+    this.descs = document.getElementsByClassName('desc');
+
   }
 
   componentDidMount() {
@@ -113,6 +117,11 @@ class App extends React.Component {
   }
 
   setStep(step) {
+    // Perform cool flash animation
+    this.cover.style.opacity = 0.5;
+    setTimeout(() => {
+      this.cover.style.opacity = 0.25;
+    }, 250)
     this.setState({step: step, finished:false});
     this.canvas.advance(this.state.step);
     this.progressBar.fill(this.state.step);
@@ -123,11 +132,20 @@ class App extends React.Component {
     }
     this.titles[this.state.step].style.color = '#49709F';
     this.descs[this.state.step].style.display = 'initial';
+    this.setState({started: true})
   }
 
   render() {
     return (
-      <div></div>
+      <div>
+      {!this.state.started ?
+        <div>
+          <div className="content" id="instructions" onClick={this.setStep.bind(this)}>
+            Tap or click this photo to advance
+          </div>
+        </div>
+        : null}
+      </div>
     )
   }
 }
