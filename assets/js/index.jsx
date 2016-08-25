@@ -70,7 +70,7 @@ class App extends React.Component {
         this.titles[j].addEventListener('mouseenter', (e) => {
           e.target.style['padding-left'] = '10px'
         })
-        this.titles[j].addEventListener('mouseout', (e) => {
+        this.titles[j].addEventListener('mouseleave', (e) => {
           e.target.style['padding-left'] = '0'
         })
         this.titles[j].addEventListener('click', (e) => {
