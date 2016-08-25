@@ -156,7 +156,7 @@ class App extends React.Component {
       {!this.state.started ?
         <div>
           <div className="content" id="instructions" onClick={this.setStep.bind(this)}>
-            Tap or click this photo to advance
+            Tap or click this photo
           </div>
         </div>
         : null}

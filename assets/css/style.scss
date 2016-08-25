@@ -199,6 +199,7 @@ svg {
 }
 
 #splash-holder {
+  padding-top: 20px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
@@ -207,6 +208,8 @@ svg {
 
 
 #splash-text {
+  margin-top: 20px;
+  padding: 15px;
   font-family: 'Publico';
   font-size: 2em;
 }
@@ -437,8 +440,6 @@ Mobile styles
     font-size: 1.5em;
   }
   #splash-text {
-    margin-top: 20px;
-    padding: 15px;
     font-size: 1em;
   }
   #begin-button {
