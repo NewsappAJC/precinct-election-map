@@ -153,7 +153,7 @@ svg {
 }
 
 .point {
-  fill: #003366;
+  fill: red;
   stroke: #fff;
   stroke-width: 2px;
   transition: opacity 1s;
@@ -237,6 +237,11 @@ svg {
 /******************** 
 Begin Navbar style 
 ********************/
+#nav {
+  position: relative;
+  padding-right: 20px;
+}
+
 #nav-logo {
   padding: 5px;
   height: 50px;
@@ -252,6 +257,12 @@ Begin Navbar style
   font-family: 'Boomer-Bold';
   text-transform: uppercase;
   color: #fff;
+  line-height: 3em;
+}
+@media (max-width: 400px) {
+  #nav {
+    display: none;
+  }
 }
 /******************** 
 End Navbar style 
@@ -301,19 +312,22 @@ Related Stories
 ********************/
 
 #related-content {
+  margin-top: 100px;
   padding-top: 20px;
+  padding-bottom: 20px;
   position: relative;
-  top: 100px;
   width: 100%;
   background-color: #e7e7e7;
 }
 
+/*
 @media (min-width: 820px) {
   #related-content {
     position: absolute;
     top: 98%;
   }
 }
+*/
 
 #stories-header {
   text-align: center;
@@ -358,3 +372,32 @@ Related Stories
 /******************** 
 End related stories
 ********************/
+
+
+/******************** 
+Credits
+********************/
+#credits {
+  padding: 20px;
+  background-color: #333;
+  color: white;
+  font-family: 'Publico';
+  font-size: 1em;
+}
+/******************** 
+End credits
+********************/
+
+/******************** 
+Social sharing
+********************/
+#fb-share {
+  position: relative;
+  float: right;
+  top: 15px;
+}
+
+#fb-share-credits {
+  margin-bottom: 10px;
+}
+
