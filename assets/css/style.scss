@@ -202,14 +202,9 @@ svg {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
+  max-width: 600px;
 }
 
-#splash-title {
-  font-family: 'Boomer-Bold';
-  font-size: 10em;
-  line-height: 1em;
-}
 
 #splash-text {
   font-family: 'Publico';
@@ -442,7 +437,13 @@ Mobile styles
     font-size: 1.5em;
   }
   #splash-text {
-    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 1em;
+  }
+  #begin-button {
+    font-size: 1.5em;
+    line-height: 2em;
   }
   .desc {
     font-size: .8em
