@@ -23,11 +23,6 @@ class App extends React.Component {
 
     this.state = {started: false, finished: false, step: -1};
 
-    // Add titles
-    this.data.forEach((s) => {
-      $('#titles').append(`<div class="title">${s.title}</div>`)
-    })
-
     // Add event handlers
     var beginButton = document.getElementById('begin-button');
     
@@ -36,8 +31,6 @@ class App extends React.Component {
       splash.style.display = 'none';
     })
 
-    this.titles = document.getElementsByClassName('title');
-
     for (var i = this.data.length - 1; i >= 0; i--) {
       // Append divs with the event descriptions after the #main div
       $(`<div class="desc">
@@ -45,19 +38,6 @@ class App extends React.Component {
             ${this.data[i].desc}
           </div>
         </div>`).insertAfter('#main');
-
-      // An IIFE that adds event listeners for hover to each of the event titles
-      ((j) => {
-        this.titles[j].addEventListener('mouseenter', (e) => {
-          e.target.style['padding-left'] = '10px'
-        })
-        this.titles[j].addEventListener('mouseleave', (e) => {
-          e.target.style['padding-left'] = '0'
-        })
-        this.titles[j].addEventListener('click', (e) => {
-          this.setStep(j)
-        })
-      })(i)
     }
 
     // Add click event handler to canvas
@@ -98,7 +78,6 @@ class App extends React.Component {
   setStep(step) {
     this.cover.style.opacity = 0;
     for (var i=0; i<this.data.length; i++) {
-      this.titles[i].style.color = '#fff';
       this.descs[i].style.display = 'none';
     };
 
@@ -147,7 +126,6 @@ class App extends React.Component {
       return
     }
 
-    this.titles[this.state.step].style.color = '#49709F';
     this.descs[this.state.step].style.display = 'initial';
     this.progressBar.fill(this.state.step);
   }

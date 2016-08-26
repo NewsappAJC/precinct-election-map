@@ -107,11 +107,6 @@
 	
 	    _this.state = { started: false, finished: false, step: -1 };
 	
-	    // Add titles
-	    _this.data.forEach(function (s) {
-	      $('#titles').append('<div class="title">' + s.title + '</div>');
-	    });
-	
 	    // Add event handlers
 	    var beginButton = document.getElementById('begin-button');
 	
@@ -120,24 +115,9 @@
 	      splash.style.display = 'none';
 	    });
 	
-	    _this.titles = document.getElementsByClassName('title');
-	
 	    for (var i = _this.data.length - 1; i >= 0; i--) {
 	      // Append divs with the event descriptions after the #main div
 	      $('<div class="desc">\n          <div class="box">\n            ' + _this.data[i].desc + '\n          </div>\n        </div>').insertAfter('#main');
-	
-	      // An IIFE that adds event listeners for hover to each of the event titles
-	      (function (j) {
-	        _this.titles[j].addEventListener('mouseenter', function (e) {
-	          e.target.style['padding-left'] = '10px';
-	        });
-	        _this.titles[j].addEventListener('mouseleave', function (e) {
-	          e.target.style['padding-left'] = '0';
-	        });
-	        _this.titles[j].addEventListener('click', function (e) {
-	          _this.setStep(j);
-	        });
-	      })(i);
 	    }
 	
 	    // Add click event handler to canvas
@@ -183,7 +163,6 @@
 	    value: function setStep(step) {
 	      this.cover.style.opacity = 0;
 	      for (var i = 0; i < this.data.length; i++) {
-	        this.titles[i].style.color = '#fff';
 	        this.descs[i].style.display = 'none';
 	      };
 	
@@ -223,7 +202,6 @@
 	        return;
 	      }
 	
-	      this.titles[this.state.step].style.color = '#49709F';
 	      this.descs[this.state.step].style.display = 'initial';
 	      this.progressBar.fill(this.state.step);
 	    }
