@@ -47,7 +47,7 @@ class App extends React.Component {
 
     // Add titles
     this.data.forEach((s) => {
-      $('#titles').append(`<div class="title"><span class="caret">&raquo;</span>${s.title}</div>`)
+      $('#titles').append(`<div class="title">${s.title}</div>`)
     })
 
     // Add event handlers
@@ -62,7 +62,11 @@ class App extends React.Component {
 
     for (var i = this.data.length - 1; i >= 0; i--) {
       // Append divs with the event descriptions after the #main div
-      $(`<div class="desc"><div class="box">${this.data[i].desc}</box></div>`).insertAfter('#main');
+      $(`<div class="desc">
+          <div class="box">
+            ${this.data[i].desc}
+          </div>
+        </div>`).insertAfter('#main');
 
       // An IIFE that adds event listeners for hover to each of the event titles
       ((j) => {
@@ -78,6 +82,7 @@ class App extends React.Component {
       })(i)
     }
 
+    // Add click event handler to canvas
     $('#app').mouseup(() => {
       this.handleClick(1)
     })
@@ -98,20 +103,17 @@ class App extends React.Component {
       e.preventDefault()
     })
 
-    // Add instance variables referring to elements on the page that we'll want to
-    // manipulate later.
+    // Add instance variables referring to elements on the page that I'll want to
+    // reference later.
     this.cover = document.getElementById('cover');
     this.descs = document.getElementsByClassName('desc');
 
-  }
-
-  componentDidMount() {
     this.canvas.build()
     this.progressBar.build(this.data.length + 1)
     this.canvas.advance(this.state.step)
     this.progressBar.fill(this.state.step)
   }
-  
+
   handleClick(i) {
     this.setStep(this.state.step + i)
   }
@@ -125,15 +127,16 @@ class App extends React.Component {
     if (step === this.data.length) {
       this.setState({step: step})
       this.setState({finished: true})
+      this.cover.style.opacity = .7;
     }
     else if (step < this.data.length){
       this.setState({step: step})
       this.setState({started: true, finished: false})
 
       // Perform cool flash animation
-      this.cover.style.opacity = 0.5;
+      this.cover.style.opacity = 0.25;
       setTimeout(() => {
-        this.cover.style.opacity = 0.25;
+        this.cover.style.opacity = 0;
       }, 250)
 
 
@@ -156,7 +159,7 @@ class App extends React.Component {
       {!this.state.started ?
         <div>
           <div className="content" id="instructions" onClick={this.setStep.bind(this)}>
-            Tap or click this photo
+            Tap or click this photo to advance
           </div>
         </div>
         : null}
