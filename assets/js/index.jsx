@@ -1,3 +1,4 @@
+import Data from './data';
 import ProgressBar from './progress-bar';
 import Canvas from './canvas';
 import Stories from './stories';
@@ -8,37 +9,11 @@ import '!style!css!sass!../css/style.scss';
 import '../img/ajc-logo.png';
 import '../img/title-card.png';
 
-const DATA = [
-  {desc: 'This is Stepr. It\'s a responsive single-page app that displays a sequence of events',
-    title: 'First step',
-    x: 20, y: 50},
-  {desc: 'The user clicks, taps, or uses the arrow keys to step through the events',
-    title: 'Second step',
-    x: 50, y: 40},
-  {desc: 'Circles overlaid on a map/aerial photo show where each event took place', 
-    title: 'Third step',
-    x: 75, y: 20},
-  {desc: 'A progress bar at the top of the screen tracks how far the user has left to go',
-    title: 'Fourth step',
-    x: 43, y: 80},
-  {desc: 'It can be hard to convey spatial logic with words. But with Stepr it\'s easy',
-    title: 'Fifth step',
-    x: 15, y: 40},
-  {desc: 'Try it out on mobile - it\'s responsive!',
-    title: 'Sixth step',
-    x: 43, y: 80},
-  {desc: 'Just make sure that the photo you upload has an aspect ratio of 5:6',
-    title: 'Seven here',
-    x: 90, y: 20},
-  {desc: 'That\'s it. Try it out in one of your stories!',
-    title: 'Wow eight',
-    x: 14, y: 30}
-]
-
 class App extends React.Component {
   constructor() {
     super();
-    this.data = DATA;
+    var Input = new Data;
+    this.data = Input.data;
 
     this.canvas = new Canvas(this.data);
     this.progressBar = new ProgressBar()
