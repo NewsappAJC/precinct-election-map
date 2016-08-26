@@ -181,7 +181,16 @@
 	  }, {
 	    key: 'setStep',
 	    value: function setStep(step) {
-	      var _this2 = this;
+	      this.cover.style.opacity = 0;
+	      for (var i = 0; i < this.data.length; i++) {
+	        this.titles[i].style.color = '#fff';
+	        this.descs[i].style.display = 'none';
+	      };
+	
+	      var cs = document.getElementsByClassName('point');
+	      for (var i = 0; i < cs.length; i++) {
+	        cs[i].style.r = '5px';
+	      }
 	
 	      if (step === this.data.length) {
 	        this.setState({ step: step });
@@ -191,26 +200,31 @@
 	        this.setState({ step: step });
 	        this.setState({ started: true, finished: false });
 	
-	        // Perform cool flash animation
+	        /* Perform cool flash animation
 	        this.cover.style.opacity = 0.25;
-	        setTimeout(function () {
-	          _this2.cover.style.opacity = 0;
-	        }, 250);
+	        setTimeout(() => {
+	          this.cover.style.opacity = 0;
+	        }, 250)
+	        */
 	
 	        var entry = this.data[this.state.step];
+	        var colors = ['blue', 'red'];
 	
-	        if (this.plotted.indexOf(this.id) === -1) {
+	        if (this.plotted.indexOf(entry.id) === -1) {
 	          this.plotted.push(entry.id);
-	          this.svg.append('circle').attr('class', 'point').attr('id', 'point' + entry.id).attr('cx', entry.x).attr('cy', entry.y);
+	          this.svg.append('circle').attr('class', 'point').attr('fill', colors[entry.id]).attr('id', 'point' + entry.id).attr('cx', entry.x + '%').attr('cy', entry.y + '%').attr('r', '7px');
 	        } else {
 	          var c = document.getElementById('point' + entry.id);
 	          c.style.cx = entry.x + '%';
 	          c.style.cy = entry.y + '%';
+	          c.style.r = '7px';
 	        }
 	      } else {
 	        return;
 	      }
 	
+	      this.titles[this.state.step].style.color = '#49709F';
+	      this.descs[this.state.step].style.display = 'initial';
 	      this.progressBar.fill(this.state.step);
 	    }
 	  }, {
@@ -10349,64 +10363,57 @@
 	    _classCallCheck(this, _class);
 	
 	    this.data = [{
-	        "desc": "An officer radios to say he's chasing a suspect toward Monroe Place NE.",
+	        "desc": "Officer Burns arrives at Monroe Place responding to a call about an officer chasing a suspect. He turns off his lights and sirens.",
 	        "id": 0,
-	        "step": 0,
-	        "title": "Call",
-	        "x": 78,
-	        "y": 68
-	    }, {
-	        "desc": "Officer Burns arrives minutes later, and turns off his lights and sirens.",
-	        "id": 1,
 	        "step": 1,
 	        "title": "Arrival",
 	        "x": 7,
 	        "y": 8
 	    }, {
 	        "desc": "Burns drives south along Monroe Place NE along the left side of the road.",
-	        "id": 1,
+	        "id": 0,
 	        "step": 2,
 	        "title": "Lookout",
 	        "x": 48,
 	        "y": 28
 	    }, {
-	        "desc": "Burns sees a car pull out of the road and come towards him ",
-	        "id": 2,
+	        "desc": "Burns sees a car pull into the road and drive towards him.",
+	        "id": 1,
 	        "step": 3,
 	        "title": "Spotted",
 	        "x": 41,
 	        "y": 67
 	    }, {
-	        "desc": "Burns flashes his lights and chirps his siren",
-	        "id": 1,
+	        "desc": "Burns flashes his lights and chirps his siren.",
+	        "id": 0,
 	        "step": 4,
 	        "title": "Sirens",
 	        "x": 48,
 	        "y": 28
 	    }, {
 	        "desc": "The car does not stop. Burns said the driver \"gunned his engine.\" ",
-	        "id": 2,
+	        "id": 1,
 	        "step": 5,
 	        "title": "Confrontation",
 	        "x": 42,
 	        "y": 56
 	    }, {
 	        "desc": "Burns steps out of his car and moves around to the rear, shouting 'stop!'",
-	        "id": 1,
+	        "id": 0,
 	        "step": 6,
 	        "title": "Command",
 	        "x": 48,
 	        "y": 28
 	    }, {
-	        "desc": "As the car passes Burns on the left, he fires through the window, striking the driver Deravis Rogers in the head.",
-	        "id": 2,
+	        "desc": "As the car passes Burns on the left, the officer fires through the window, striking the driver Deravis Rogers in the head.",
+	        "id": 1,
 	        "step": 7,
 	        "title": "Gunshot",
 	        "x": 44,
 	        "y": 28
 	    }, {
-	        "desc": "The car rolls down the hill. Driver Deravis Rogers is dead by the time it comes to rest across the intersection. ",
-	        "id": 2,
+	        "desc": "The car rolls down the hill. The driver, Deravis Rogers is dead by the time it comes to rest across the intersection. ",
+	        "id": 1,
 	        "step": 8,
 	        "title": "Finished",
 	        "x": 43,
@@ -48655,7 +48662,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Publico';\n  src: url(" + __webpack_require__(188) + "); }\n\n@font-face {\n  font-family: 'Publico-Black';\n  src: url(" + __webpack_require__(189) + "); }\n\n@font-face {\n  font-family: 'Boomer-Bold';\n  src: url(" + __webpack_require__(190) + "); }\n\n@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(191) + "); }\n\n/******************** \nBegin positioning\n********************/\nhtml, body {\n  margin: 0px;\n  height: 100%;\n  position: relative; }\n\nbody {\n  background-color: #333; }\n\n#jumbotron {\n  position: relative;\n  max-width: 1000px;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 1em; }\n\n#main {\n  width: 100%;\n  max-width: 500px; }\n\n#wrapper {\n  border: 3px solid white;\n  position: relative;\n  padding-bottom: 120%;\n  height: 0; }\n\n.content {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#buttons {\n  display: none; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n.fade {\n  opacity: .2; }\n\n#instructions, #finished {\n  padding: 2em;\n  font-family: 'Boomer-Bold';\n  font-size: 3em;\n  text-align: center; }\n\n#finished-link {\n  text-decoration: underline;\n  color: black; }\n\n#finished-link:hover {\n  color: #49709F; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(192) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  display: none;\n  top: 100%;\n  width: 100%;\n  box-sizing: border-box; }\n\n.box {\n  max-width: 500px;\n  font-family: 'Publico';\n  font-weight: bold;\n  position: relative;\n  padding: 10px 5px 10px 5px;\n  text-align: left;\n  box-sizing: border-box;\n  color: white;\n  font-size: 1.4em; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  fill: red;\n  r: 6;\n  stroke: #fff;\n  stroke-width: 2px;\n  transition: all .3s ease; }\n\n#loading {\n  position: fixed;\n  background-color: #fff;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 99999; }\n\n#splash {\n  position: fixed;\n  background-color: black;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  color: #fff; }\n\n#splash-holder {\n  padding-top: 20px;\n  position: relative;\n  left: 50%;\n  transform: translateX(-50%);\n  max-width: 600px; }\n\n#splash-text {\n  margin-top: 20px;\n  padding: 15px;\n  font-family: 'Publico';\n  font-size: 2em; }\n\n#begin-button {\n  position: absolute;\n  font-family: 'Boomer';\n  font-size: 5em;\n  margin-top: 10px;\n  width: 100%;\n  border-top: 3px solid #fff;\n  text-align: center;\n  transition: background-color .5s;\n  transition: color .5s;\n  bottom: 0px;\n  padding-bottom: 10px;\n  cursor: pointer; }\n\n#begin-button:hover {\n  color: black;\n  background-color: white; }\n\n.caret {\n  font-family: serif;\n  padding-right: 10px;\n  font-size: 1.7em;\n  line-height: 1em; }\n\n#high {\n  color: #49709F; }\n\n#cover {\n  background-color: white;\n  opacity: .5;\n  transition: opacity .25s; }\n\n#outro {\n  font-family: 'Boomer';\n  width: 100%;\n  height: 400px;\n  line-height: 400px;\n  margin-top: -200px;\n  top: 50%;\n  position: absolute;\n  text-align: center; }\n\n/******************** \nBegin Navbar style \n********************/\n#nav {\n  position: relative;\n  padding-right: 20px; }\n\n#nav-logo {\n  padding: 5px;\n  height: 50px;\n  vertical-align: middle;\n  display: inline-block; }\n\n#nav-title {\n  display: inline-block;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff;\n  line-height: 3em; }\n\n@media (max-width: 400px) {\n  #nav {\n    display: none; } }\n\n/******************** \nEnd Navbar style \n********************/\n/******************** \nTitles\n********************/\n#titles {\n  z-index: -1;\n  position: relative;\n  margin-left: 20px;\n  width: 300px;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff;\n  top: 0; }\n\n@media (min-width: 510px) {\n  #jumbotron {\n    margin-left: 10px; } }\n\n@media (min-width: 820px) {\n  #titles {\n    position: absolute;\n    left: 520px; } }\n\n.title {\n  transition: padding .25s;\n  cursor: pointer; }\n\n/******************** \nEnd titles\n********************/\n/******************** \nRelated Stories\n********************/\n#related-content {\n  margin-top: 100px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n  position: relative;\n  width: 100%;\n  background-color: #e7e7e7; }\n\n/*\n@media (min-width: 820px) {\n  #related-content {\n    position: absolute;\n    top: 98%;\n  }\n}\n*/\n#stories-header {\n  text-align: center;\n  font-family: 'Boomer-Bold'; }\n\n.all-stories {\n  padding: 0px 20px 0px 20px;\n  margin-bottom: 20px; }\n\n.story-card {\n  background-color: white;\n  border: 2px solid #e7e7e7;\n  padding: 20px;\n  color: black;\n  transition: all .3s ease; }\n\n.story-card:hover {\n  border: 2px solid #1c437f;\n  background-color: #EFF8FB; }\n\n.story-title {\n  left: 10px;\n  font-family: 'Boomer-Bold';\n  font-size: 2em; }\n\n.story-tease {\n  left: 10px;\n  font-family: 'Publico'; }\n\n.text {\n  max-width: 220px;\n  position: relative;\n  float: left;\n  margin-left: 10px; }\n\n/******************** \nEnd related stories\n********************/\n/******************** \nCredits\n********************/\n#credits {\n  padding: 20px;\n  background-color: #333;\n  color: white;\n  font-family: 'Publico';\n  font-size: 1em; }\n\n/******************** \nEnd credits\n********************/\n/******************** \nSocial sharing\n********************/\n#fb-share {\n  position: relative;\n  float: right;\n  top: 15px; }\n\n#fb-share-credits {\n  margin-bottom: 10px; }\n\n/******************** \nMobile styles\n********************/\n@media (max-width: 400px) {\n  #instructions, #finished {\n    padding: 10px;\n    font-size: 1.5em; }\n  #splash-text {\n    font-size: 1em; }\n  #begin-button {\n    font-size: 1.5em;\n    line-height: 2em; }\n  .desc {\n    font-size: .8em; } }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Publico';\n  src: url(" + __webpack_require__(188) + "); }\n\n@font-face {\n  font-family: 'Publico-Black';\n  src: url(" + __webpack_require__(189) + "); }\n\n@font-face {\n  font-family: 'Boomer-Bold';\n  src: url(" + __webpack_require__(190) + "); }\n\n@font-face {\n  font-family: 'Boomer';\n  src: url(" + __webpack_require__(191) + "); }\n\n/******************** \nBegin positioning\n********************/\nhtml, body {\n  margin: 0px;\n  height: 100%;\n  position: relative; }\n\nbody {\n  background-color: #333; }\n\n#jumbotron {\n  position: relative;\n  max-width: 1000px;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 1em; }\n\n#main {\n  width: 100%;\n  max-width: 500px; }\n\n#wrapper {\n  border: 3px solid white;\n  position: relative;\n  padding-bottom: 120%;\n  height: 0; }\n\n.content {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#buttons {\n  display: none; }\n\n#progressBar {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 3px;\n  left: 0; }\n\n.backgroundImg {\n  z-index: -1;\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 90%; }\n\n.fade {\n  opacity: .2; }\n\n#instructions, #finished {\n  padding: 2em;\n  font-family: 'Boomer-Bold';\n  font-size: 3em;\n  text-align: center; }\n\n#finished-link {\n  text-decoration: underline;\n  color: black; }\n\n#finished-link:hover {\n  color: #49709F; }\n\n#canvas {\n  background-image: url(" + __webpack_require__(192) + ");\n  background-size: contain;\n  background-repeat: no-repeat;\n  z-index: -1; }\n\n#start {\n  z-index: 9999;\n  position: relative;\n  left: 50%;\n  opacity: .7;\n  border-radius: 5px;\n  height: 50px;\n  width: 100px;\n  margin-left: -50px;\n  line-height: 50px;\n  background: white;\n  text-align: center;\n  font-size: 1.5em;\n  cursor: pointer; }\n\n.desc {\n  display: none;\n  top: 100%;\n  width: 100%;\n  box-sizing: border-box; }\n\n.box {\n  max-width: 500px;\n  font-family: 'Publico';\n  font-weight: bold;\n  position: relative;\n  padding: 10px 5px 10px 5px;\n  text-align: left;\n  box-sizing: border-box;\n  color: white;\n  font-size: 1.4em; }\n\n#buttons {\n  z-index: 9999;\n  position: absolute;\n  top: 90%;\n  left: 50%;\n  height: 50px;\n  width: 220px;\n  margin-left: -110px; }\n\nbutton {\n  width: 100px;\n  height: 50px;\n  font-size: 20px;\n  font-weight: bold;\n  margin: 5px; }\n\n.axis path,\n.axis line {\n  shape-rendering: crispEdges;\n  fill: none;\n  width: 1px; }\n\nsvg {\n  z-index: -1;\n  position: absolute; }\n\n.point {\n  stroke: #fff;\n  stroke-width: 2px;\n  transition: all .3s ease; }\n\n#loading {\n  position: fixed;\n  background-color: #fff;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 99999; }\n\n#splash {\n  position: fixed;\n  background-color: black;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 9999;\n  color: #fff; }\n\n#splash-holder {\n  padding-top: 20px;\n  position: relative;\n  left: 50%;\n  transform: translateX(-50%);\n  max-width: 600px; }\n\n#splash-text {\n  margin-top: 20px;\n  padding: 15px;\n  font-family: 'Publico';\n  font-size: 2em; }\n\n#begin-button {\n  position: absolute;\n  font-family: 'Boomer';\n  font-size: 5em;\n  margin-top: 10px;\n  width: 100%;\n  border-top: 3px solid #fff;\n  text-align: center;\n  transition: background-color .5s;\n  transition: color .5s;\n  bottom: 0px;\n  padding-bottom: 10px;\n  cursor: pointer; }\n\n#begin-button:hover {\n  color: black;\n  background-color: white; }\n\n.caret {\n  font-family: serif;\n  padding-right: 10px;\n  font-size: 1.7em;\n  line-height: 1em; }\n\n#high {\n  color: #49709F; }\n\n#cover {\n  background-color: white;\n  opacity: .5;\n  transition: opacity .25s; }\n\n#outro {\n  font-family: 'Boomer';\n  width: 100%;\n  height: 400px;\n  line-height: 400px;\n  margin-top: -200px;\n  top: 50%;\n  position: absolute;\n  text-align: center; }\n\n/******************** \nBegin Navbar style \n********************/\n#nav {\n  position: relative;\n  padding-right: 20px; }\n\n#nav-logo {\n  padding: 5px;\n  height: 50px;\n  vertical-align: middle;\n  display: inline-block; }\n\n#nav-title {\n  display: inline-block;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff;\n  line-height: 3em; }\n\n@media (max-width: 400px) {\n  #nav {\n    display: none; } }\n\n/******************** \nEnd Navbar style \n********************/\n/******************** \nTitles\n********************/\n#titles {\n  z-index: -1;\n  position: relative;\n  margin-left: 20px;\n  width: 300px;\n  font-size: 20px;\n  font-weight: 700;\n  vertical-align: middle;\n  font-family: 'Boomer-Bold';\n  text-transform: uppercase;\n  color: #fff;\n  top: 0; }\n\n@media (min-width: 510px) {\n  #jumbotron {\n    margin-left: 10px; } }\n\n@media (min-width: 820px) {\n  #titles {\n    position: absolute;\n    left: 520px; } }\n\n.title {\n  transition: padding .25s;\n  cursor: pointer; }\n\n/******************** \nEnd titles\n********************/\n/******************** \nRelated Stories\n********************/\n#related-content {\n  margin-top: 100px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n  position: relative;\n  width: 100%;\n  background-color: #e7e7e7; }\n\n/*\n@media (min-width: 820px) {\n  #related-content {\n    position: absolute;\n    top: 98%;\n  }\n}\n*/\n#stories-header {\n  text-align: center;\n  font-family: 'Boomer-Bold'; }\n\n.all-stories {\n  padding: 0px 20px 0px 20px;\n  margin-bottom: 20px; }\n\n.story-card {\n  background-color: white;\n  border: 2px solid #e7e7e7;\n  padding: 20px;\n  color: black;\n  transition: all .3s ease; }\n\n.story-card:hover {\n  border: 2px solid #1c437f;\n  background-color: #EFF8FB; }\n\n.story-title {\n  left: 10px;\n  font-family: 'Boomer-Bold';\n  font-size: 2em; }\n\n.story-tease {\n  left: 10px;\n  font-family: 'Publico'; }\n\n.text {\n  max-width: 220px;\n  position: relative;\n  float: left;\n  margin-left: 10px; }\n\n/******************** \nEnd related stories\n********************/\n/******************** \nCredits\n********************/\n#credits {\n  padding: 20px;\n  background-color: #333;\n  color: white;\n  font-family: 'Publico';\n  font-size: 1em; }\n\n/******************** \nEnd credits\n********************/\n/******************** \nSocial sharing\n********************/\n#fb-share {\n  position: relative;\n  float: right;\n  top: 15px; }\n\n#fb-share-credits {\n  margin-bottom: 10px; }\n\n/******************** \nMobile styles\n********************/\n@media (max-width: 400px) {\n  #instructions, #finished {\n    padding: 10px;\n    font-size: 1.5em; }\n  #splash-text {\n    font-size: 1em; }\n  #begin-button {\n    font-size: 1.5em;\n    line-height: 2em; }\n  .desc {\n    font-size: .8em; } }\n", ""]);
 	
 	// exports
 

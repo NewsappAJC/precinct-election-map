@@ -96,6 +96,17 @@ class App extends React.Component {
   }
 
   setStep(step) {
+    this.cover.style.opacity = 0;
+    for (var i=0; i<this.data.length; i++) {
+      this.titles[i].style.color = '#fff';
+      this.descs[i].style.display = 'none';
+    };
+
+    var cs = document.getElementsByClassName('point');
+    for (var i = 0; i < cs.length; i++) {
+      cs[i].style.r = '5px';
+    }
+
     if (step === this.data.length) {
       this.setState({step: step})
       this.setState({finished: true})
@@ -105,33 +116,39 @@ class App extends React.Component {
       this.setState({step: step})
       this.setState({started: true, finished: false})
 
-      // Perform cool flash animation
+      /* Perform cool flash animation
       this.cover.style.opacity = 0.25;
       setTimeout(() => {
         this.cover.style.opacity = 0;
       }, 250)
+      */
 
       var entry = this.data[this.state.step];
+      var colors = ['blue', 'red'];
 
-      if (this.plotted.indexOf(this.id) === -1) {
+      if (this.plotted.indexOf(entry.id) === -1) {
         this.plotted.push(entry.id);
         this.svg.append('circle')
           .attr('class', 'point')
+          .attr('fill', colors[entry.id])
           .attr('id', 'point' + entry.id)
-          .attr('cx', entry.x)
-          .attr('cy', entry.y)
+          .attr('cx', entry.x + '%')
+          .attr('cy', entry.y + '%')
+          .attr('r', '7px');
       }
       else {
         var c = document.getElementById('point' + entry.id);
         c.style.cx = entry.x + '%';
         c.style.cy = entry.y + '%';
+        c.style.r = '7px';
       }
-
     }
     else {
       return
     }
 
+    this.titles[this.state.step].style.color = '#49709F';
+    this.descs[this.state.step].style.display = 'initial';
     this.progressBar.fill(this.state.step);
   }
 

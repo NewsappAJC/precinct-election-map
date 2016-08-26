@@ -174,8 +174,6 @@ svg {
 }
 
 .point {
-  fill: red;
-  r: 6;
   stroke: #fff;
   stroke-width: 2px;
   transition: all .3s ease;
@@ -196,7 +194,7 @@ svg {
   top: 0;
   width: 100%;
   height: 100%;
-  //z-index: 9999; un-comment for production
+  z-index: 9999;
   color: #fff;
 }
 
