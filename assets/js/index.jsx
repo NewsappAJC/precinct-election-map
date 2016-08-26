@@ -15,7 +15,10 @@ class App extends React.Component {
     var Input = new Data;
     this.data = Input.data;
 
-    this.canvas = new Canvas(this.data);
+    this.Canvas = new Canvas();
+    this.Canvas.build();
+    this.svg = this.Canvas.svg;
+
     this.progressBar = new ProgressBar()
 
     this.state = {started: false, finished: false, step: -1};
@@ -83,10 +86,9 @@ class App extends React.Component {
     this.cover = document.getElementById('cover');
     this.descs = document.getElementsByClassName('desc');
 
-    this.canvas.build()
     this.progressBar.build(this.data.length + 1)
-    this.canvas.advance(this.state.step)
     this.progressBar.fill(this.state.step)
+    this.plotted = [];
   }
 
   handleClick(i) {
@@ -94,11 +96,6 @@ class App extends React.Component {
   }
 
   setStep(step) {
-    for (var i=0; i<this.data.length; i++) {
-      this.titles[i].style.color = '#fff';
-      this.descs[i].style.display = 'none';
-    }
-
     if (step === this.data.length) {
       this.setState({step: step})
       this.setState({finished: true})
@@ -114,17 +111,27 @@ class App extends React.Component {
         this.cover.style.opacity = 0;
       }, 250)
 
+      var entry = this.data[this.state.step];
 
-      this.canvas.advance(this.state.step);
+      if (this.plotted.indexOf(this.id) === -1) {
+        this.plotted.push(entry.id);
+        this.svg.append('circle')
+          .attr('class', 'point')
+          .attr('id', 'point' + entry.id)
+          .attr('cx', entry.x)
+          .attr('cy', entry.y)
+      }
+      else {
+        var c = document.getElementById('point' + entry.id);
+        c.style.cx = entry.x + '%';
+        c.style.cy = entry.y + '%';
+      }
 
-      this.titles[this.state.step].style.color = '#49709F';
-      this.descs[this.state.step].style.display = 'initial';
     }
     else {
       return
     }
 
-    this.canvas.advance(this.state.step);
     this.progressBar.fill(this.state.step);
   }
 
