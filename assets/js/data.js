@@ -58,7 +58,7 @@ export default class {
             "y": 28
         },
         {
-            "desc": "The car rolls down the hill. The driver, Deravis Rogers is dead by the time it comes to rest across the intersection. ",
+            "desc": "The car rolls down the hill. Rogers is dead by the time it comes to rest across the intersection. ",
             "id": 1,
             "step": 8,
             "title": "Finished",

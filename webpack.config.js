@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var PROD = JSON.parse(process.env.PROD_ENV || '0');
+
 module.exports = {
   context: __dirname,
 
@@ -12,6 +14,9 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    }),
     //new webpack.optimize.UglifyJsPlugin({minimize: true}),
     new webpack.ProvidePlugin({
       $: 'jquery',

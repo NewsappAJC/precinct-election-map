@@ -92,16 +92,8 @@ class App extends React.Component {
       this.cover.style.opacity = .7;
     }
     else if (step < this.data.length){
-      this.setState({step: step})
-      this.setState({started: true, finished: false})
-
-      /* Perform cool flash animation
-      this.cover.style.opacity = 0.25;
-      setTimeout(() => {
-        this.cover.style.opacity = 0;
-      }, 250)
-      */
-
+      this.setState({step: step, started: true, finished: false})
+      this.descs[this.state.step].style.display = 'initial';
       var entry = this.data[this.state.step];
       var colors = ['blue', 'red'];
 
@@ -126,7 +118,6 @@ class App extends React.Component {
       return
     }
 
-    this.descs[this.state.step].style.display = 'initial';
     this.progressBar.fill(this.state.step);
   }
 
