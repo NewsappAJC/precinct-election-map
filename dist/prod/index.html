@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <title>Steps to a Shooting</title>
+  </head>
+  <!-- Header -->
+<body>
+  <div id="splash">
+    <div id="splash-holder">
+      <div id="splash-title">
+        <img src="../img/title-card.jpg" alt="Title: The Last 60 Seconds"/>
+      </div>
+      <div id="splash-text">Rookie APD officer James Burns shot Deravis Caine Rogers on June 22. 
+        This interactive maps the events that led to the shooting.</div>
+    </div>
+    <div id="begin-button">Begin</div>
+  </div>
+  <div id="fb-root"></div>
+
+  <!--Load Facebook SDK for Javascript-->
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+
+  <!-- Nav -->
+  <div id="nav">
+    <div id="nav-logo">
+      <a href="http://myajc.com" target="_blank">
+        <img src="img/ajc-logo.png" >
+      </a> 
+    </div>
+    <div id="nav-title">Steps to a Shooting</div>
+    <!--Facebook share button-->
+    <div id="fb-share">
+      <div class="fb-share-button" 
+        data-href="http://ajc.com" 
+        data-layout="button_count" 
+        data-size="large" 
+        data-mobile-iframe="true">
+        <a class="fb-xfbml-parse-ignore" 
+          target="_blank" 
+          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fajc.com%2F&amp;src=sdkpreparse">
+          Share
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div id="main">
+    <div id="wrapper">
+      <div id="canvas" class="content"></div>
+      <div id="cover" class="content"></div>
+      <div id="app" class="content"></div>
+    </div>
+  </div>
+  <div id="progressBar"></div>
+
+  <!-- Related stories -->
+  <div id="related-content"></div>
+
+  <!-- Credits -->
+  <div id="credits">
+    <div id="fb-share-credits">
+      <div class="fb-share-button" 
+        data-href="http://ajc.com" 
+        data-layout="button_count" 
+        data-size="large" 
+        data-mobile-iframe="true">
+        <a class="fb-xfbml-parse-ignore" 
+          target="_blank" 
+          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fajc.com%2F&amp;src=sdkpreparse">
+          Share
+        </a>
+      </div>
+    </div>
+    <div id="editorial-credit">Reporting by Brad Schrade and Ken Foskett</div>
+    <div id="design-credit">Design and development by Jonathan Cox</div>
+  </div>
+
+  <!-- Load React component -->
+  <script src="./main.js"></script>
+  </body>
+</html>

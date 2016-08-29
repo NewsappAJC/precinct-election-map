@@ -4,13 +4,21 @@ Display markers and text captions for each event in a sequence of events on a st
 
 Installation
 ------------
+Install the app and all necessary dependencies.
 ```
 git clone https://_jonathancox@bitbucket.org/_jonathancox/stepr.git
 
 npm install
-
-node-exec webpack
-
-http-server dist
 ```
 
+Build for development
+```
+npm run build-dev
+
+http-server dist/dev
+```
+
+Build for production
+```
+npm run build-prod
+```

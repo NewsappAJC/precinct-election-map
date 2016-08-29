@@ -7,7 +7,9 @@ import ReactDOM from 'react-dom';
 import '!style!css!sass!../css/vendor/foundation.min.css';
 import '!style!css!sass!../css/style.scss';
 import '../img/ajc-logo.png';
-import '../img/title-card.png';
+import '../img/bak.jpg';
+import '../img/title-card.jpg';
+import '../index.html';
 
 class App extends React.Component {
   constructor() {

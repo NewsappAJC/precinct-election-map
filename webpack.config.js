@@ -1,7 +1,11 @@
+var CompressionPlugin = require('compression-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
 
-var PROD = JSON.parse(process.env.PROD_ENV || '0');
+var PROD_ENV = JSON.parse(process.env.PROD_ENV || '0');
+
+DEV = './dist/dev/';
+PROD = './dist/prod/';
 
 module.exports = {
   context: __dirname,
@@ -9,15 +13,28 @@ module.exports = {
   entry: 'assets/js/index.jsx',
 
   output: {
-    path: path.resolve('./dist/'),
+    path: PROD_ENV ? path.resolve(PROD) : path.resolve(DEV),
     filename: 'main.js'
   },
 
-  plugins: [
+  plugins: PROD_ENV ? [
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
     }),
     //new webpack.optimize.UglifyJsPlugin({minimize: true}),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jquery': 'jquery'
+    }),
+    new CompressionPlugin({
+      asset: "[path]",
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.png$|\.jpg$/,
+      threshold: 10240,
+      minRatio: .8
+    })
+  ] : [
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -37,6 +54,11 @@ module.exports = {
         query: {
           presets: ['es2015', 'react']
         }
+      },
+      {
+        test: /\.html$/,
+        exclude: /node_modules/,
+        loader: 'file-loader?name=[name].[ext]'
       },
       {
         test: /\.css$/,
