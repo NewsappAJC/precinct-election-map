@@ -43,8 +43,11 @@ body {
 #wrapper {
   border: 3px solid white;
   position: relative;
-  padding-bottom: 120%;
-  height: 0;
+  display: inline-block;
+}
+
+#map {
+  z-index: -1;
 }
 
 .content {
@@ -94,13 +97,6 @@ body {
 
 #finished-link:hover {
   color: #49709F;
-}
-
-#canvas{ 
-  background-image: url('../img/bak.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  z-index: -1;
 }
 
 #start {
@@ -171,6 +167,7 @@ svg {
 }
 
 .point {
+  z-index: 0;
   stroke: #fff;
   stroke-width: 2px;
   transition: all .3s ease;
