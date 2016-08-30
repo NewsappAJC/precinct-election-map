@@ -1,21 +1,23 @@
 @font-face {
   font-family: 'Publico';
-  src: url('./fonts/publico/Publico-Medium.otf')
+  src: url('./fonts/publico/Publico-Medium.otf');
 }
 
 @font-face {
   font-family: 'Publico-Black';
-  src: url('./fonts/publico/Publico-Black.otf')
-}
-
-@font-face {
-  font-family: 'Boomer-Bold';
-  src: url('./fonts/boomer/Boomer-Bold.otf')
+  src: url('./fonts/publico/Publico-Black.otf');
 }
 
 @font-face {
   font-family: 'Boomer';
-  src: url('./fonts/boomer/Boomer-Regular.otf')
+  src: url('./fonts/boomer/Boomer-Regular.otf');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Boomer';
+  src: url('./fonts/boomer/Boomer-Bold.otf');
+  font-weight: 700;
+  font-style: normal
 }
 
 /******************** 
@@ -85,7 +87,8 @@ body {
 
 #instructions, #finished {
   padding: 2em;
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
   font-size: 3em;
   text-align: center;
 }
@@ -275,9 +278,9 @@ Begin Navbar style
 #nav-title {
   vertical-align: middle;
   display: inline-block;
+  font-family: 'Boomer';
   line-height: 1em;
   font-weight: 700;
-  font-family: 'Boomer-Bold';
   font-size: 20px;
   color: #fff;
   text-transform: uppercase;
@@ -304,7 +307,8 @@ Titles
   font-size: 20px;
   font-weight: 700;
   vertical-align: middle;
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   top: 0;
@@ -354,7 +358,8 @@ Related Stories
 
 #stories-header {
   text-align: center;
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
 }
 
 .all-stories {
@@ -377,7 +382,8 @@ Related Stories
 
 .story-title {
   left: 10px;
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
   font-size: 2em;
 }
 
