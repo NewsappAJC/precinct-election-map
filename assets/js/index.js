@@ -126,20 +126,17 @@ class App {
         c.style.y = entry.y + '%';
       }
 
-      var newPoints = document.getElementsByClassName('point');
+      var updatedPoints = document.getElementsByClassName('point');
 
-      for (i in newPoints) {
-        try { 
-          var num = newPoints[i].id.match(/\d/)[0];
-          num = parseInt(num);
-          if (entry.present.indexOf(num) === -1) {
-            newPoints[i].style.display = 'none';
-          }
-          else {
-            newPoints[i].style.display = 'initial'; 
-          }
+      for (var i = 0; i < updatedPoints.length; i++) {
+        var id = updatedPoints[i].id.match(/\d/)[0];
+        var num = parseInt(id);
+        if (entry.present.indexOf(num) === -1) {
+          updatedPoints[i].style.display = 'none';
         }
-        catch (TypeError) {}
+        else {
+          updatedPoints[i].style.display = 'initial'; 
+        }
       }
 
     }
