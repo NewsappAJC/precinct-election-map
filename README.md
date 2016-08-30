@@ -6,7 +6,8 @@ Installation
 ------------
 Install the app and all necessary dependencies.
 ```
-git clone https://_jonathancox@bitbucket.org/_jonathancox/stepr.git
+
+git clone git@bitbucket.org:ajcnewsapp/burns-june-police-shooting.git
 
 npm install
 ```
