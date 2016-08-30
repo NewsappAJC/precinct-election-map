@@ -4,6 +4,7 @@ import Canvas from './canvas';
 //import Stories from './stories';
 import '!style!css!sass!../css/vendor/foundation.min.css';
 import '!style!css!sass!../css/style.scss';
+import '../img/pin.svg';
 import '../img/ajc-logo.png';
 import '../img/bak.jpg';
 import '../img/title-card.jpg';
@@ -88,14 +89,11 @@ class App {
 
   setStep(step) {
     this.cover.style.opacity = 0;
+
     for (var i=0; i<this.data.length; i++) {
       this.descs[i].style.display = 'none';
     };
 
-    var cs = document.getElementsByClassName('point');
-    for (var i = 0; i < cs.length; i++) {
-      cs[i].style.r = '5px';
-    }
 
     if (step === this.data.length) {
       this.step = step;
@@ -103,29 +101,47 @@ class App {
       this.cover.style.opacity = .7;
     }
     else if (step < this.data.length){
+      var entry = this.data[step];
+      var points = document.getElementsByClassName('point');
+
       this.step = step;
       this.started = true;
 
       this.descs[this.step].style.display = 'initial';
-      var entry = this.data[this.step];
-      var colors = ['blue', 'red'];
 
       if (this.plotted.indexOf(entry.id) === -1) {
         this.plotted.push(entry.id);
-        this.svg.append('circle')
+        this.svg.append('svg:image')
+          .attr('xlink:href', '../img/pin.svg')
           .attr('class', 'point')
-          .attr('fill', colors[entry.id])
           .attr('id', 'point' + entry.id)
-          .attr('cx', entry.x + '%')
-          .attr('cy', entry.y + '%')
-          .attr('r', '7px');
+          .attr('x', entry.x + '%')
+          .attr('y', entry.y + '%')
+          .attr('width', '2em')
+          .attr('height', '3em')
       }
       else {
         var c = document.getElementById('point' + entry.id);
-        c.style.cx = entry.x + '%';
-        c.style.cy = entry.y + '%';
-        c.style.r = '7px';
+        c.style.x = entry.x + '%';
+        c.style.y = entry.y + '%';
       }
+
+      var newPoints = document.getElementsByClassName('point');
+
+      for (i in newPoints) {
+        try { 
+          var num = newPoints[i].id.match(/\d/)[0];
+          num = parseInt(num);
+          if (entry.present.indexOf(num) === -1) {
+            newPoints[i].style.display = 'none';
+          }
+          else {
+            newPoints[i].style.display = 'initial'; 
+          }
+        }
+        catch (TypeError) {}
+      }
+
     }
     else {
       return
