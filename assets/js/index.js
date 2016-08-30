@@ -44,6 +44,16 @@ class App {
       splash.style.display = 'none';
     })
 
+    var backButton = document.getElementById('back-button');
+    backButton.addEventListener('click', () => {
+      this.handleClick(-1);
+    });
+
+    var nextButton = document.getElementById('next-button');
+    nextButton.addEventListener('click', () => {
+      this.handleClick(1);
+    });
+
     for (var i = this.data.length - 1; i >= 0; i--) {
       // Append divs with descriptions of each step.
       // Loop backwards because insertAfter appends each 
@@ -54,7 +64,7 @@ class App {
           <div class="box">
             ${this.data[i].desc}
           </div>
-        </div>`).insertAfter('#main');
+        </div>`).insertAfter('#buttons');
     }
 
     $('#wrapper').on('mouseup', () => {
@@ -112,8 +122,8 @@ class App {
 
     // Check if the user has finished the last step in the visualization.
     // If so, display a finished message
-    if (step === this.data.length) {
-      this.step = step;
+    if (step >= this.data.length) {
+      this.step = this.data.length;
       this.finished = true;
       this.cover.style.opacity = .7;
     }
@@ -122,6 +132,7 @@ class App {
 
       this.step = step;
       this.started = true;
+      this.finished = false;
 
       this.descs[this.step].style.display = 'initial';
 
@@ -134,8 +145,8 @@ class App {
         .attr('class', 'point ' + entry.id) 
         .attr('x', entry.x + '%')
         .attr('y', entry.y + '%')
-        .attr('width', '2em')
-        .attr('height', '3em')
+        .attr('width', '3em')
+        .attr('height', '4em')
 
       var points = document.getElementsByClassName('point');
 
