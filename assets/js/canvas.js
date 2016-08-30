@@ -8,7 +8,7 @@ export default class {
   build() {
     d3.select('window').on('resize', () => {
       this.width = parseInt(d3.select('#canvas').style('width'));
-      console.log('resizing')
+      console.log('resizing canvas')
     })
 
     this.svg = d3.select('div#canvas').append('svg')

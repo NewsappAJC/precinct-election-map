@@ -10,7 +10,7 @@ PROD = './dist/prod/';
 module.exports = {
   context: __dirname,
 
-  entry: 'assets/js/index.jsx',
+  entry: 'assets/js/index.js',
 
   output: {
     path: PROD_ENV ? path.resolve(PROD) : path.resolve(DEV),
@@ -48,11 +48,11 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader', 
         query: {
-          presets: ['es2015', 'react']
+          presets: ['es2015']
         }
       },
       {

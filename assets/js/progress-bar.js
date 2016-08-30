@@ -3,11 +3,16 @@ import * as d3 from 'd3';
 export default class {
 
   constructor() {
+    this.totalWidth = parseInt(d3.select('#progressBar').style('width'));
     this.progressWidth = 0;
   }
 
   build(len) {
-    this.totalWidth = parseInt(d3.select('#progressBar').style('width'));
+    d3.select('window').on('resize', () => {
+      this.totalWidth = parseInt(d3.select('#canvas').style('width'));
+      console.log('resizing progress bar')
+    })
+
     var height = parseInt(d3.select('#progressBar').style('height'));
 
     var svg = d3.select('#progressBar').append('svg')
