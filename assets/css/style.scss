@@ -39,7 +39,6 @@ body {
   transform: translateX(-50%);
 }
 
-// Set fixed aspect ratio for canvas
 #wrapper {
   border: 3px solid white;
   position: relative;
@@ -166,7 +165,9 @@ svg {
 }
 
 .point {
-  z-index: 0;
+  position: absolute;
+  width: 2em;
+  height: 3em;
   stroke: #fff;
   stroke-width: 2px;
   transition: all .3s ease;

@@ -24,7 +24,7 @@ class App {
     // will be drawn.
     var canvas = new Canvas();
     canvas.build();
-    this.svg = canvas.svg;
+    this.canvas = canvas.canvas;
 
     // Display a bar across the top of the screen that gradually
     // fills in as the user navigates through the app.
@@ -122,66 +122,65 @@ class App {
 
       this.descs[this.step].style.display = 'initial';
 
-      this.svg.append('svg:image')
-        .attr('xlink:href', '../img/pin.svg')
-        // Each pointer's class contains a number that links it
-        // to one of the characters in the visualization.
-        .attr('class', 'point ' + entry.id) 
-        .attr('x', entry.x + '%')
-        .attr('y', entry.y + '%')
-        .attr('width', '2em')
-        .attr('height', '3em')
+      $('#canvas').append(`<div id=${entry.step}></div>`);
+      $('#' + entry.step).load('../img/pin.svg', () => {
+        var svg = $('#' + entry.step).children[0];
+        svg.className = 'point' + entry.id;
 
-      var points = document.getElementsByClassName('point');
+        var points = document.getElementsByClassName('point');
 
-      // thisId will hold a list of all the pointer elements that match 
-      // the id of the current entry.
-      var thisId = [];
+        // thisId will hold a list of all the pointer elements that match 
+        // the id of the current entry.
+        var thisId = [];
 
-      for (var i = 0; i < points.length; i++) {
-        // Use regex to get the id number from the pointer's class name, and coerce
-        // it from a string to a number.
-        var id = points[i].getAttribute('class').match(/\d/)[0];
-        var num = parseInt(id);
-        // If a particular pointer is not relevant at this step, it will not be 
-        // in the entry's present[] array. Change its opacity to zero.
-        if (entry.present.indexOf(num) === -1) {
-          points[i].style.opacity = 0;
-        }
-        // Create a list of all the pins that correspond to this entry's id.
-        if (entry.id === num) {
-          thisId.push(points[i])
-        }
-      }
 
-      var colors = ['red', 'blue', 'green', 'orange'];
-
-      // Loop through the pins corresponding to this entry's id. Set the opacity
-      // of the newest pin to 1. Set the opacity of the previous pin to .3, so that
-      // it is still faintly visible. Set the opacity of earlier pins to 0.
-      if (thisId.length > 1) {
-        thisId.forEach((elem, i) => {
-          thisId[i].path.fill = colors[entry.id]
-          if (i === thisId.length - 2) {
-            thisId[i].style.opacity = .3;
+        for (var i = 0; i < points.length; i++) {
+          // Use regex to get the id number from the pointer's class name, and coerce
+          // it from a string to a number.
+          var id = points[i].getAttribute('class').match(/\d/)[0];
+          var num = parseInt(id);
+          // If a particular pointer is not relevant at this step, it will not be 
+          // in the entry's present[] array. Change its opacity to zero.
+          if (entry.present.indexOf(num) === -1) {
+            points[i].style.opacity = 0;
           }
-          else {
-            thisId[i].style.opacity = 0;
+          // Create a list of all the pins that correspond to this entry's id.
+          if (entry.id === num) {
+            thisId.push(points[i])
           }
-        })
-      }
-      thisId[thisId.length-1].style.opacity = 1;
+        }
+
+        var colors = ['red', 'blue', 'green', 'orange'];
+
+        // Loop through the pins corresponding to this entry's id. Set the opacity
+        // of the newest pin to 1. Set the opacity of the previous pin to .3, so that
+        // it is still faintly visible. Set the opacity of earlier pins to 0.
+        if (thisId.length > 1) {
+          thisId.forEach((elem, i) => {
+            thisId[i].path.fill = colors[entry.id]
+            if (i === thisId.length - 2) {
+              thisId[i].style.opacity = .3;
+            }
+            else {
+              thisId[i].style.opacity = 0;
+            }
+          })
+        }
+        thisId[thisId.length-1].style.opacity = 1;
+      })
+    }
+      else {
+        return
     }
 
-    else {
-      return
-    }
+      // Display the started or finished message as needed.
+      this.getMessage();
 
-    // Display the started or finished message as needed.
-    this.getMessage();
+      // Update the progress bar to show how much the user has progressed.
+      this.progressBar.fill(this.step);
+        });
 
-    // Update the progress bar to show how much the user has progressed.
-    this.progressBar.fill(this.step);
+
   }
 
   /* 
