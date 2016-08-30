@@ -154,11 +154,14 @@ class App {
         }
       }
 
+      var colors = ['red', 'blue', 'green', 'orange'];
+
       // Loop through the pins corresponding to this entry's id. Set the opacity
       // of the newest pin to 1. Set the opacity of the previous pin to .3, so that
       // it is still faintly visible. Set the opacity of earlier pins to 0.
       if (thisId.length > 1) {
         thisId.forEach((elem, i) => {
+          thisId[i].path.fill = colors[entry.id]
           if (i === thisId.length - 2) {
             thisId[i].style.opacity = .3;
           }
