@@ -102,44 +102,50 @@ class App {
     }
     else if (step < this.data.length){
       var entry = this.data[step];
-      var points = document.getElementsByClassName('point');
 
       this.step = step;
       this.started = true;
 
       this.descs[this.step].style.display = 'initial';
 
-      if (this.plotted.indexOf(entry.id) === -1) {
-        this.plotted.push(entry.id);
-        this.svg.append('svg:image')
-          .attr('xlink:href', '../img/pin.svg')
-          .attr('class', 'point')
-          .attr('id', 'point' + entry.id)
-          .attr('x', entry.x + '%')
-          .attr('y', entry.y + '%')
-          .attr('width', '2em')
-          .attr('height', '3em')
-      }
-      else {
-        var c = document.getElementById('point' + entry.id);
-        c.style.x = entry.x + '%';
-        c.style.y = entry.y + '%';
-      }
+      this.svg.append('svg:image')
+        .attr('xlink:href', '../img/pin.svg')
+        .attr('class', 'point')
+        .attr('class', 'point ' + entry.id)
+        .attr('x', entry.x + '%')
+        .attr('y', entry.y + '%')
+        .attr('width', '2em')
+        .attr('height', '3em')
 
       var updatedPoints = document.getElementsByClassName('point');
 
+      var thisId = [];
+
       for (var i = 0; i < updatedPoints.length; i++) {
-        var id = updatedPoints[i].id.match(/\d/)[0];
+        var id = updatedPoints[i].getAttribute('class').match(/\d/)[0];
         var num = parseInt(id);
         if (entry.present.indexOf(num) === -1) {
-          updatedPoints[i].style.display = 'none';
+          updatedPoints[i].style.opacity = 0;
         }
-        else {
-          updatedPoints[i].style.display = 'initial'; 
+        if (entry.id === num) {
+          thisId.push(updatedPoints[i])
         }
       }
 
+      if (thisId.length > 1) {
+        thisId.forEach((elem, i) => {
+          if (i === thisId.length - 2) {
+            thisId[i].style.opacity = .3;
+          }
+          else {
+            thisId[i].style.opacity = 0;
+          }
+        })
+      }
+
+      thisId[thisId.length - 1].style.opacity = 1;
     }
+
     else {
       return
     }

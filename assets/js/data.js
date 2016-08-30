@@ -52,12 +52,12 @@ export default class {
           "step": 5,
           "present": [1,2],
           "title": "",
-          "x": 48,
+          "x": 45,
           "y": 41
       },
       {
           "desc": "As the car tries to drive around Burns' patrol vehicle, the officer jumps out and yells \"Stop!\" ",
-          "id": 1,
+          "id": 2,
           "step": 6,
           "present": [1,2],
           "title": "",
@@ -66,7 +66,7 @@ export default class {
       },
       {
           "desc": "Burns runs toward the rear of his vehicle. He fires one shot through Rogers' passenger side window, striking him in the head.",
-          "id": 1,
+          "id": 2,
           "step": 7,
           "present": [1,2],
           "title": "",
