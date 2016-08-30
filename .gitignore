@@ -7,3 +7,5 @@ main.js
 .DS_Store
 
 .sass-cache
+
+prod/
