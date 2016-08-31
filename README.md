@@ -14,7 +14,6 @@ npm install
 
 Build, watch changes, and serve from the dev directory
 ```
-npm run watch
 npm run serve-dev
 ```
 
