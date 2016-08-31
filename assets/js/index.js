@@ -140,7 +140,7 @@ class App {
         .attr('src', 'img/' + colors[entry.id] + '-pin.svg')
         // Each pointer's class contains a number that links it
         // to one of the characters in the visualization.
-        .attr('class', 'point ' + entry.id) 
+        .attr('class', 'point character' + entry.id) 
         .style('left', entry.x + '%')
         .style('top', entry.y + '%')
 
