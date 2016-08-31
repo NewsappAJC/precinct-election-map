@@ -17,7 +17,7 @@ export default class {
           "present": [1],
           "title": "",
           "x": 15,
-          "y": 18
+          "y": 19
       },
       {
           "desc": "Burns turns onto Monroe Place NE and slows his vehicle as he scans the area.",

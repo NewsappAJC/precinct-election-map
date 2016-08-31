@@ -27,6 +27,9 @@ class App {
     // will be drawn.
     this.canvas = d3.select('div#canvas');
 
+    this.backButton = document.getElementById('back-button');
+    this.backButton.style.display = 'none';
+
     // Display a bar across the top of the screen that gradually
     // fills in as the user navigates through the app.
     this.progressBar = new ProgressBar();
@@ -109,6 +112,7 @@ class App {
     this.cover.style.opacity = 0;
 
     if (step <= -1) {
+      this.backButton.style.display = 'none';
       return;
     };
 
@@ -126,6 +130,7 @@ class App {
       this.cover.style.opacity = .7;
     }
     else if (step < this.data.length){
+      this.backButton.style.display = 'initial';
       var entry = this.data[step];
 
       this.step = step;
