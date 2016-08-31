@@ -335,11 +335,18 @@ Related Stories
   text-align: center;
   font-family: 'Boomer';
   font-weight: 700;
+  font-size: 2em;
+  margin-bottom: 20px;
 }
 
 .all-stories {
   padding: 0px 20px 0px 20px;
   margin-bottom: 20px;
+}
+
+#stories-holder {
+  background-color: #fff;
+  padding: 20px;
 }
 
 .story-card {
@@ -351,7 +358,7 @@ Related Stories
 }
 
 .story-card:hover {
-  border: 2px solid #1c437f;
+  border: 2px solid #5c7dbe;
   background-color: #EFF8FB;
 }
 
