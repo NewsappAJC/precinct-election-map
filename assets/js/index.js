@@ -18,6 +18,7 @@ class App {
     // will be drawn.
     this.canvas = d3.select('div#canvas');
 
+    // Hide the back button until the user navigates to the next step.
     this.backButton = document.getElementById('back-button');
     this.backButton.style.display = 'none';
 
@@ -30,7 +31,6 @@ class App {
     // Add an event handler to the splash screen's "Begin" button
     // that hides the splash screen.
     var beginButton = document.getElementById('begin-button');
-    
     beginButton.addEventListener('click', () => {
       var splash = document.getElementById('splash');
       splash.style.display = 'none';
@@ -199,8 +199,7 @@ class App {
 
     // If the user hasn't started yet, show them instructions.
     if (!this.started) {
-      var msg = `<div 
-        id="instructions">
+      var msg = `<div>
             Tap or click this photo to advance.
         </div>`
       $('#message').append(msg);
@@ -209,7 +208,7 @@ class App {
     else if (this.finished) {
       var msg = `<div 
         id="finished">
-          Finished
+          <a class="finished-link" href="http://www.ajc.com/news/news/crime-law/atlanta-police-shooting-goes-to-grand-jury-murder-/nsPgj/">Read more</a>
         </div>`
       $('#message').append(msg);
     }
