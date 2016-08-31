@@ -125,7 +125,6 @@ body {
 }
 
 #descs {
-  position: relative;
   height: 10em;
 }
 
@@ -138,8 +137,6 @@ body {
 
 .box { 
   position: relative;
-  height: 8em;
-  max-width: 500px;
   left: 50%;
   transform: translateX(-50%);
   padding: 0px 5px 10px 5px;
@@ -152,8 +149,6 @@ body {
 }
 
 #buttons {
-  position: relative;
-  width: 100%;
   height: 2.5em;
   padding: .3em;
   color: #A4A4A4;
@@ -167,16 +162,12 @@ body {
 }
 
 #back-button {
-  text-align: left;
-  width: 3em;
   left: 0;
   padding-left: 10px;
   position: absolute;
 }
 
 #next-button {
-  text-align: right;
-  width: 3em;
   right: 0;
   padding-right: 10px;
   position: absolute;
