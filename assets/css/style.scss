@@ -443,3 +443,8 @@ Mobile styles
     margin-left: 10px;
   }
 }
+@media (max-width: 700px) {
+  .story-card {
+    height: 25em;
+  }
+}
