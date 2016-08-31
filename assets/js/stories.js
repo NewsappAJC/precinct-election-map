@@ -1,5 +1,4 @@
-import React from 'react';
-import '../img/kitten.jpg';
+import * as d3 from 'd3';
 
 const STORIES = [
   {hed: 'Test', 
@@ -24,40 +23,41 @@ const STORIES = [
   },
 ]
 
-export default class extends React.Component {
+export default class {
   constructor() {
-    super();
-    this.stories = STORIES;
-  }
+    this.data = STORIES;
+  };
+
   render() {
-    var nodes = this.stories.map((story) => {
-      return (
-          <div className="small-12 medium-6 columns all-stories">
-            <a href={story.link}>
-              <div className="story-card row">
-                <div className="medium-4 columns">
-                  <img className="thumbnail"src={'../img/' + story.thumb}/>
-                </div>
-                <div className="medium-8 columns">
-                  <div className="story-title">
-                    {story.hed}
-                  </div>
-                  <div className="story-tease">
-                    {story.tease}
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-      )
-    })
-    return (
-      <div>
-        <h1 id="stories-header">Related Stories</h1>
-        <div className="row">
-          {nodes}
-        </div>
-      </div>
-        )
+    var stories = d3.select('#stories');
+
+    var storyNodes = stories.selectAll('div')
+      .data(this.data)
+        .enter()
+      .append('div')
+      .attr('class', 'small-12 medium-6 columns all-stories');
+
+    var cards = storyNodes.append('a')
+      .attr('href', (d) => d.link)
+        .append('div')
+      .attr('class', 'story-card row');
+
+    cards.append('div')
+      .attr('class', 'medium-4 columns')
+        .append('img')
+      .attr('class', 'thumbnail')
+      .attr('src', (d) => `../img/${d.thumb}`);
+
+    var text = cards.append('div')
+      .attr('class', 'medium-8 columns');
+
+    text.append('div')
+      .attr('class', 'story-title')
+      .text((d) => d.hed);
+
+    text.append('div')
+      .attr('class', 'story-tease')
+      .text((d) => d.tease);
+
   }
 }

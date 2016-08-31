@@ -1,6 +1,7 @@
 import Data from './data';
 import ProgressBar from './progress-bar';
 import Canvas from './canvas';
+import Stories from './stories';
 import * as d3 from 'd3';
 import $ from 'jquery';
 
@@ -27,6 +28,9 @@ class App {
     this.progressBar = new ProgressBar();
     this.progressBar.build(this.data.length + 1)
     this.progressBar.fill(this.step)
+
+    var stories = new Stories();
+    stories.render();
 
     // Add an event handler to the splash screen's "Begin" button
     // that hides the splash screen.
