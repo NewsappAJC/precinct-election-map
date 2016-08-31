@@ -125,7 +125,7 @@ body {
 }
 
 #descs {
-  height: 10em;
+  height: 9em;
 }
 
 .desc {
@@ -146,31 +146,35 @@ body {
   box-sizing: border-box;
   color: white;
   line-height: 1.4;
+  padding: 0 10px;
 }
 
 #buttons {
   height: 2.5em;
-  padding: .3em;
+  padding: .3em 0;
   color: #A4A4A4;
   font-family: $body-text;
   font-weight: 700;
-  cursor: pointer;
   font-size: .8em;
+
   div {
+    cursor: pointer;
     text-decoration: underline;
   }
 }
 
 #back-button {
-  left: 0;
-  padding-left: 10px;
-  position: absolute;
+  float: left;
+  @media (max-width:540px){
+    padding-left: 10px;
+  }
 }
 
 #next-button {
-  right: 0;
-  padding-right: 10px;
-  position: absolute;
+  float: right;
+  @media (max-width:540px){
+    padding-right: 10px;
+  }
 }
 
 .axis path,
