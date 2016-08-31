@@ -77,16 +77,12 @@ body {
 #message {
   position: absolute;
   width: 100%;
+  padding: 40px;
   top: 50%;
-  transform: translateY(-50%);
-}
-
-#instructions, #finished {
-  z-index: 99999;
-  padding: 2em;
+  transform: translateY('-50%');
+  margin-top: -8em;
+  font-size: 2.5em;
   font-family: 'Boomer';
-  font-weight: 700;
-  font-size: 3em;
   text-align: center;
 }
 
@@ -97,22 +93,6 @@ body {
 
 #finished-link:hover {
   color: #49709F;
-}
-
-#start {
-  z-index: 9999;
-  position: relative;
-  left: 50%;
-  opacity: .7;
-  border-radius: 5px;
-  height: 50px;
-  width: 100px;
-  margin-left: -50px;
-  line-height: 50px;
-  background: white;
-  text-align: center;
-  font-size: 1.5em;
-  cursor: pointer;
 }
 
 #descs {
@@ -456,7 +436,7 @@ Social sharing
 Mobile styles
 ********************/
 @media (max-width: 400px) {
-  #instructions, #finished {
+  #message {
     padding: 10px;
     font-size: 1.5em;
   }

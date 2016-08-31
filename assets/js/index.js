@@ -199,8 +199,7 @@ class App {
 
     // If the user hasn't started yet, show them instructions.
     if (!this.started) {
-      var msg = `<div 
-        id="instructions">
+      var msg = `<div>
             Tap or click this photo to advance.
         </div>`
       $('#message').append(msg);
@@ -209,7 +208,7 @@ class App {
     else if (this.finished) {
       var msg = `<div 
         id="finished">
-          Finished
+          <a class="finished-link" href="http://www.ajc.com/news/news/crime-law/atlanta-police-shooting-goes-to-grand-jury-murder-/nsPgj/">Read more</a>
         </div>`
       $('#message').append(msg);
     }
