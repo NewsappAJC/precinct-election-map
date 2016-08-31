@@ -64,10 +64,6 @@ class App {
         </div>`);
     }
 
-    $('#wrapper').on('mouseup', () => {
-      this.handleClick(1) // Handle click takes an argument that determines whether to step forward or backward
-    })
-
     // Handle arrow keys as well as clicks.
     $(document).keydown((e) => {
       switch(e.which) {
@@ -93,6 +89,9 @@ class App {
 
     // Last of all, display the instructions
     this.getMessage();
+
+    var wrapper = document.getElementById('wrapper');
+    wrapper.addEventListener('mouseup', this.handleClick.bind(this, 1))
   }
 
   /*
@@ -128,6 +127,7 @@ class App {
       this.step = this.data.length;
       this.finished = true;
       this.cover.style.opacity = .7;
+      this.getMessage();
     }
     else if (step < this.data.length){
       this.backButton.style.display = 'initial';
@@ -210,7 +210,7 @@ class App {
     if (!this.started) {
       var msg = `<div 
         id="instructions">
-            Tap or click this photo to advance
+            Tap or click this photo to advance.
         </div>`
       $('#message').append(msg);
     }
@@ -218,7 +218,7 @@ class App {
     else if (this.finished) {
       var msg = `<div 
         id="finished">
-            <a href="http://investigations.blog.ajc.com/2016/07/11/atlanta-police-fire-officer-involved-deadly-shooting-video-of-incident-not-yet-released/" id="finished-link">Read more.</a>
+          Finished
         </div>`
       $('#message').append(msg);
     }

@@ -39,7 +39,6 @@ body {
   max-width: 500px;
   left: 50%;
   transform: translateX(-50%);
-  border-bottom: 2px solid white;
 }
 
 // Set fixed aspect ratio for canvas
@@ -83,6 +82,7 @@ body {
 }
 
 #instructions, #finished {
+  z-index: 99999;
   padding: 2em;
   font-family: 'Boomer';
   font-weight: 700;
@@ -433,6 +433,7 @@ Credits
   color: white;
   font-family: 'Publico';
   font-size: 1em;
+  border-top: 2px solid white;
 }
 /******************** 
 End credits
