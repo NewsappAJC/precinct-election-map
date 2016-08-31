@@ -7,7 +7,7 @@ import '!style!css!sass!../css/style.scss';
 import '../img/pin.svg';
 import '../img/ajc-logo.png';
 import '../img/bak.jpg';
-import '../img/red-pin.svg';
+import '../img/green-pin.svg';
 import '../img/blue-pin.svg';
 import '../img/orange-pin.svg';
 import '../img/title-card.jpg';
@@ -136,7 +136,7 @@ class App {
 
       this.descs[this.step].style.display = 'initial';
 
-      var colors = ['red', 'blue', 'orange']
+      var colors = ['green', 'blue', 'orange']
 
       this.svg.append('svg:image')
         .attr('xlink:href', '../img/' + colors[entry.id] + '-pin.svg')

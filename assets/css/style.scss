@@ -47,6 +47,7 @@ body {
 }
 
 #map {
+  max-width: 100%;
   z-index: -1;
 }
 
@@ -64,15 +65,6 @@ body {
   width: 100%;
   height: 3px;
   left: 0;
-}
-
-.backgroundImg {
-  z-index: -1;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 90%;
 }
 
 .fade {
@@ -206,17 +198,22 @@ svg {
 }
 
 #splash-holder {
-  padding-top: 20px;
+  padding: 20px;
   position: relative;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -60%);
   max-width: 600px;
 }
 
+#splash-title {
+  font-family: 'Boomer-Bold';
+  line-height: 1;
+  font-size: 5em;
+}
 
 #splash-text {
   margin-top: 20px;
-  padding: 15px;
   font-family: 'Publico';
   font-size: 2em;
 }
@@ -445,6 +442,9 @@ Mobile styles
   #instructions, #finished {
     padding: 10px;
     font-size: 1.5em;
+  }
+  #splash-title {
+    font-size: 3em;
   }
   #splash-text {
     font-size: 1em;

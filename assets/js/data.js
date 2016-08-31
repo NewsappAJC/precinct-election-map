@@ -47,7 +47,7 @@ export default class {
           "y": 26
       },
       {
-          "desc": "The car continues north without stopping. Burns said he thought the driver was trying to escape. ",
+          "desc": "Rogers continues north without stopping. Burns said he thought the driver was trying to escape. ",
           "id": 2,
           "step": 5,
           "present": [1,2],
@@ -65,7 +65,7 @@ export default class {
           "y": 30
       },
       {
-          "desc": "Burns runs toward the rear of his vehicle. He fires one shot through Rogers' passenger side window, striking him in the head.",
+          "desc": "As the car passes, Burns runs toward the rear of his vehicle. He fires one shot through Rogers' passenger side window, striking him in the head.",
           "id": 2,
           "step": 7,
           "present": [1,2],
