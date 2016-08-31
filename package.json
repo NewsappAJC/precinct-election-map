@@ -7,7 +7,9 @@
     "build-dev": "rimraf ./dist/dev && webpack --watch",
     "build-prod": "browserify assets/js/index.js -t [ babelify --presets [es2015] ]| uglifyjs > dist/prod/main.js",
     "deploy": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter",
-    "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer"
+    "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
+    "watch": "rimraf ./dist/dev && gulp watch",
+    "serve-dev": "gulp webserver"
   },
   "repository": {
     "type": "git",
@@ -29,13 +31,18 @@
     "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
+    "buffer": "^4.9.1",
     "compression-webpack-plugin": "^0.3.1",
     "css-loader": "^0.23.1",
     "d3": "^4.2.1",
     "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
     "jquery": "^3.1.0",
+    "livereload": "^0.5.0",
     "node-sass": "^3.8.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
@@ -43,6 +50,8 @@
     "style-loader": "^0.13.1",
     "template-style": "git://github.com/NewsappAJC/digital-design-guide.git#master",
     "uglifyjs": "^2.4.10",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.1"
   }
 }
