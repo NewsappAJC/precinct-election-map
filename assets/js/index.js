@@ -1,16 +1,8 @@
 import Data from './data';
 import ProgressBar from './progress-bar';
 import Canvas from './canvas';
-//import Stories from './stories';
-import '../index.html';
-import '!style!css!sass!../css/vendor/foundation.min.css';
-import '!style!css!sass!../css/style.scss';
-import '../img/bak.jpg';
-import '../img/ajc-logo.png';
-import '../img/green-pin.svg';
-import '../img/blue-pin.svg';
-import '../img/orange-pin.svg';
 import * as d3 from 'd3';
+import $ from 'jquery';
 
 class App {
   constructor() {
@@ -141,7 +133,7 @@ class App {
       var colors = ['green', 'blue', 'orange']
 
       this.canvas.append('img')
-        .attr('src', '../img/' + colors[entry.id] + '-pin.svg')
+        .attr('src', 'img/' + colors[entry.id] + '-pin.svg')
         // Each pointer's class contains a number that links it
         // to one of the characters in the visualization.
         .attr('class', 'point ' + entry.id) 
