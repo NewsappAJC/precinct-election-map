@@ -8,8 +8,7 @@
     "build-prod": "browserify assets/js/index.js -t [ babelify --presets [es2015] ]| uglifyjs > dist/prod/main.js",
     "deploy": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter",
     "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
-    "watch": "rimraf ./dist/dev && gulp watch",
-    "serve-dev": "gulp webserver"
+    "serve-dev": "rimraf ./dist/dev && gulp watch && http-server ./dist/dev"
   },
   "repository": {
     "type": "git",

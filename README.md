@@ -12,11 +12,10 @@ git clone git@bitbucket.org:ajcnewsapp/burns-june-police-shooting.git
 npm install
 ```
 
-Build for development
+Build, watch changes, and serve from the dev directory
 ```
-npm run build-dev
-
-http-server dist/dev
+npm run watch
+npm run serve-dev
 ```
 
 Build for production
