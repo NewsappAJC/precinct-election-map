@@ -4,7 +4,6 @@ import Canvas from './canvas';
 //import Stories from './stories';
 import '!style!css!sass!../css/vendor/foundation.min.css';
 import '!style!css!sass!../css/style.scss';
-import '../img/pin.svg';
 import '../img/ajc-logo.png';
 import '../img/bak.jpg';
 import '../img/green-pin.svg';
