@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
   rename = require('gulp-rename'),
-  buffer = require('vinyl-buffer'),
+  buffer = require('vinyl-buffer'), // Vinyl is an interface between browserify and gulp
   livereload = require('gulp-livereload'),
   source = require('vinyl-source-stream'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -30,7 +30,8 @@ gulp.task('compile', function() {
     transform: [babelify.configure({
       presets: ['es2015']
     })]
-  })
+  });
+
   return b.bundle()
     .pipe(source(SRC + 'js/index.js'))
     .pipe(buffer())
@@ -57,7 +58,7 @@ gulp.task('build-assets', function(done) {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(DEV + 'img'));
 
-  return merge(html, fonts, images);
+  return merge(html, fonts, images); // Emits events from multiple streams
 })
 
 gulp.task('watch-sass', function() {
@@ -69,14 +70,12 @@ gulp.task('watch-js', function() {
 });
 
 gulp.task('watch-assets', function() {
-  return gulp.watch([SRC + 'index.html', SRC + 'img/*'], ['compile']);
+  return gulp.watch([SRC + 'index.html', SRC + 'img/*'], ['build-assets']);
 })
 
 gulp.task('serve-dev', ['sass', 'compile', 'build-assets', 
-'watch-sass', 'watch-js'], function() {
-  console.log('starting server');
+'watch-sass', 'watch-js', 'watch-assets'], function() {
   bsIns = bs.create();
   bsIns.init(browserSync);
   bsIns.reload();
-  console.log('server running');
 });
