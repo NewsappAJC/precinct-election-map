@@ -2,15 +2,14 @@ import Data from './data';
 import ProgressBar from './progress-bar';
 import Canvas from './canvas';
 //import Stories from './stories';
+import '../index.html';
 import '!style!css!sass!../css/vendor/foundation.min.css';
 import '!style!css!sass!../css/style.scss';
-import '../img/ajc-logo.png';
 import '../img/bak.jpg';
+import '../img/ajc-logo.png';
 import '../img/green-pin.svg';
 import '../img/blue-pin.svg';
 import '../img/orange-pin.svg';
-import '../img/title-card.jpg';
-import '../index.html';
 import * as d3 from 'd3';
 
 class App {

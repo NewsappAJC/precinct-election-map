@@ -23,6 +23,7 @@
   <div id="fb-root"></div>
 
   <!--Load Facebook SDK for Javascript-->
+  <div id="fb-root"></div>
   <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -35,30 +36,28 @@
   <div id="nav">
     <div id="nav-logo">
       <a href="http://myajc.com" target="_blank">
-        <img src="img/ajc-logo.png" >
+        <img src="./img/ajc-logo.png" >
       </a> 
     </div>
     <div id="nav-title">A Deadly Encounter</div>
     <!--Facebook share button-->
-    <div id="fb-share">
-      <div class="fb-share-button" 
-        data-href="http://ajc.com" 
-        data-layout="button_count" 
-        data-size="large" 
-        data-mobile-iframe="true">
-        <a class="fb-xfbml-parse-ignore" 
-          target="_blank" 
-          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fajc.com%2F&amp;src=sdkpreparse">
-          Share
-        </a>
-      </div>
-    </div>
+    <div class="fb-share-button" 
+      data-href="http://investigations.myajc.com/deadly-encounter" 
+      data-layout="button_count" 
+      data-size="large" 
+      data-mobile-iframe="true">
+      <a 
+        class="fb-xfbml-parse-ignore" 
+        target="_blank" 
+        href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Finvestigations.myajc.com%2Fdeadly-encounter&amp;src=sdkpreparse">Share
+      </a>
+    </div>  
   </div>
 
   <!-- Main app -->
   <div id="main">
     <div id="wrapper">
-      <img id="map" src="../img/bak.jpg"/>
+      <img id="map" src="./img/bak.jpg"/>
       <div id="canvas" class="content"></div>
       <div id="cover" class="content"></div>
       <div id="message"></div>
@@ -73,19 +72,6 @@
 
   <!-- Credits -->
   <div id="credits">
-    <div id="fb-share-credits">
-      <div class="fb-share-button" 
-        data-href="http://ajc.com" 
-        data-layout="button_count" 
-        data-size="large" 
-        data-mobile-iframe="true">
-        <a class="fb-xfbml-parse-ignore" 
-          target="_blank" 
-          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fajc.com%2F&amp;src=sdkpreparse">
-          Share
-        </a>
-      </div>
-    </div>
     <div id="editorial-credit">Reporting by Brad Schrade and Ken Foskett</div>
     <div id="design-credit">Design and development by Jonathan Cox</div>
   </div>

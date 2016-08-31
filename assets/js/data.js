@@ -2,7 +2,7 @@ export default class {
   constructor() {
     this.data = [
       {
-          "desc": "Just before midnight June 22, an off-duty police officer radios that he is in pursuit of a suspect through Monroe Place Apartments.",
+          "desc": "Just before midnight June 22, an off-duty police officer radios that he is pursuing a suspect on foot through Monroe Place Apartments. The exact location of the officer is unknown.",
           "id": 0,
           "step": 0,
           "present": [0],
@@ -29,7 +29,7 @@ export default class {
           "y": 29
       },
       {
-          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and begins driving north.",
+          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and begins driving towards Burns.",
           "id": 2,
           "step": 3,
           "present": [1,2],
@@ -38,7 +38,7 @@ export default class {
           "y": 68
       },
       {
-          "desc": "Burns angles his car to block the center of the road, chirps his siren and turns on his blue lights. He later admitted he had no reason to try to stop Rogers.",
+          "desc": "Burns angles his car to block the center of the road, chirps his siren and turns on his blue lights. \"I didn't know to block that particular car,\" he later admitted.",
           "id": 1,
           "step": 4,
           "present": [1,2],
