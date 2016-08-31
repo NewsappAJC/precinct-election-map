@@ -8,5 +8,6 @@ dist/
 .DS_Store
 
 .sass-cache
+npm-debug.log
 
 prod/
