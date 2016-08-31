@@ -285,11 +285,6 @@ Begin Navbar style
   color: #fff;
   text-transform: uppercase;
 }
-@media (max-width: 400px) {
-  #nav {
-    display: none;
-  }
-}
 /******************** 
 End Navbar style 
 ********************/
@@ -314,17 +309,6 @@ Titles
   top: 0;
 }
 
-@media (min-width: 510px) {
-  #jumbotron {
-    margin-left: 10px;
-  }
-}
-@media (min-width: 820px) {
-  #titles {
-    position: absolute;
-    left: 520px;
-  }
-}
 
 .title {
   transition: padding .25s;
@@ -346,15 +330,6 @@ Related Stories
   width: 100%;
   background-color: #e7e7e7;
 }
-
-/*
-@media (min-width: 820px) {
-  #related-content {
-    position: absolute;
-    top: 98%;
-  }
-}
-*/
 
 #stories-header {
   text-align: center;
@@ -452,5 +427,11 @@ Mobile styles
   }
   .desc {
     font-size: .8em
+  }
+}
+
+@media (min-width: 510px) {
+  #jumbotron {
+    margin-left: 10px;
   }
 }
