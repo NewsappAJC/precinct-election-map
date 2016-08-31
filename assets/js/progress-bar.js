@@ -26,7 +26,6 @@ export default class {
     this.bar = svg.append('rect')
       .attr('width', this.progressWidth)
       .attr('height', height)
-      .attr('fill', 'white')
       .style('transition', 'width .5s')
   }
     

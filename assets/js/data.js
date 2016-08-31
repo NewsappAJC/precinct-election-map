@@ -2,7 +2,7 @@ export default class {
   constructor() {
     this.data = [
       {
-          "desc": "Just before midnight June 22, an off-duty police officer radios that he is in a foot chase with a suspect through Monroe Place Apartments.",
+          "desc": "Just before midnight June 22, an off-duty police officer radios that he is in pursuit of a suspect through Monroe Place Apartments.",
           "id": 0,
           "step": 0,
           "present": [0],
@@ -29,7 +29,7 @@ export default class {
           "y": 29
       },
       {
-          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and drives north.",
+          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and begins driving north.",
           "id": 2,
           "step": 3,
           "present": [1,2],
@@ -38,7 +38,7 @@ export default class {
           "y": 68
       },
       {
-          "desc": "Seeing the approaching vehicle, Burns angles his car towards the center of the road, chirps his siren and turns on his blue lights.",
+          "desc": "Burns angles his car to block the center of the road, chirps his siren and turns on his blue lights. He later admitted he had no reason to try to stop Rogers.",
           "id": 1,
           "step": 4,
           "present": [1,2],
@@ -47,7 +47,7 @@ export default class {
           "y": 34
       },
       {
-          "desc": "Rogers continues north without stopping. Burns said he thought the driver was trying to escape. ",
+          "desc": "Rogers continues north without slowing. Burns said he thought the driver was trying to escape. ",
           "id": 2,
           "step": 5,
           "present": [1,2],
@@ -56,7 +56,7 @@ export default class {
           "y": 52
       },
       {
-          "desc": "The car tries to drive around Burns' patrol vehicle. The officer jumps out and yells \"Stop!\" ",
+          "desc": "Rogers tries to drive around the patrol vehicle. Burns jumps out of the car and yells \"Stop!\" ",
           "id": 2,
           "step": 6,
           "present": [1,2],

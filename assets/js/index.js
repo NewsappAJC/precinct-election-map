@@ -213,7 +213,7 @@ class App {
     else if (this.finished) {
       var msg = `<div 
         id="finished">
-            Finished. <a href="http://investigations.blog.ajc.com/2016/07/11/atlanta-police-fire-officer-involved-deadly-shooting-video-of-incident-not-yet-released/" id="finished-link"><br>Read more.</a>
+            <a href="http://investigations.blog.ajc.com/2016/07/11/atlanta-police-fire-officer-involved-deadly-shooting-video-of-incident-not-yet-released/" id="finished-link">Read more.</a>
         </div>`
       $('#message').append(msg);
     }
