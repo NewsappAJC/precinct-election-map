@@ -7,12 +7,25 @@ var gulp = require('gulp'),
   rimraf = require('rimraf');
   sass = require('gulp-sass'),
   browserify = require('browserify'),
+  bs = require('browser-sync'),
   babelify = require('babelify'),
   webserver = require('gulp-webserver');
+  merge = require('merge-stream');
 
 var SRC = './assets/';
 var PROD = './dist/prod/';
 var DEV = './dist/dev/';
+
+var browserSync = {
+  port: 8080,
+  server: {
+    baseDir: './dist/dev/',
+  },
+  ui: {
+    port: 3000
+  },
+  logLevel: 'debug'
+}
 
 gulp.task('compile', function() {
   var b = browserify({
@@ -47,6 +60,8 @@ gulp.task('build-assets', function(done) {
 
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(DEV + 'img'));
+
+  return merge(html, fonts, images);
 })
 
 gulp.task('watch-sass', function() {
@@ -61,21 +76,11 @@ gulp.task('watch-assets', function() {
   return gulp.watch([SRC + 'index.html', SRC + 'img/*'], ['compile']);
 })
 
-gulp.task('webserver', function() {
-  gulp.src('./dist/dev')
-    .pipe(webserver({
-      port: '8080',
-      livereload: true,
-      open: true
-    }))
-})
-
-gulp.task('watch', [
-  'sass', 
-  'compile', 
-  'build-assets', 
-  'watch-sass', 
-  'watch-js', 
-  'watch-assets'
-  ], function() {
+gulp.task('serve-dev', ['sass', 'compile', 'build-assets', 
+'watch-sass', 'watch-js'], function() {
+  console.log('starting server');
+  bsIns = bs.create();
+  bsIns.init(browserSync);
+  bsIns.reload();
+  console.log('server running');
 });
