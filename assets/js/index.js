@@ -7,6 +7,9 @@ import '!style!css!sass!../css/style.scss';
 import '../img/pin.svg';
 import '../img/ajc-logo.png';
 import '../img/bak.jpg';
+import '../img/green-pin.svg';
+import '../img/blue-pin.svg';
+import '../img/orange-pin.svg';
 import '../img/title-card.jpg';
 import '../index.html';
 
@@ -41,17 +44,23 @@ class App {
       splash.style.display = 'none';
     })
 
-    for (var i = this.data.length - 1; i >= 0; i--) {
+    var backButton = document.getElementById('back-button');
+    backButton.addEventListener('click', () => {
+      this.handleClick(-1);
+    });
+
+    var nextButton = document.getElementById('next-button');
+    nextButton.addEventListener('click', () => {
+      this.handleClick(1);
+    });
+
+    for (var i = 0; i < this.data.length; i++) {
       // Append divs with descriptions of each step.
-      // Loop backwards because insertAfter appends each 
-      // new div as the first child below #main, and we 
-      // will later need to loop through them in the right 
-      // order.
-      $(`<div class="desc">
+      $('#descs').append(`<div class="desc">
           <div class="box">
             ${this.data[i].desc}
           </div>
-        </div>`).insertAfter('#main');
+        </div>`);
     }
 
     $('#wrapper').on('mouseup', () => {
@@ -101,6 +110,10 @@ class App {
   setStep(step) {
     this.cover.style.opacity = 0;
 
+    if (step <= -1) {
+      return;
+    };
+
     // Hide all the descriptions. The description that corresponds to the 
     // step will be displayed later
     for (var i=0; i<this.data.length; i++) {
@@ -109,8 +122,8 @@ class App {
 
     // Check if the user has finished the last step in the visualization.
     // If so, display a finished message
-    if (step === this.data.length) {
-      this.step = step;
+    if (step >= this.data.length) {
+      this.step = this.data.length;
       this.finished = true;
       this.cover.style.opacity = .7;
     }
@@ -119,18 +132,21 @@ class App {
 
       this.step = step;
       this.started = true;
+      this.finished = false;
 
       this.descs[this.step].style.display = 'initial';
 
+      var colors = ['green', 'blue', 'orange']
+
       this.svg.append('svg:image')
-        .attr('xlink:href', '../img/pin.svg')
+        .attr('xlink:href', '../img/' + colors[entry.id] + '-pin.svg')
         // Each pointer's class contains a number that links it
         // to one of the characters in the visualization.
         .attr('class', 'point ' + entry.id) 
         .attr('x', entry.x + '%')
         .attr('y', entry.y + '%')
-        .attr('width', '2em')
-        .attr('height', '3em')
+        .attr('width', '3em')
+        .attr('height', '4em')
 
       var points = document.getElementsByClassName('point');
 

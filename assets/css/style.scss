@@ -49,6 +49,7 @@ body {
 }
 
 #map {
+  max-width: 100%;
   z-index: -1;
 }
 
@@ -60,25 +61,12 @@ body {
   top: 0;
 }
 
-#buttons {
-  display: none;
-}
-
 #progressBar {
   position: fixed;
   top: 0;
   width: 100%;
   height: 3px;
   left: 0;
-}
-
-.backgroundImg {
-  z-index: -1;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 90%;
 }
 
 .fade {
@@ -118,6 +106,11 @@ body {
   cursor: pointer;
 }
 
+#descs {
+  position: relative;
+  height: 10em;
+}
+
 .desc {
   display: none;
   top: 100%;
@@ -127,10 +120,11 @@ body {
 
 .box { 
   position: relative;
+  height: 8em;
   max-width: 500px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 5px 10px 5px;
+  padding: 0px 5px 10px 5px;
   font-family: 'Publico';
   font-size: 1.4em;
   text-align: left;
@@ -139,21 +133,33 @@ body {
 }
 
 #buttons {
-  z-index: 9999;
-  position:absolute;
-  top: 90%;
-  left: 50%;
-  height: 50px;
-  width: 220px;
-  margin-left: -110px;
+  position: relative;
+  width: 100%;
+  height: 2.5em;
+  padding: .3em;
+  color: #A4A4A4;
+  text-decoration: underline;
+  font-family: 'Boomer-Bold';
+  font-size: 1em;
+  cursor: pointer;
 }
 
-button {
-  width: 100px;
-  height: 50px;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 5px;
+#back-button {
+  text-align: left;
+  display: inline-block;
+  width: 3em;
+  left: 0;
+  padding-left: 10px;
+  position: absolute;
+}
+
+#next-button {
+  text-align: right;
+  display: inline-block;
+  width: 3em;
+  right: 0;
+  padding-right: 10px;
+  position: absolute;
 }
 
 .axis path,
@@ -194,17 +200,22 @@ svg {
 }
 
 #splash-holder {
-  padding-top: 20px;
+  padding: 20px;
   position: relative;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -60%);
   max-width: 600px;
 }
 
+#splash-title {
+  font-family: 'Boomer-Bold';
+  line-height: 1;
+  font-size: 5em;
+}
 
 #splash-text {
   margin-top: 20px;
-  padding: 15px;
   font-family: 'Publico';
   font-size: 2em;
 }
@@ -437,6 +448,9 @@ Mobile styles
   #instructions, #finished {
     padding: 10px;
     font-size: 1.5em;
+  }
+  #splash-title {
+    font-size: 3em;
   }
   #splash-text {
     font-size: 1em;
