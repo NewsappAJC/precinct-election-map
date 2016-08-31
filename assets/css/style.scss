@@ -14,7 +14,7 @@
   font-weight: 400;
 }
 @font-face {
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
   src: url('./fonts/boomer/Boomer-Bold.otf');
   font-weight: 700;
   font-style: normal
@@ -148,7 +148,8 @@ body {
   padding: .3em;
   color: #A4A4A4;
   text-decoration: underline;
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
   font-size: 1em;
   cursor: pointer;
 }
@@ -218,7 +219,8 @@ svg {
 }
 
 #splash-title {
-  font-family: 'Boomer-Bold';
+  font-family: 'Boomer';
+  font-weight: 700;
   line-height: 1;
   font-size: 5em;
 }
