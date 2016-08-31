@@ -27,6 +27,7 @@
 
 $large-text: 'Boomer-Light';
 $body-text: 'Boomer';
+$bg-color: #222;
 /******************** 
 Begin positioning
 ********************/
@@ -37,7 +38,8 @@ html, body {
 }
 
 body {
-  background-color: #333;
+  background-color: $bg-color;
+  color: $bg-color;
 }
 
 #main {
@@ -439,7 +441,6 @@ Credits
 ********************/
 #credits {
   padding: 20px;
-  background-color: #333;
   color: white;
   font-family: $body-text;
   font-size: 12px;
