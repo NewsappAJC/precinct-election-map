@@ -11,13 +11,13 @@ export default class {
           "y": 50
       },
       {
-          "desc": "Officer James Burns arrives minutes later. He disables his blue lights and siren. ",
+          "desc": "Officer James Burns arrives minutes later. He turns off his blue lights and siren. ",
           "id": 1,
           "step": 1,
           "present": [1],
           "title": "",
-          "x": 9,
-          "y": 12
+          "x": 15,
+          "y": 18
       },
       {
           "desc": "Burns turns onto Monroe Place NE and slows his vehicle as he scans the area.",
@@ -25,8 +25,8 @@ export default class {
           "step": 2,
           "present": [1,2],
           "title": "",
-          "x": 46,
-          "y": 19
+          "x": 50,
+          "y": 29
       },
       {
           "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and drives north.",
@@ -34,8 +34,8 @@ export default class {
           "step": 3,
           "present": [1,2],
           "title": "",
-          "x": 41,
-          "y": 64
+          "x": 45,
+          "y": 68
       },
       {
           "desc": "Seeing the approaching vehicle, Burns angles his car towards the center of the road, chirps his siren and turns on his blue lights.",
@@ -43,8 +43,8 @@ export default class {
           "step": 4,
           "present": [1,2],
           "title": "",
-          "x": 45,
-          "y": 26
+          "x": 48,
+          "y": 34
       },
       {
           "desc": "Rogers continues north without stopping. Burns said he thought the driver was trying to escape. ",
@@ -52,17 +52,17 @@ export default class {
           "step": 5,
           "present": [1,2],
           "title": "",
-          "x": 45,
-          "y": 41
+          "x": 48,
+          "y": 52
       },
       {
-          "desc": "As the car tries to drive around Burns' patrol vehicle, the officer jumps out and yells \"Stop!\" ",
+          "desc": "The car tries to drive around Burns' patrol vehicle. The officer jumps out and yells \"Stop!\" ",
           "id": 2,
           "step": 6,
           "present": [1,2],
           "title": "",
-          "x": 44,
-          "y": 30
+          "x": 46,
+          "y": 36
       },
       {
           "desc": "As the car passes, Burns runs toward the rear of his vehicle. He fires one shot through Rogers' passenger side window, striking him in the head.",
@@ -70,8 +70,8 @@ export default class {
           "step": 7,
           "present": [1,2],
           "title": "",
-          "x": 43,
-          "y": 25
+          "x": 46,
+          "y": 32
       },
       {
           "desc": "Rogers' car coasts down Monroe Place, hops the curb of Monroe Drive, and crashes into a vehicle in a parking lot. Rogers is later pronounced dead.",
@@ -79,8 +79,8 @@ export default class {
           "step": 8,
           "present": [1,2],
           "title": "",
-          "x": 41,
-          "y": 1
+          "x": 45,
+          "y": 4
       }
     ]
   }

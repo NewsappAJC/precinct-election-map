@@ -11,7 +11,7 @@ export default class {
       console.log('resizing canvas')
     })
 
-    this.svg = d3.select('div#canvas').append('svg')
+    d3.select('div#canvas')
         .attr('width', this.width) 
         .attr('height', '100%')
         .attr('position', 'absolute')

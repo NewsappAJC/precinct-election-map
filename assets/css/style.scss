@@ -14,7 +14,7 @@
   font-weight: 400;
 }
 @font-face {
-  font-family: 'Boomer';
+  font-family: 'Boomer-Bold';
   src: url('./fonts/boomer/Boomer-Bold.otf');
   font-weight: 700;
   font-style: normal
@@ -71,6 +71,13 @@ body {
 
 .fade {
   opacity: .2;
+}
+
+#message {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #instructions, #finished {
@@ -174,10 +181,12 @@ svg {
 }
 
 .point {
-  z-index: 0;
-  stroke: #fff;
-  stroke-width: 2px;
+  position: absolute;
   transition: all .3s ease;
+  width: 3em;
+  height: 4em;
+  margin-left: -1.2em;
+  margin-top: -2em;
 }
 
 #loading {

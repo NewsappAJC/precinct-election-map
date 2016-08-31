@@ -11,6 +11,7 @@ import '../img/blue-pin.svg';
 import '../img/orange-pin.svg';
 import '../img/title-card.jpg';
 import '../index.html';
+import * as d3 from 'd3';
 
 class App {
   constructor() {
@@ -24,9 +25,7 @@ class App {
 
     // Create a new canvas object, which is where the pins 
     // will be drawn.
-    var canvas = new Canvas();
-    canvas.build();
-    this.svg = canvas.svg;
+    this.canvas = d3.select('div#canvas');
 
     // Display a bar across the top of the screen that gradually
     // fills in as the user navigates through the app.
@@ -137,15 +136,13 @@ class App {
 
       var colors = ['green', 'blue', 'orange']
 
-      this.svg.append('svg:image')
-        .attr('xlink:href', '../img/' + colors[entry.id] + '-pin.svg')
+      this.canvas.append('img')
+        .attr('src', '../img/' + colors[entry.id] + '-pin.svg')
         // Each pointer's class contains a number that links it
         // to one of the characters in the visualization.
         .attr('class', 'point ' + entry.id) 
-        .attr('x', entry.x + '%')
-        .attr('y', entry.y + '%')
-        .attr('width', '3em')
-        .attr('height', '4em')
+        .style('left', entry.x + '%')
+        .style('top', entry.y + '%')
 
       var points = document.getElementsByClassName('point');
 
@@ -216,7 +213,7 @@ class App {
     else if (this.finished) {
       var msg = `<div 
         id="finished">
-            Finished. <a href="http://investigations.blog.ajc.com/2016/07/11/atlanta-police-fire-officer-involved-deadly-shooting-video-of-incident-not-yet-released/" id="finished-link">Read more.</a>
+            Finished. <a href="http://investigations.blog.ajc.com/2016/07/11/atlanta-police-fire-officer-involved-deadly-shooting-video-of-incident-not-yet-released/" id="finished-link"><br>Read more.</a>
         </div>`
       $('#message').append(msg);
     }
