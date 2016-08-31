@@ -18,6 +18,7 @@ class App {
     // will be drawn.
     this.canvas = d3.select('div#canvas');
 
+    // Hide the back button until the user navigates to the next step.
     this.backButton = document.getElementById('back-button');
     this.backButton.style.display = 'none';
 
@@ -30,7 +31,6 @@ class App {
     // Add an event handler to the splash screen's "Begin" button
     // that hides the splash screen.
     var beginButton = document.getElementById('begin-button');
-    
     beginButton.addEventListener('click', () => {
       var splash = document.getElementById('splash');
       splash.style.display = 'none';

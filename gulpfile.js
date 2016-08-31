@@ -20,11 +20,7 @@ var browserSync = {
   port: 8080,
   server: {
     baseDir: './dist/dev/',
-  },
-  ui: {
-    port: 3000
-  },
-  logLevel: 'debug'
+  }
 }
 
 gulp.task('compile', function() {
