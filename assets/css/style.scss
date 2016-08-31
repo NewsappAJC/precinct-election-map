@@ -353,16 +353,22 @@ Related Stories
   margin-bottom: 20px;
 }
 
+#stories-holder {
+  background-color: #fff;
+  padding: 20px;
+}
+
 .story-card {
   background-color: white;
   border: 2px solid #e7e7e7;
   padding: 20px;
   color: black;
   transition: all .3s ease;
+  height: 15em;
 }
 
 .story-card:hover {
-  border: 2px solid #1c437f;
+  border: 2px solid #5c7dbe;
   background-color: #EFF8FB;
 }
 
@@ -370,7 +376,7 @@ Related Stories
   left: 10px;
   font-family: $body-text;
   font-weight: 700;
-  font-size: 2em;
+  font-size: 1.2em;
 }
 
 .story-tease {
@@ -444,5 +450,10 @@ Mobile styles
 @media (min-width: 510px) {
   #jumbotron {
     margin-left: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .story-card {
+    height: 25em;
   }
 }

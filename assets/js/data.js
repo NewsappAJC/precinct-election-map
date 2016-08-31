@@ -29,7 +29,7 @@ export default class {
           "y": 29
       },
       {
-          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his lights and begins driving towards Burns.",
+          "desc": "Deravis Rogers, who is parked toward the end of the block, turns on his headlights and begins driving towards Burns.",
           "id": 2,
           "step": 3,
           "present": [1,2],
@@ -38,7 +38,7 @@ export default class {
           "y": 68
       },
       {
-          "desc": "Burns angles his car to block the center of the road, chirps his siren and turns on his blue lights. \"I didn't know to block that particular car,\" he later admitted.",
+          "desc": "Burns angles his car to block the center of the road, chirps his siren and turns on his blue lights. He later admitted he wasn't sure if the suspect was behind the wheel.",
           "id": 1,
           "step": 4,
           "present": [1,2],
@@ -47,7 +47,7 @@ export default class {
           "y": 34
       },
       {
-          "desc": "Rogers continues north without slowing. Burns said he thought the driver was trying to escape. ",
+          "desc": "Rogers continues north without slowing. Burns later said he thought the driver was trying to escape. ",
           "id": 2,
           "step": 5,
           "present": [1,2],

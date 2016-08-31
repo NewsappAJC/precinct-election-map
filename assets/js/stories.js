@@ -1,63 +1,63 @@
-import React from 'react';
-import '../img/kitten.jpg';
+import * as d3 from 'd3';
 
 const STORIES = [
-  {hed: 'Test', 
-    tease: 'This is a test article. A user clicks this link to navigate to a story', 
-    thumb: 'kitten.jpg',
-    link: 'http://ajc.com'
+  {hed: 'Atlanta officer fired', 
+    tease: 'Deravis Caine Rogers, suspected of breaking into cars, was shot by an officer...', 
+    thumb: 'apd_car_shooting.jpg',
+    link: 'http://www.myajc.com/news/news/breaking-news/atlanta-officer-fired-as-shooting-at-cars-by-polic/nrtwD/'
   },
-  {hed: 'Test', 
-    tease: 'This is a test article. A user clicks this link to navigate to a story', 
-    thumb: 'kitten.jpg',
-    link: 'http://ajc.com'
+  {hed: 'Murder charge against Atlanta cop', 
+    tease: 'Atlanta’s top law enforcement leaders this month quickly brought criminal charges...',
+    thumb: 'JamesBurnscollage.jpg',
+    link: 'http://www.myajc.com/news/news/murder-charge-against-atlanta-cop-shifts-ground-in/nrzHy/', 
   },
-  {hed: 'Test', 
-    tease: 'This is a test article. A user clicks this link to navigate to a story', 
-    thumb: 'kitten.jpg',
-    link: 'http://ajc.com'
+  {hed: 'New details in deadly police shooting', 
+    tease: 'The Atlanta Police Department’s internal affairs investigation contains damning new information...', 
+    thumb: 'Deravis-Caine-Rogers-photo.jpg',
+    link: 'http://www.myajc.com/news/news/breaking-news/new-details-in-deadly-police-shooting-of-black-man/nrx6L/'
   },
-  {hed: 'Test', 
-    tease: 'This is a test article. A user clicks this link to navigate to a story', 
-    thumb: 'kitten.jpg',
-    link: 'http://ajc.com'
+  {hed: 'Arrest warrants issued', 
+    tease: 'Fulton County District Attorney Paul Howard announced that arrest warrants were issued Friday...', 
+    thumb: 'Officer-James-Burns.jpg',
+    link: 'http://www.myajc.com/news/news/breaking-news/atlanta-cop-who-shot-unarmed-black-man-charged-wit/nry7G/'
   },
 ]
 
-export default class extends React.Component {
+export default class {
   constructor() {
-    super();
-    this.stories = STORIES;
-  }
+    this.data = STORIES;
+  };
+
   render() {
-    var nodes = this.stories.map((story) => {
-      return (
-          <div className="small-12 medium-6 columns all-stories">
-            <a href={story.link}>
-              <div className="story-card row">
-                <div className="medium-4 columns">
-                  <img className="thumbnail"src={'../img/' + story.thumb}/>
-                </div>
-                <div className="medium-8 columns">
-                  <div className="story-title">
-                    {story.hed}
-                  </div>
-                  <div className="story-tease">
-                    {story.tease}
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-      )
-    })
-    return (
-      <div>
-        <h1 id="stories-header">Related Stories</h1>
-        <div className="row">
-          {nodes}
-        </div>
-      </div>
-        )
+    var stories = d3.select('#stories');
+
+    var storyNodes = stories.selectAll('div')
+      .data(this.data)
+        .enter()
+      .append('div')
+      .attr('class', 'small-12 medium-6 columns all-stories');
+
+    var cards = storyNodes.append('a')
+      .attr('href', (d) => d.link)
+        .append('div')
+      .attr('class', 'story-card row');
+
+    cards.append('div')
+      .attr('class', 'medium-4 columns')
+        .append('img')
+      .attr('class', 'thumbnail')
+      .attr('src', (d) => `../img/${d.thumb}`);
+
+    var text = cards.append('div')
+      .attr('class', 'medium-8 columns');
+
+    text.append('div')
+      .attr('class', 'story-title')
+      .text((d) => d.hed);
+
+    text.append('div')
+      .attr('class', 'story-tease')
+      .text((d) => d.tease);
+
   }
 }
