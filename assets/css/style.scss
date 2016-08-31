@@ -96,8 +96,9 @@ body {
   text-align: center;
 }
 
-#finished-link {
+.finished-link {
   text-decoration: underline;
+  text-transform: uppercase;
   color: black;
 }
 
