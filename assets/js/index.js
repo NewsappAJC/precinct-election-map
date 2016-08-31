@@ -54,17 +54,13 @@ class App {
       this.handleClick(1);
     });
 
-    for (var i = this.data.length - 1; i >= 0; i--) {
+    for (var i = 0; i < this.data.length; i++) {
       // Append divs with descriptions of each step.
-      // Loop backwards because insertAfter appends each 
-      // new div as the first child below #main, and we 
-      // will later need to loop through them in the right 
-      // order.
-      $(`<div class="desc">
+      $('#descs').append(`<div class="desc">
           <div class="box">
             ${this.data[i].desc}
           </div>
-        </div>`).insertAfter('#buttons');
+        </div>`);
     }
 
     $('#wrapper').on('mouseup', () => {
@@ -113,6 +109,10 @@ class App {
   */
   setStep(step) {
     this.cover.style.opacity = 0;
+
+    if (step <= -1) {
+      return;
+    };
 
     // Hide all the descriptions. The description that corresponds to the 
     // step will be displayed later

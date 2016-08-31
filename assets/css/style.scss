@@ -111,6 +111,11 @@ body {
   cursor: pointer;
 }
 
+#descs {
+  position: relative;
+  height: 10em;
+}
+
 .desc {
   display: none;
   top: 100%;
@@ -120,6 +125,7 @@ body {
 
 .box { 
   position: relative;
+  height: 8em;
   max-width: 500px;
   left: 50%;
   transform: translateX(-50%);
