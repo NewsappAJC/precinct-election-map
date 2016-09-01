@@ -90,6 +90,9 @@ body {
   height: 3px;
   left: 0;
   fill: #A4A4A4;
+  svg {
+    position: absolute;
+  }
 }
 
 .fade {
