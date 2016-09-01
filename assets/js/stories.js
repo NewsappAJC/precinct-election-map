@@ -46,7 +46,7 @@ export default class {
       .attr('class', 'medium-4 columns')
         .append('img')
       .attr('class', 'thumbnail')
-      .attr('src', (d) => `../img/${d.thumb}`);
+      .attr('src', (d) => `img/${d.thumb}`);
 
     var text = cards.append('div')
       .attr('class', 'medium-8 columns');

@@ -10,3 +10,5 @@ dist/
 .sass-cache
 
 prod/
+
+npm-debug.log
