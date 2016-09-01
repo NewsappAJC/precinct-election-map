@@ -40,7 +40,7 @@ export default class {
               <div class="story-card">
                 <div class="row">
                   <div class="medium-4 columns">
-                    <img class="thumbnail"src=${'img/' + story.thumb}/>
+                    <img class="thumbnail"src="${'img/' + story.thumb}"/>
                   </div>
                   <div class="medium-8 columns">
                     <h4 class="story-title">
