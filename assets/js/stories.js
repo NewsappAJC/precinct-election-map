@@ -36,20 +36,22 @@ export default class {
     this.data.forEach((story) => {
       $('#stories').append(`
           <div class="small-12 medium-6 columns all-stories">
-            <a href=${story.link} target="_blank">
-              <div class="story-card row">
-                <div class="medium-4 columns">
-                  <img class="thumbnail"src=${'img/' + story.thumb}/>
-                </div>
-                <div class="medium-8 columns">
-                  <div class="story-title">
-                    ${story.hed}
+            <a href=${story.link} target="_blank", rel="noopener">
+              <div class="story-card">
+                <div class="row">
+                  <div class="medium-4 columns">
+                    <img class="thumbnail"src=${'img/' + story.thumb}/>
                   </div>
-                  <div class="dateline">
-                    ${story.dateline}
-                  </div>
-                  <div class="story-tease">
-                    ${story.tease}
+                  <div class="medium-8 columns">
+                    <h4 class="story-title">
+                      ${story.hed}
+                    </h4>
+                    <div class="dateline">
+                      ${story.dateline}
+                    </div>
+                    <div class="story-tease">
+                      ${story.tease}
+                    </div>
                   </div>
                 </div>
               </div>
