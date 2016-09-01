@@ -8,7 +8,8 @@
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
     "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
-    "deploy-production": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter"
+    "deploy-production": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter",
+    "deploy": "gulp deploy --production"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "d3": "^4.2.1",
     "file-loader": "^0.9.0",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-awspublish": "^3.3.0",
     "gulp-cssnano": "^2.1.2",
     "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
@@ -48,8 +50,10 @@
     "livereload": "^0.5.0",
     "merge-stream": "^1.0.0",
     "node-sass": "^3.8.0",
+    "path": "^0.12.7",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
+    "rename": "^1.0.3",
     "run-sequence": "^1.2.2",
     "s3-deploy": "^0.6.1",
     "style-loader": "^0.13.1",

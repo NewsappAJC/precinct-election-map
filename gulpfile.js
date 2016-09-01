@@ -14,6 +14,9 @@ var gulp = require('gulp'),
   merge = require('merge-stream'),
   uglify = require('gulp-uglify'),
   cssnano = require('gulp-cssnano');
+  path   = require('path'),
+  rename = require('gulp-rename'),
+  awspublish = require('gulp-awspublish');
 
 var SRC = './assets/';
 var PROD = './dist/prod/';
@@ -103,5 +106,55 @@ gulp.task('serve', gulp.series('sass', 'compile', 'build-assets',
 }));
 
 gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done) {
+  done();
+}));
+
+gulp.task('publish', function(){
+  var s3_dir = 'testing-directory/sub-dir'; //s3 bucket subdirectory 
+  var AWS = require('aws-sdk');
+  
+  // create a new publisher using S3 options 
+  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property 
+  var publisher = awspublish.create({
+    region: 'us-east-1',
+    params: {
+      Bucket: 'publish-testing-bucket',
+      //Key: 'testing-directory',
+      ACL: 'public-read'
+    },
+    credentials: new AWS.SharedIniFileCredentials({profile: 'default'})
+  });
+ 
+  // define custom headers 
+  var headers = {
+    'Cache-Control': 'max-age=2592000, no-transform, public'
+  };
+  var options = {
+    //force: true //bypass cache / skip if you need to for some reason
+  }
+
+  /********************************************
+  DO NOT RUN `publisher.sync()` when targeting
+  a child directory of a bucket or it will 
+  delete everything else in the bucket
+  *********************************************/
+  return gulp.src(PROD + '**/*')
+    //because we are targeting a child path of a bucket we need to modify the path the reflect that
+    .pipe(rename(function(filePath) {
+      filePath.dirname = path.join(s3_dir, filePath.dirname);
+    }))
+    // publisher will add Content-Length, Content-Type and headers specified above 
+    // If not specified it will set x-amz-acl to public-read by default 
+    .pipe(publisher.publish(headers, options)) //upload new/changed files
+    // create a cache file to speed up consecutive uploads 
+    .pipe(publisher.cache())
+ 
+     // print upload updates to console 
+    .pipe(awspublish.reporter({
+      states: ['create', 'update', 'delete']
+    })); //if it appears to be hanging and you want to 'skip' states add that to the array
+});
+
+gulp.task('deploy', gulp.series('build', 'publish', function(done){
   done();
 }));

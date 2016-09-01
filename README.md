@@ -23,7 +23,5 @@ npm run build-prod
 
 Deploy
 ```
-npm run deploy-staging
-//OR
-npm run deploy-production
+npm run deploy
 ```

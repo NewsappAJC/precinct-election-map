@@ -9,6 +9,7 @@ dist/
 
 .sass-cache
 npm-debug.log
+.awspublish-*
 
 prod/
 
