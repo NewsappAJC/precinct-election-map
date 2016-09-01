@@ -91,6 +91,7 @@ class App {
       this.step = this.data.length;
       this.finished = true;
       $('#cover').css({'opacity': .7});
+      $('#next-button').hide();
     }
 
     else if (step < this.data.length){
