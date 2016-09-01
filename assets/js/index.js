@@ -100,6 +100,7 @@ class App {
       // Only display back button if the user is past the first step.
       var backDisplay = step <= 0 ? 'none' : 'initial';
       $('#back-button').css({'display': backDisplay});
+      $('#next-button').show();
 
       // Assign the correct item in the data object to the entry variable.
       var entry = this.data[step];
