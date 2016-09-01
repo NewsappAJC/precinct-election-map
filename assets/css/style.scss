@@ -83,16 +83,14 @@ body {
   top: 0;
 }
 
-#progressBar {
-  position: fixed;
+#progress-bar {
+  position: absolute;
   top: 0;
-  width: 100%;
-  height: 3px;
+  width: 0;
+  height: 5px;
   left: 0;
-  fill: #A4A4A4;
-  svg {
-    position: absolute;
-  }
+  background-color: white;
+  transition: all .25s ease;
 }
 
 .fade {

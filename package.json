@@ -55,6 +55,7 @@
     "template-style": "git://github.com/NewsappAJC/digital-design-guide.git#master",
     "uglify-js": "^2.7.3",
     "uglifyjs": "^2.4.10",
+    "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.1",
