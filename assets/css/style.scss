@@ -310,8 +310,13 @@ Begin Related Stories
   background-color: white;
   padding: 20px;
   color: $text-black;
-  height: 11em;
   margin-bottom: 20px;
+  @media (min-width: 640px) {
+    height: 275px;
+  }
+  @media (min-width: 940px) {
+    height: 175px;
+  }
 }
 
 .story-card:hover, .story-card:focus {

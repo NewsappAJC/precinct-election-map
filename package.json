@@ -7,8 +7,8 @@
     "serve-dev": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
-    "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
-    "deploy-production": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter"
+    "deploy-staging": "gulp publish --staging",
+    "deploy-production": "gulp publish"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/_jonathancox/stepr#readme",
   "devDependencies": {
+    "aws-sdk": "^2.5.4",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
@@ -37,6 +38,7 @@
     "d3": "^4.2.1",
     "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
+    "gulp-awspublish": "^3.3.0",
     "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",

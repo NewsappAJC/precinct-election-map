@@ -3,6 +3,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   buffer = require('vinyl-buffer'), // Vinyl is an interface between browserify and gulp
   livereload = require('gulp-livereload'),
+  awspublish = require('gulp-awspublish');
   source = require('vinyl-source-stream'),
   sourcemaps = require('gulp-sourcemaps'),
   rimraf = require('rimraf');
@@ -96,3 +97,39 @@ gulp.task('serve', ['sass', 'compile', 'build-assets',
 
 gulp.task('build', ['sass', 'compile', 'build-assets'], function() {
 })
+
+gulp.task('publish', function(){
+  var AWS = require('aws-sdk');
+  var bucket = argv.staging ? 'ajcnewsapps/2016/deadly-encounter-staging' : 'investigations.myajc.com/deadly-encounter';
+  // create a new publisher using S3 options 
+  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property 
+  const publisher = awspublish.create({
+    region: 'us-east-1',
+    params: {
+      Bucket: 'ajcnewsapps.s3-website-us-east-1.amazonaws.com/2016/deadly-encounter-staging' ,
+      ACL: 'public-read'
+    },
+    credentials: new AWS.SharedIniFileCredentials({profile: 'default'})
+  });
+ 
+  // define custom headers 
+  const headers = {
+    'Cache-Control': 'max-age=2592000, no-transform, public'
+  };
+  const options = {
+    //force: true //bypass cache / skip if you need to for some reason
+  }
+
+  return gulp.src(PROD+'**/*')
+    // publisher will add Content-Length, Content-Type and headers specified above 
+    // If not specified it will set x-amz-acl to public-read by default 
+    .pipe(publisher.publish(headers, options)) //upload new/changed files
+    .pipe(publisher.sync()) //remove deleted files
+    // create a cache file to speed up consecutive uploads 
+    .pipe(publisher.cache())
+ 
+     // print upload updates to console 
+    .pipe(awspublish.reporter({
+      states: ['create', 'update', 'delete']
+    })); //if it appears to be hanging and you want to 'skip' states add that to the array
+});
