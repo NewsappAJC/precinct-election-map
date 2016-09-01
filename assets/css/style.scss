@@ -52,16 +52,27 @@ body {
   transform: translateX(-50%);
 }
 
-// Set fixed aspect ratio for canvas
 #wrapper {
   border: 1px solid white;
   position: relative;
   display: inline-block;
 }
 
+#cover {
+  background-color: white;
+  opacity: .5;
+  transition: opacity .25s;
+}
+
 #map {
   max-width: 100%;
   z-index: -1;
+}
+
+#wrapper {
+  border: 1px solid white;
+  position: relative;
+  display: inline-block;
 }
 
 .content {
@@ -97,6 +108,10 @@ body {
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
+  @media (max-width: 400px){
+    padding: 10px;
+    font-size: 1.5em;
+  }
 }
 
 .finished-link {
@@ -127,6 +142,9 @@ body {
   color: white;
   line-height: 1.4;
   padding: 0 10px;
+  @media (max-width: 400px){
+    font-size: .8em;
+  }
 }
 
 #buttons {
@@ -157,17 +175,7 @@ body {
   }
 }
 
-.axis path,
-.axis line {
-  shape-rendering: crispEdges;
-  fill: none;
-  width: 1px;
-}
-
-svg { 
-  position: absolute;
-}
-
+// Styles for pins
 .point {
   position: absolute;
   transition: all .3s ease;
@@ -176,15 +184,9 @@ svg {
   margin-top: -20px;
 }
 
-#loading {
-  position: fixed;
-  background-color: #fff;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 99999;
-}
-
+/***************************
+* Begin splash screen styles
+***************************/
 #splash {
   position: fixed;
   background-color: $bg-color;
@@ -209,12 +211,18 @@ svg {
   font-weight: 700;
   line-height: 1;
   font-size: 5em;
+  @media (max-width: 400px){
+    font-size: 3em;
+  }
 }
 
 #splash-text {
   margin-top: 20px;
   font-family: $large-text;
   font-size: 1.4em;
+  @media (max-width: 400px){
+    font-size: 1em;
+  }
 }
 
 #begin-button {
@@ -236,38 +244,12 @@ svg {
   color: $text-black;
   background-color:white;
 }
-
-.caret {
-  font-family: serif;
-  padding-right: 10px;
-  font-size: 1.7em;
-  line-height: 1em;
-}
-
-#high {
-  color: #49709F
-}
-
-
-#cover {
-  background-color: white;
-  opacity: .5;
-  transition: opacity .25s;
-}
-
-#outro {
-  font-family: $body-text;
-  width: 100%;
-  height: 400px;
-  line-height: 400px;
-  margin-top: -200px;
-  top: 50%;
-  position: absolute;
-  text-align: center;
-}
+/***************************
+* End splash screen styles
+***************************/
 
 /******************** 
-Begin Navbar style 
+Begin navbar
 ********************/
 #nav {
   position: relative;
@@ -276,10 +258,10 @@ Begin Navbar style
 
 #nav-logo {
   display: inline-block;
-}
-#nav-logo img {
-	padding: 3px;
-	height: 50px;
+  img {
+    padding: 3px;
+    height: 50px;
+  }
 }
 
 #nav-title {
@@ -293,42 +275,12 @@ Begin Navbar style
   text-transform: uppercase;
 }
 /******************** 
-End Navbar style 
+End navbar 
 ********************/
 
 /******************** 
-Titles
+Begin Related Stories
 ********************/
-
-
-#titles {
-  z-index: -1;
-  position: relative;
-  margin-left: 20px;
-  width: 300px;
-  font-size: 20px;
-  font-weight: 700;
-  vertical-align: middle;
-  font-family: 'Boomer';
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #fff;
-  top: 0;
-}
-
-
-.title {
-  transition: padding .25s;
-  cursor: pointer;
-}
-/******************** 
-End titles
-********************/
-
-/******************** 
-Related Stories
-********************/
-
 #related-content {
   margin-top: 100px;
   padding-top: 20px;
@@ -338,20 +290,19 @@ Related Stories
   background-color: #e7e7e7;
 }
 
-#stories-holder h2 {
-  text-align: center;
-  color: $text-black;
-  font-family: $body-text;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  font-size: 24px;
-}
-
 #stories-holder {
   background-color: $gray-bg;
   padding: 40px 20px;
+  h2 {
+    text-align: center;
+    color: $text-black;
+    font-family: $body-text;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-size: 24px;
+  }
 }
 
 .story-card {
@@ -405,9 +356,8 @@ Related Stories
 End related stories
 ********************/
 
-
 /******************** 
-Credits
+Begin credits
 ********************/
 #credits {
   padding: 20px;
@@ -436,38 +386,7 @@ Social sharing
 #fb-share-credits {
   margin-bottom: 10px;
 }
-
-
 /******************** 
-Mobile styles
+End social sharing
 ********************/
-@media (max-width: 400px) {
-  #message {
-    padding: 10px;
-    font-size: 1.5em;
-  }
-  #splash-title {
-    font-size: 3em;
-  }
-  #splash-text {
-    font-size: 1em;
-  }
-  #begin-button {
-    font-size: 1.5em;
-    line-height: 2em;
-  }
-  .desc {
-    font-size: .8em
-  }
-}
 
-@media (min-width: 510px) {
-  #jumbotron {
-    margin-left: 10px;
-  }
-}
-@media (max-width: 700px) {
-  .story-card {
-    height: 25em;
-  }
-}
