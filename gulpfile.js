@@ -29,14 +29,6 @@ var browserSync = {
   }
 }
 
-gulp.task('compile', ['bundle'], function() {
-  if (ENV === PROD) {
-    return gulp.src(ENV + 'main.js')
-      .pipe(uglify())
-      .pipe(gulp.dest(ENV))
-  }
-});
-
 gulp.task('bundle', function() {
   var b = browserify({
     entries: SRC + 'js/index.js',
@@ -54,6 +46,14 @@ gulp.task('bundle', function() {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(ENV));
 })
+
+gulp.task('compile', gulp.series('bundle', function() {
+  if (ENV === PROD) {
+    return gulp.src(ENV + 'main.js')
+      .pipe(uglify())
+      .pipe(gulp.dest(ENV))
+  }
+}));
 
 gulp.task('sass', function(){
   return gulp.src([SRC + 'css/*.scss', SRC + 'css/**/*.css'])
@@ -86,13 +86,14 @@ gulp.task('watch-assets', function() {
   return gulp.watch([SRC + 'index.html', SRC + 'img/*'], ['build-assets']);
 })
 
-gulp.task('serve', ['sass', 'compile', 'build-assets', 
-'watch-sass', 'watch-js', 'watch-assets'], function() {
+gulp.task('serve', gulp.series('sass', 'compile', 'build-assets', 
+'watch-sass', 'watch-js', 'watch-assets', function() {
   bsIns = bs.create();
   bsIns.init(browserSync);
   bsIns.reload();
   console.log('Serving from ' + ENV)
-});
+}));
 
-gulp.task('build', ['sass', 'compile', 'build-assets'], function() {
-})
+gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done) {
+  done();
+}));
