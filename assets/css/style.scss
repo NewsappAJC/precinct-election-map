@@ -28,6 +28,8 @@
 $large-text: 'Boomer-Light';
 $body-text: 'Boomer';
 $bg-color: #222;
+$text-black: #121212;
+$gray-bg: #e7e7e7;
 /******************** 
 Begin positioning
 ********************/
@@ -39,7 +41,7 @@ html, body {
 
 body {
   background-color: $bg-color;
-  color: $bg-color;
+  color: $text-black;
 }
 
 #main {
@@ -52,7 +54,7 @@ body {
 
 // Set fixed aspect ratio for canvas
 #wrapper {
-  border: 3px solid white;
+  border: 1px solid white;
   position: relative;
   display: inline-block;
 }
@@ -94,12 +96,12 @@ body {
   font-size: 2em;
   font-weight: 700;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .finished-link {
   text-decoration: underline;
-  text-transform: uppercase;
-  color: black;
+  color: $text-black;
 }
 
 #finished-link:hover {
@@ -112,16 +114,12 @@ body {
 
 .desc {
   display: none;
-  top: 100%;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .box { 
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0px 5px 10px 5px;
   font-family: $body-text;
   font-size: 1.13em;
   text-align: left;
@@ -189,7 +187,7 @@ svg {
 
 #splash {
   position: fixed;
-  background-color: black;
+  background-color: $bg-color;
   top: 0;
   width: 100%;
   height: 100%;
@@ -235,7 +233,7 @@ svg {
 }
 
 #begin-button:hover {
-  color:black;
+  color: $text-black;
   background-color:white;
 }
 
@@ -340,48 +338,61 @@ Related Stories
   background-color: #e7e7e7;
 }
 
-#stories-header {
+#stories-holder h2 {
   text-align: center;
+  color: $text-black;
   font-family: $body-text;
   font-weight: 700;
-  font-size: 2em;
   margin-bottom: 20px;
-}
-
-.all-stories {
-  padding: 0px 20px 0px 20px;
-  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-size: 24px;
 }
 
 #stories-holder {
-  background-color: #fff;
-  padding: 20px;
+  background-color: $gray-bg;
+  padding: 40px 20px;
 }
 
 .story-card {
   background-color: white;
-  border: 2px solid #e7e7e7;
   padding: 20px;
-  color: black;
-  transition: all .3s ease;
-  height: 15em;
+  color: $text-black;
+  height: 11em;
+  margin-bottom: 20px;
 }
 
-.story-card:hover {
-  border: 2px solid #5c7dbe;
-  background-color: #EFF8FB;
+.story-card:hover, .story-card:focus {
+  outline: 2px solid #b5cde3;
+  background-color: #f9f9f9;
 }
 
 .story-title {
+  color: $text-black;
   left: 10px;
   font-family: $body-text;
-  font-weight: 700;
-  font-size: 1.2em;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
 }
 
+.dateline {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2em;
+  font-family: Boomer-Light;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  color: $text-black;
+}
 .story-tease {
-  left: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
   font-family: $large-text;
+  font-size: 14px;
 }
 
 .text {
@@ -405,6 +416,9 @@ Credits
   font-size: 12px;
   text-transform: uppercase;
   border-top: 2px solid white;
+  div {
+    margin-left: 40px;
+  }
 }
 /******************** 
 End credits
