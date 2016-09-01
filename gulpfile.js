@@ -13,14 +13,14 @@ var gulp = require('gulp'),
   webserver = require('gulp-webserver'),
   merge = require('merge-stream'),
   uglify = require('gulp-uglify'),
-  runSequence = require('run-sequence');
+  cssnano = require('gulp-cssnano');
 
 var SRC = './assets/';
 var PROD = './dist/prod/';
 var DEV = './dist/dev/';
 
 var ENV = argv.production ? PROD : DEV;
-console.log(argv, argv.production)
+console.log(argv, argv.production);
 
 var browserSync = {
   port: 8080,
@@ -45,7 +45,7 @@ gulp.task('bundle', function() {
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(ENV));
-})
+});
 
 gulp.task('compile', gulp.series('bundle', function() {
   if (ENV === PROD) {
@@ -57,11 +57,13 @@ gulp.task('compile', gulp.series('bundle', function() {
 
 gulp.task('sass', function(){
   return gulp.src([SRC + 'css/*.scss', SRC + 'css/**/*.css'])
+    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.write())
     .pipe(sass()) // Using gulp-sass
     .pipe(gulp.dest(ENV + 'css/'));
 });
 
-gulp.task('build-assets', function(done) {
+gulp.task('build-assets', function() {
   var html = gulp.src(SRC + 'index.html')
   .pipe(gulp.dest(ENV));
 
@@ -71,7 +73,13 @@ gulp.task('build-assets', function(done) {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(ENV + 'img'));
 
-  return merge(html, fonts, images); // Merge emits events from multiple streams
+  var css = gulp.src(ENV + 'css/style.css')
+    .pipe(cssnano())
+    .pipe(gulp.dest(function(file){
+      return file.base; //replace current file
+    }));
+
+  return merge(html, fonts, images, css); // Merge emits events from multiple streams
 })
 
 gulp.task('watch-sass', function() {
