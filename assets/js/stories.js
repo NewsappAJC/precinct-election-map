@@ -1,23 +1,24 @@
 import * as d3 from 'd3';
 
 const STORIES = [
-  {hed: 'Atlanta officer fired', 
-    tease: 'Deravis Caine Rogers, suspected of breaking into cars, was shot by an officer...', 
+  {hed: 'Atlanta officer fired',
+    tease: 'Deravis Caine Rogers, suspected of breaking into cars, was shot by an officer...',
     thumb: 'apd_car_shooting.jpg',
     link: 'http://www.myajc.com/news/news/breaking-news/atlanta-officer-fired-as-shooting-at-cars-by-polic/nrtwD/'
   },
-  {hed: 'Murder charge against Atlanta cop', 
+  {hed: 'Murder charge against Atlanta cop',
     tease: 'Atlanta’s top law enforcement leaders this month quickly brought criminal charges...',
     thumb: 'JamesBurnscollage.jpg',
-    link: 'http://www.myajc.com/news/news/murder-charge-against-atlanta-cop-shifts-ground-in/nrzHy/', 
+    link: 'http://www.myajc.com/news/news/murder-charge-against-atlanta-cop-shifts-ground-in/nrzHy/'
   },
-  {hed: 'New details in deadly police shooting', 
-    tease: 'The Atlanta Police Department’s internal affairs investigation contains damning new information...', 
+  {hed: 'New details in deadly police shooting',
+    tease: 'The Atlanta Police Department’s internal affairs investigation contains damning new information...',
     thumb: 'Deravis-Caine-Rogers-photo.jpg',
     link: 'http://www.myajc.com/news/news/breaking-news/new-details-in-deadly-police-shooting-of-black-man/nrx6L/'
   },
   {hed: 'Arrest warrants issued', 
     tease: 'Fulton County District Attorney Paul Howard announced that arrest warrants were issued Friday...', 
+    dateline: 'July 15th, 2016',
     thumb: 'Officer-James-Burns.jpg',
     link: 'http://www.myajc.com/news/news/breaking-news/atlanta-cop-who-shot-unarmed-black-man-charged-wit/nry7G/'
   },
@@ -35,7 +36,7 @@ export default class {
       .data(this.data)
         .enter()
       .append('div')
-      .attr('class', 'small-12 medium-6 columns all-stories');
+      .attr('class', 'small-12 medium-6 columns');
 
     var cards = storyNodes.append('a')
       .attr('href', (d) => d.link)

@@ -53,7 +53,7 @@ body {
 
 // Set fixed aspect ratio for canvas
 #wrapper {
-  border: 3px solid white;
+  border: 1px solid white;
   position: relative;
   display: inline-block;
 }
@@ -95,6 +95,7 @@ body {
   font-size: 2em;
   font-weight: 700;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .finished-link {
@@ -113,16 +114,12 @@ body {
 
 .desc {
   display: none;
-  top: 100%;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .box { 
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0px 5px 10px 5px;
   font-family: $body-text;
   font-size: 1.13em;
   text-align: left;
