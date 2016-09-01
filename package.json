@@ -6,7 +6,7 @@
   "scripts": {
     "serve-dev": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
-    "build": "rimraf ./dist/prod && gulp build --production",
+    "build-prod": "rimraf ./dist/prod && gulp build --production",
     "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
     "deploy-production": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter"
   },

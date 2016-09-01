@@ -6,18 +6,24 @@ Installation
 ------------
 Install the app and all necessary dependencies.
 ```
-
-git clone git@bitbucket.org:ajcnewsapp/burns-june-police-shooting.git
-
 npm install
 ```
 
-Build, watch changes, and serve from the dev directory
+Build, watch for changes, and run server
 ```
 npm run serve-dev
+//OR
+npm run serve-prod
 ```
 
 Build for production
 ```
 npm run build-prod
+```
+
+Deploy
+```
+npm run deploy-staging
+//OR
+npm run deploy-production
 ```
