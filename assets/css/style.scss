@@ -254,11 +254,6 @@ body {
 /******************** 
 Begin navbar
 ********************/
-#nav {
-  position: relative;
-  padding-right: 20px;
-}
-
 #nav-logo {
   display: inline-block;
   img {
@@ -285,9 +280,8 @@ End navbar
 Begin Related Stories
 ********************/
 #related-content {
-  margin-top: 100px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   position: relative;
   width: 100%;
   background-color: #e7e7e7;
@@ -296,12 +290,14 @@ Begin Related Stories
 #stories-holder {
   background-color: $gray-bg;
   padding: 40px 20px;
+  @media (max-width: 40em){
+    padding: 40px 0;
+  }
   h2 {
     text-align: center;
     color: $text-black;
     font-family: $body-text;
     font-weight: 700;
-    margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: .5px;
     font-size: 24px;
@@ -312,8 +308,10 @@ Begin Related Stories
   background-color: white;
   padding: 20px;
   color: $text-black;
-  height: 11em;
   margin-bottom: 20px;
+  @media (min-width: 40em){
+    height: 176px; //to make them same height - could be done with equalizer for more flexibility but we're not using Foundation js so far
+  }
 }
 
 .story-card:hover, .story-card:focus {
@@ -330,6 +328,9 @@ Begin Related Stories
   letter-spacing: 1px;
   margin: 0;
   padding: 0;
+  @media (max-width: 40em){
+    margin-top: 10px;
+  }
 }
 
 .dateline {
@@ -369,8 +370,10 @@ Begin credits
   font-size: 12px;
   text-transform: uppercase;
   border-top: 2px solid white;
-  div {
-    margin-left: 40px;
+  @media (min-width: 80em){
+    div {
+      margin-left: 40px;
+    }
   }
 }
 /******************** 
