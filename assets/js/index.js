@@ -188,7 +188,7 @@ class App {
       var msg = `<div 
         id="finished">
           <a class="finished-link" 
-            href="http://www.ajc.com/news/news/crime-law/atlanta-police-shooting-goes-to-grand-jury-murder-/nsPgj/">
+            href="http://www.ajc.com/news/news/breaking-news/former-atlanta-cop-indicted-for-murder/nsPpj/">
             Read more
           </a>
         </div>`
