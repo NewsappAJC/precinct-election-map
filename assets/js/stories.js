@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import $ from 'jquery';
 
 const STORIES = [
   {hed: 'Atlanta officer fired',
@@ -33,42 +33,26 @@ export default class {
   };
 
   render() {
-    var stories = d3.select('#stories');
-
-    var storyNodes = stories.selectAll('div')
-      .data(this.data)
-        .enter()
-      .append('div')
-      .attr('class', 'small-12 medium-6 columns');
-
-    var cards = storyNodes.append('a')
-      .attr('href', (d) => d.link)
-      .attr('target', '_blank')
-      .attr('rel', 'noopener')
-        .append('div')
-      .attr('class', 'story-card')
-      .append('div').attr('class', 'row');
-
-    cards.append('div')
-      .attr('class', 'medium-4 columns')
-        .append('img')
-      .attr('class', 'thumbnail')
-      .attr('src', (d) => `img/${d.thumb}`);
-
-    var text = cards.append('div')
-      .attr('class', 'medium-8 columns');
-
-    text.append('h4')
-      .attr('class', 'story-title')
-      .text((d) => d.hed);
-
-    text.append('div')
-      .attr('class', 'dateline')
-      .text((d) => d.dateline);
-
-    text.append('div')
-      .attr('class', 'story-tease')
-      .text((d) => d.tease);
-
+    this.data.forEach((story) => {
+      $('#stories').append(`
+          <div className="small-12 medium-6 columns all-stories">
+            <a href=${story.link} target="_blank">
+              <div className="story-card row">
+                <div className="medium-4 columns">
+                  <img className="thumbnail"src={'./img/' + ${story.thumb}/>
+                </div>
+                <div className="medium-8 columns">
+                  <div className="story-title">
+                    ${story.hed}
+                  </div>
+                  <div className="story-tease">
+                    ${story.tease}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+      `)
+    })
   }
 }
