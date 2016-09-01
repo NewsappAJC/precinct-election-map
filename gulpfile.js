@@ -58,7 +58,7 @@ gulp.task('build-assets', function(done) {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(DEV + 'img'));
 
-  return merge(html, fonts, images); // Emits events from multiple streams
+  return merge(html, fonts, images); // Merge emits events from multiple streams
 })
 
 gulp.task('watch-sass', function() {
