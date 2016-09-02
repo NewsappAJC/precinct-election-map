@@ -257,6 +257,9 @@ body {
   bottom: 0px;
   padding-bottom: 10px;
   cursor: pointer;
+  @media (max-width: 400px) {
+    font-size: 3em;
+  }
 }
 
 #begin-button:hover {
@@ -417,15 +420,3 @@ Begin credits
 /******************** 
 End credits
 ********************/
-
-/******************** 
-Social sharing
-********************/
-
-#fb-share-credits {
-  margin-bottom: 10px;
-}
-/******************** 
-End social sharing
-********************/
-
