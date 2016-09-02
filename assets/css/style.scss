@@ -60,7 +60,7 @@ body {
 
 #map-link {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   padding: 5px;
   font-family: 'Boomer';
@@ -100,7 +100,7 @@ body {
 
 #progress-bar {
   position: absolute;
-  top: 0;
+  bottom: 0;
   width: 0;
   height: 4px;
   left: 0;
