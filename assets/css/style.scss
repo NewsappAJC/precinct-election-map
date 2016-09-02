@@ -210,10 +210,10 @@ body {
 #splash {
   position: fixed;
   background-color: $bg-color;
-  top: 0;
+  top: 50px;
   width: 100%;
   height: 100%;
-  z-index: 9999;
+  z-index: 999;
   color: #fff;
 }
 
@@ -246,7 +246,6 @@ body {
 }
 
 #begin-button {
-  position: absolute;
   font-family: $body-text;
   font-size: 5em;
   margin-top: 10px;
@@ -271,6 +270,11 @@ body {
 /******************** 
 Begin navbar
 ********************/
+#nav {
+  margin-bottom: 10px;
+  position: relative;
+  height: 50px;
+}
 #nav-logo {
   display: inline-block;
   img {
@@ -288,6 +292,20 @@ Begin navbar
   font-size: 20px;
   color: #fff;
   text-transform: uppercase;
+  @media (max-width: 540px) {
+    display: none;
+  }
+}
+
+.fb-share {
+  position: absolute;
+  vertical-align: center;
+  right: 0px;
+  margin: 10px;
+}
+
+#nav-left {
+  position: absolute;
 }
 /******************** 
 End navbar 
@@ -403,11 +421,6 @@ End credits
 /******************** 
 Social sharing
 ********************/
-.fb-share-button {
-  position: relative;
-  float: right;
-  top: 15px;
-}
 
 #fb-share-credits {
   margin-bottom: 10px;
