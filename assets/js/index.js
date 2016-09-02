@@ -68,7 +68,15 @@ class App {
    * correct descriptions and pins accordingly. 
   */
   handleClick(i) {
-    this.setStep(this.step + i)
+    var step;
+    if (this.step === this.data.length && i > 0) {
+      step = this.data.length;
+    }
+    else {
+      step = this.step + i
+    };
+
+    this.setStep(step);
   }
 
 
@@ -87,7 +95,7 @@ class App {
 
     // Check if the user has finished the last step in the visualization.
     // If so, display a finished message, and prevent the step from incrementing.
-    if (step >= this.data.length) {
+    if (step === this.data.length) {
       this.step = this.data.length;
       this.finished = true;
       $('#cover').css({'opacity': .7});
