@@ -25,6 +25,7 @@
   font-style: normal
 }
 
+$large-text-bold: 'Boomer';
 $large-text: 'Boomer-Light';
 $body-text: 'Boomer';
 $bg-color: #222;
@@ -112,14 +113,13 @@ body {
   opacity: .2;
 }
 
-#message {
+.message {
   position: absolute;
   width: 100%;
   padding: 40px;
   top: 50%;
-  font-family: $large-text;
-  transform: translateY('-50%');
-  margin-top: -8em;
+  font-family: $large-text-bold;
+  transform: translateY(-50%);
   font-size: 2em;
   font-weight: 700;
   text-align: center;

@@ -143,7 +143,7 @@ class App {
       `).html(pin);
 
       // Set colors of the pin based on the character it represents.
-      var colors = ['#F78181', '#F2E241', '#0C63A5'];
+      var colors = ['#F78181', '#F2E241', '#2ECCFA'];
       pinDiv.find('path')[0].setAttribute('fill', colors[entry.id]);
 
       $('#canvas').append(pinDiv);
@@ -195,25 +195,23 @@ class App {
   */
   getMessage() {
     // Remove the existing message by emptying the message div.
-    $('#message').empty();
+    $('#instructions').empty();
+    $('#finished').empty();
 
     // If the user hasn't started yet, show them instructions.
     if (!this.started) {
       var msg = `<div>
             Tap or click this photo to advance.
         </div>`
-      $('#message').append(msg);
+      $('#instructions').append(msg);
     }
     // If the user has finished, display the finished text.
     else if (this.finished) {
-      var msg = `<div 
-        id="finished">
-          <a class="finished-link" 
-            href="http://www.ajc.com/news/news/breaking-news/former-atlanta-cop-indicted-for-murder/nsPpj/">
-            Read more
-          </a>
-        </div>`
-      $('#message').append(msg);
+      var msg = `<a class="finished-link" 
+          href="http://www.ajc.com/news/news/breaking-news/former-atlanta-cop-indicted-for-murder/nsPpj/">
+          Read more
+        </a>`
+      $('#finished').append(msg);
     }
   }
 }
