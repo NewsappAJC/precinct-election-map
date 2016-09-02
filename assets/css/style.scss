@@ -272,6 +272,8 @@ Begin navbar
 ********************/
 #nav {
   margin-bottom: 10px;
+  position: relative;
+  height: 50px;
 }
 #nav-logo {
   display: inline-block;
@@ -290,6 +292,20 @@ Begin navbar
   font-size: 20px;
   color: #fff;
   text-transform: uppercase;
+  @media (max-width: 540px) {
+    display: none;
+  }
+}
+
+.fb-share {
+  position: absolute;
+  vertical-align: center;
+  right: 0px;
+  margin: 10px;
+}
+
+#nav-left {
+  position: absolute;
 }
 /******************** 
 End navbar 
@@ -405,11 +421,6 @@ End credits
 /******************** 
 Social sharing
 ********************/
-.fb-share-button {
-  position: relative;
-  float: right;
-  top: 15px;
-}
 
 #fb-share-credits {
   margin-bottom: 10px;
