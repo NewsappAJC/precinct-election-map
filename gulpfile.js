@@ -24,7 +24,6 @@ var PROD = './dist/prod/';
 var DEV = './dist/dev/';
 
 var ENV = argv.production ? PROD : DEV;
-console.log(argv, argv.production);
 
 var browserSync = {
   port: 8080,

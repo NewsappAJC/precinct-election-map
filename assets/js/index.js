@@ -34,13 +34,13 @@ class App {
     })
 
     // Add event handlers to the back and next buttons, and the photo
-    $('#back-button').click(() => {
+    $('#back-button').mouseup(() => {
       this.handleClick(-1);
     })
-    $('#next-button').click(() => {
+    $('#next-button').mouseup(() => {
       this.handleClick(1);
     })
-    $('#app').click(() => {
+    $('#app').mouseup(() => {
       this.handleClick(1)
     })
 
@@ -119,18 +119,39 @@ class App {
       // Unhide the relevant div
       this.descs[step].style.display = 'initial';
 
-      var colors = ['green', 'blue', 'orange']
+      $.get('./img/pin.svg', (el) => this.addPin(el));
+    };
 
+      // If necessary, display the finished message 
+      this.getMessage();
+
+      // Update the progress bar to show how much the user has progressed.
+      // Add 1 so that the bar advances at step 0.
+      this.progressBar.css({
+        'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
+      });
+  };
+
+  addPin(file) {
       // Append a pin for this step.
-      $('#canvas').append(`
-        <img src="./img/${ colors[entry.id] }-pin.svg"
-          class="point character${ entry.id }"
-          style="left:${ entry.x }%; top:${ entry.y }%"/>
-      `)
+      var pin = file.firstChild;
+      var entry = this.data[this.step]
 
+      var pinDiv = $(`
+          <div class="point character${entry.id}" 
+            style="left:${entry.x}%; top:${entry.y}%"/>
+      `).html(pin);
+
+      // Set colors of the pin based on the character it represents.
+      var colors = ['#F78181', '#F2E241', '#0C63A5'];
+      pinDiv.find('path')[0].setAttribute('fill', colors[entry.id]);
+
+      $('#canvas').append(pinDiv);
+
+      // Select all pins on the page
       var points = $('.point');
 
-      // thisId will hold a list of all the pointer elements that match 
+      // thisId will hold a list of all pins that match 
       // the id of the current entry, which is linked to a given character.
       var thisId = [];
 
@@ -166,16 +187,6 @@ class App {
 
       thisId[thisId.length-1].style.opacity = 1;
     };
-
-    // If necessary, display the finished message 
-    this.getMessage();
-
-    // Update the progress bar to show how much the user has progressed.
-    // Add 1 so that the bar advances at step 0.
-    this.progressBar.css({
-      'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
-    });
-  };
 
 
   /* 
