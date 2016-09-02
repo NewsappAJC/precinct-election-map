@@ -51,12 +51,13 @@ gulp.task('bundle', function() {
     .pipe(gulp.dest(ENV));
 });
 
-gulp.task('compile', gulp.series('bundle', function() {
+gulp.task('compile', gulp.series('bundle', function(done) {
   if (ENV === PROD) {
     return gulp.src(ENV + 'main.js')
       .pipe(uglify())
       .pipe(gulp.dest(ENV))
   }
+  done();
 }));
 
 gulp.task('sass', function(){
@@ -86,20 +87,17 @@ gulp.task('build-assets', function() {
   return merge(html, fonts, images, css); // Merge emits events from multiple streams
 })
 
-gulp.task('watch-sass', function() {
-  return gulp.watch(SRC + 'css/*.scss', ['sass']);
-});
+gulp.task('watch', function(done) {
+  gulp.watch(SRC + 'css/*.scss', gulp.series('sass'));
 
-gulp.task('watch-js', function() {
-  return gulp.watch(SRC + 'js/*.js', ['compile']);
-});
+  gulp.watch(SRC + 'js/*.js', gulp.series('compile'));
 
-gulp.task('watch-assets', function() {
-  return gulp.watch([SRC + 'index.html', SRC + 'img/*'], ['build-assets']);
-})
+  gulp.watch([SRC + 'img/*', SRC + 'index.html'], gulp.series('build-assets'));
+  done();
+});
 
 gulp.task('serve', gulp.series('sass', 'compile', 'build-assets', 
-'watch-sass', 'watch-js', 'watch-assets', function() {
+'watch', function() {
   bsIns = bs.create();
   bsIns.init(browserSync);
   bsIns.reload();
