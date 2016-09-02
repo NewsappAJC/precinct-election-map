@@ -52,6 +52,10 @@ body {
   transform: translateX(-50%);
 }
 
+#app {
+  cursor: default;
+}
+
 #wrapper {
   border: 1px solid white;
   position: relative;

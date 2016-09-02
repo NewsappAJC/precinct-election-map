@@ -40,7 +40,7 @@ class App {
     $('#next-button').click(() => {
       this.handleClick(1);
     })
-    $('#wrapper').click(() => {
+    $('#app').click(() => {
       this.handleClick(1)
     })
 
