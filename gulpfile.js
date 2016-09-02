@@ -3,6 +3,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   buffer = require('vinyl-buffer'), // Vinyl is an interface between browserify and gulp
   livereload = require('gulp-livereload'),
+  awspublish = require('gulp-awspublish');
   source = require('vinyl-source-stream'),
   sourcemaps = require('gulp-sourcemaps'),
   rimraf = require('rimraf');

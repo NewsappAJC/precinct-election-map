@@ -7,8 +7,8 @@
     "serve-dev": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
-    "deploy-staging": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket ajc-steps-visualizer",
-    "deploy-production": "cd ./dist/prod && s3-deploy '**' --region us-east-1 --bucket investigations.myajc.com/deadly-encounter",
+    "deploy-staging": "gulp publish --staging",
+    "deploy-production": "gulp publish",
     "deploy": "gulp deploy --production"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/_jonathancox/stepr#readme",
   "devDependencies": {
+    "aws-sdk": "^2.5.4",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
@@ -60,6 +61,7 @@
     "template-style": "git://github.com/NewsappAJC/digital-design-guide.git#master",
     "uglify-js": "^2.7.3",
     "uglifyjs": "^2.4.10",
+    "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.13.1",

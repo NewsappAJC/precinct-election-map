@@ -1,6 +1,4 @@
 import Data from './data';
-import ProgressBar from './progress-bar';
-import Canvas from './canvas';
 import Stories from './stories';
 import $ from 'jquery';
 
@@ -23,9 +21,7 @@ class App {
 
     // Display a bar across the top of the screen that gradually
     // fills in as the user navigates through the app.
-    this.progressBar = new ProgressBar();
-    this.progressBar.build(this.data.length + 1)
-    this.progressBar.fill(this.step)
+    this.progressBar = $('#progress-bar');
 
     // Render a list of related stories.
     var stories = new Stories();
@@ -95,6 +91,7 @@ class App {
       this.step = this.data.length;
       this.finished = true;
       $('#cover').css({'opacity': .7});
+      $('#next-button').hide();
     }
 
     else if (step < this.data.length){
@@ -103,6 +100,7 @@ class App {
       // Only display back button if the user is past the first step.
       var backDisplay = step <= 0 ? 'none' : 'initial';
       $('#back-button').css({'display': backDisplay});
+      $('#next-button').show();
 
       // Assign the correct item in the data object to the entry variable.
       var entry = this.data[step];
@@ -161,10 +159,14 @@ class App {
       thisId[thisId.length-1].style.opacity = 1;
     };
 
-    // Display the finished message, or update the progress bar 
-    // to show how much the user has progressed.
+    // If necessary, display the finished message 
     this.getMessage();
-    this.progressBar.fill(step);
+
+    // Update the progress bar to show how much the user has progressed.
+    // Add 1 so that the bar advances at step 0.
+    this.progressBar.css({
+      'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
+    });
   };
 
 
