@@ -108,15 +108,26 @@ gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done)
 }));
 
 gulp.task('publish', function(){
-  var s3_dir = 'testing-directory/sub-dir'; //s3 bucket subdirectory 
   var AWS = require('aws-sdk');
-  
+
+  var staging_bucket = "ajc-staging-sites",
+  prod_bucket = "investigations.myajc.com",
+  staging_subdir = 'deadly-encounter-staging', //s3 bucket subdirectory DO NOT RUN SYNC WITH SUBDIRECTORIES,
+  prod_subdir = 'deadly-encounter';
+
+  if(ENV === PROD){
+    var s3_bucket = prod_bucket,
+    s3_subdir = prod_subdir;
+  } else {
+    var s3_bucket = staging_bucket,
+    s3_subdir = staging_subdir;
+  }
   // create a new publisher using S3 options 
   // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property 
   var publisher = awspublish.create({
     region: 'us-east-1',
     params: {
-      Bucket: 'publish-testing-bucket',
+      Bucket: s3_bucket,
       //Key: 'testing-directory',
       ACL: 'public-read'
     },
@@ -139,7 +150,7 @@ gulp.task('publish', function(){
   return gulp.src(PROD + '**/*')
     //because we are targeting a child path of a bucket we need to modify the path the reflect that
     .pipe(rename(function(filePath) {
-      filePath.dirname = path.join(s3_dir, filePath.dirname);
+      filePath.dirname = path.join(s3_subdir, filePath.dirname);
     }))
     // publisher will add Content-Length, Content-Type and headers specified above 
     // If not specified it will set x-amz-acl to public-read by default 

@@ -7,22 +7,18 @@
     "serve-dev": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
-    "deploy-staging": "gulp publish --staging",
-    "deploy-production": "gulp publish",
-    "deploy": "gulp deploy --production"
+    "deploy-staging": "gulp deploy --staging",
+    "deploy-production": "gulp deploy --production"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://_jonathancox@bitbucket.org/_jonathancox/stepr.git"
+    "url": "git@bitbucket.org:ajcnewsapp/burns-june-police-shooting.git"
   },
   "keywords": [
-    "React",
-    "webpack",
-    "d3"
   ],
   "author": "Jonathan Cox",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/_jonathancox/stepr#readme",
+  "homepage": "https://bitbucket.org/ajcnewsapp/burns-june-police-shooting#readme",
   "devDependencies": {
     "aws-sdk": "^2.5.4",
     "babel-cli": "^6.11.4",
