@@ -53,13 +53,26 @@ body {
 }
 
 #app {
+  border: 1px solid white;
+  position: relative;
   cursor: default;
 }
 
+#map-link {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+  font-family: 'Boomer';
+  font-weight: 700;
+  font-size: .6em;
+  color: $text-black;
+  text-decoration: underline;
+  background: white;
+}
+
 #wrapper {
-  border: 1px solid white;
   position: relative;
-  display: inline-block;
 }
 
 #cover {
@@ -74,9 +87,7 @@ body {
 }
 
 #wrapper {
-  border: 1px solid white;
   position: relative;
-  display: inline-block;
 }
 
 .content {
@@ -159,12 +170,11 @@ body {
   font-family: $body-text;
   font-weight: 700;
   font-size: .8em;
-  // Prevent double-click on back or next button from selecting the text.
+  /* Prevent double-click on back or next button from selecting the text. */
   -webkit-user-select: none; /* webkit (safari, chrome) browsers */
   -moz-user-select: none; /* mozilla browsers */
   -khtml-user-select: none; /* webkit (konqueror) browsers */
   -ms-user-select: none; /* IE10+ */
-
   div {
     cursor: pointer;
     text-decoration: underline;
