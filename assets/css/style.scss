@@ -159,6 +159,11 @@ body {
   font-family: $body-text;
   font-weight: 700;
   font-size: .8em;
+  // Prevent double-click on back or next button from selecting the text.
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
 
   div {
     cursor: pointer;
