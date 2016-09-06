@@ -53,6 +53,8 @@ class App {
           </div>
         </div>
       `);
+
+    $.get('./img/pin.svg', (el) => this.pin = el);
     }
 
     // Create an instance variable referring to these descriptions.
@@ -119,7 +121,6 @@ class App {
       // Unhide the relevant div
       this.descs[step].style.display = 'initial';
 
-      $.get('./img/pin.svg', (el) => this.addPin(el));
     };
 
       // If necessary, display the finished message 
@@ -130,6 +131,21 @@ class App {
       this.progressBar.css({
         'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
       });
+
+      function pinCheck(i) {
+        if (i === 0) {
+          alert('An error occurred. Try reloading the page.');
+        }
+        try {
+          this.addPin(this.pin);
+        }
+        catch (TypeError) {
+          console.log('pin undefined');
+          setTimeout(pinCheck(i-1), 100);
+      }
+
+      pinCheck(50); //Try to get the pin object for five seconds. If it fails, show error message.
+      }
   };
 
   addPin(file) {
