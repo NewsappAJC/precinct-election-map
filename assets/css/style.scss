@@ -45,20 +45,6 @@ body {
   color: $text-black;
 }
 
-#main {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-#app {
-  border: 1px solid white;
-  position: relative;
-  cursor: default;
-}
-
 #map-link {
   position: absolute;
   top: 0;
@@ -72,10 +58,6 @@ body {
   background: white;
 }
 
-#wrapper {
-  position: relative;
-}
-
 #cover {
   background-color: white;
   opacity: .5;
@@ -85,17 +67,19 @@ body {
 #map {
   max-width: 100%;
   z-index: -1;
+  border: 1px solid white;
 }
 
 #wrapper {
   position: relative;
+  cursor: default;
 }
 
 .content {
   position: absolute;
   width: 100%;
   height: 100%;
-  left: 0;
+  //left: 0;
   top: 0;
 }
 
@@ -118,8 +102,9 @@ body {
   width: 100%;
   padding: 40px;
   top: 50%;
+  left: 50%;
   font-family: $large-text-bold;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   font-size: 2em;
   font-weight: 700;
   text-align: center;
@@ -387,7 +372,7 @@ Begin Related Stories
   margin: 0;
   padding: 0;
   line-height: 1.2em;
-  font-family: Boomer-Light;
+  font-family: $large-text;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;

@@ -36,7 +36,7 @@ export default class {
     this.data.forEach((story) => {
       $('#stories').append(`
           <div class="small-12 medium-6 columns all-stories">
-            <a href=${story.link} target="_blank", rel="noopener">
+            <a href=${story.link} target="_blank" rel="noopener">
               <div class="story-card">
                 <div class="row">
                   <div class="medium-4 columns">

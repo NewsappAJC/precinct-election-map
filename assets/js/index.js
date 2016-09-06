@@ -7,6 +7,14 @@ class App {
     this.started = false;
     this.finished = false;
     this.step = -1; // Needs to start at -1 because it is used as an index after being incremented by one.
+    var $map = $("#map");
+    this.mapDems = {width: $map.outerWidth(), height: $map.outerHeight()};
+
+    // Set the image cover to the size of the map image
+    $("#wrapper").css("max-width", this.mapDems.width);
+    $("#cover").css("width", this.mapDems.width);
+    $("#cover").css("height", this.mapDems.height);
+    
 
     // Get the data containing a list of steps.
     var Input = new Data;
