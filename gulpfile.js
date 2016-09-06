@@ -28,7 +28,7 @@ var ENV = argv.production ? PROD : DEV;
 var browserSync = {
   port: 8080,
   server: {
-    baseDir: './dist/dev/',
+    baseDir: ENV,
   }
 }
 
