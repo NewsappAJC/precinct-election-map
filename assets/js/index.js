@@ -53,9 +53,15 @@ class App {
           </div>
         </div>
       `);
-
-    $.get('./img/pin.svg', (el) => this.pin = el);
     }
+
+    // Get the pin SVG and add it (while hidden) to the canvas.
+    // We'll make copies of it later to render the other pins.
+    $.get('./img/pin.svg', (el) => {
+      var pin = el.firstChild;
+      pin.setAttribute('id', 'firstPin');
+      document.body.appendChild(pin);
+    })
 
     // Create an instance variable referring to these descriptions.
     this.descs = $('.desc');
@@ -132,32 +138,23 @@ class App {
         'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
       });
 
-      function pinCheck(i) {
-        if (i === 0) {
-          alert('An error occurred. Try reloading the page.');
-        }
-        try {
-          this.addPin(this.pin);
-        }
-        catch (TypeError) {
-          console.log('pin undefined');
-          setTimeout(pinCheck(i-1), 100);
-      }
-
-      pinCheck(50); //Try to get the pin object for five seconds. If it fails, show error message.
-      }
+      this.addPin();
   };
 
   addPin(file) {
       // Append a pin for this step.
-      var pin = file.firstChild;
-      var entry = this.data[this.step]
+      var pin = $('#firstPin').clone();
+      pin.removeAttr('id');
+      if (!this.data[this.step]) {
+        return;
+      }
+      var entry = this.data[this.step];
 
       var pinDiv = $(`
           <div class="point character${entry.id}" 
             style="left:${entry.x}%; top:${entry.y}%"/>
       `).html(pin);
-
+      
       // Set colors of the pin based on the character it represents.
       var colors = ['#F78181', '#F2E241', '#2ECCFA'];
       pinDiv.find('path')[0].setAttribute('fill', colors[entry.id]);

@@ -204,6 +204,10 @@ body {
   margin-top: -20px;
 }
 
+#firstPin {
+  display: none;
+}
+
 /***************************
 * Begin splash screen styles
 ***************************/
@@ -397,6 +401,7 @@ Begin Related Stories
   float: left;
   margin-left: 10px;
 }
+
 /******************** 
 End related stories
 ********************/
