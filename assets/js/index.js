@@ -138,7 +138,17 @@ class App {
         'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
       });
 
-      this.addPin();
+      // Check if the pin SVG is loaded. If not, wait .1 second and try again.
+      var checkPin = (i) => {
+        if ($('#firstPin') != undefined) {
+          this.addPin();
+        }
+        else {
+          setTimeout(checkPin.bind(i-1), 100)
+        }
+      }
+
+      checkPin(30);
   };
 
   addPin(file) {
