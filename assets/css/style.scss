@@ -227,6 +227,18 @@ body {
   width: 50px;
   margin-left: -15px;
   margin-top: -20px;
+  @media (max-width: 540px){
+    width: 40px;
+  }
+}
+
+#descPin {
+  float: left;
+  position: relative;
+  width: 50px;
+  @media (max-width: 540px){
+    width: 40px;
+  }
 }
 
 #firstPin {
@@ -362,9 +374,6 @@ Begin Related Stories
   padding: 20px;
   background-color: #424242;
   color: #F2F2F2;
-  @media (max-width: 40em){
-    padding: 40px 0;
-  }
   h2 {
     font-family: $body-text;
     font-weight: 700;
@@ -376,7 +385,7 @@ Begin Related Stories
 }
 
 .story-card {
-  padding: 10px;
+  padding: 15px 5px;
   color: white;
 }
 

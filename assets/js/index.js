@@ -43,7 +43,7 @@ class App {
     $('#next-button').mouseup(() => {
       this.handleClick(1);
     })
-    $('#wrapper').mouseup(() => {
+    $('#app').mouseup(() => {
       this.handleClick(1)
     })
 
@@ -103,6 +103,7 @@ class App {
     // Hide all the descriptions. The description that corresponds to this
     // step will be displayed later.
     this.descs.hide();
+    $('#descPin').remove();
 
     // Check if the user has finished the last step in the visualization.
     // If so, display a finished message, and prevent the step from incrementing.
@@ -129,6 +130,16 @@ class App {
 
       // Unhide the relevant div
       this.descs[step].style.display = 'initial';
+
+      // Append a pin to the desc so the user knows which pin is being described.
+      var pin = $('#firstPin').clone();
+      pin.removeAttr('id')
+
+      var pinDiv = $('<div id="descPin"/>').html(pin);
+
+      pinDiv.find('path')[0].setAttribute('fill', this.colors[entry.id]);
+      var desc = $('.desc')[this.step]
+      $(desc).prepend(pinDiv[0]);
     };
 
       // If necessary, display the finished message 
