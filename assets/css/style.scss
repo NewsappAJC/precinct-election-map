@@ -57,6 +57,28 @@ body {
   color: $text-black;
 }
 
+#jumbotron {
+  position: relative;
+  max-width: 1000px;
+  left: 50%;
+  transform: translate(-50%);
+  @media (max-width: 1000px) {
+    max-width: 500px;
+    padding: 10px;
+  }
+}
+
+#main {
+  position: relative;
+  max-width: 500px;
+}
+
+#app {
+  border: 1px solid white;
+  position: relative;
+  cursor: default;
+}
+
 #map-link {
   position: absolute;
   top: 0;
@@ -74,6 +96,7 @@ body {
   top: 0;
   left: 0;
 }
+
 #cover {
   background-color: white;
   opacity: .5;
@@ -81,7 +104,6 @@ body {
 }
 
 #map {
-  max-width: 100%;
   z-index: -1;
   border: 1px solid white;
 }
@@ -92,7 +114,10 @@ body {
 }
 
 .content {
+  position: absolute;
+  top: 0;
   width: 100%;
+  height: 100%;
 }
 
 #progress-bar {
@@ -138,7 +163,23 @@ body {
 }
 
 #descs {
-  height: 9em;
+  margin-bottom: 20px;
+  color: white;
+  max-width: 500px;
+  padding: 0px 20px;
+  @media (min-width: 1000px) {
+    height: 200px;
+  }
+}
+
+.right {
+  @media (min-width: 1000px){ 
+    margin-left: 100px;
+    top: 0;
+    position: absolute;
+    left: 500px;
+    padding-left: 20px;
+  }
 }
 
 .desc {
@@ -153,9 +194,7 @@ body {
   font-size: 1.13em;
   text-align: left;
   box-sizing: border-box;
-  color: white;
   line-height: 1.4;
-  padding: 0 10px;
   @media (max-width: 400px){
     font-size: .8em;
   }
@@ -196,6 +235,18 @@ body {
   width: 50px;
   margin-left: -15px;
   margin-top: -20px;
+  @media (max-width: 540px){
+    width: 40px;
+  }
+}
+
+#descPin {
+  float: left;
+  position: relative;
+  width: 50px;
+  @media (max-width: 540px){
+    width: 40px;
+  }
 }
 
 #firstPin {
@@ -298,9 +349,6 @@ Begin navbar
   font-size: 20px;
   color: #fff;
   text-transform: uppercase;
-  @media (max-width: 540px) {
-    display: none;
-  }
 }
 
 .fb-share {
@@ -321,7 +369,6 @@ End navbar
 Begin Related Stories
 ********************/
 #related-content {
-  padding-top: 40px;
   padding-bottom: 40px;
   position: relative;
   width: 100%;
@@ -329,43 +376,32 @@ Begin Related Stories
 }
 
 #stories-holder {
-  background-color: $gray-bg;
-  padding: 40px 20px;
-  @media (max-width: 40em){
-    padding: 40px 0;
-  }
+  padding: 20px;
+  background-color: #424242;
+  color: #F2F2F2;
   h2 {
-    text-align: center;
-    color: $text-black;
     font-family: $body-text;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .5px;
     font-size: 24px;
+    color: white;
+  }
+  @media (max-width: 1000px) {
+    position: relative;
   }
 }
 
 .story-card {
-  background-color: white;
-  padding: 20px;
-  color: $text-black;
-  margin-bottom: 20px;
-  @media (min-width: 640px) {
-    height: 275px;
-  }
-  @media (min-width: 940px) {
-    height: 175px;
-  }
+  padding: 15px 5px;
+  color: white;
 }
 
 .story-card:hover, .story-card:focus {
-  outline: 2px solid #b5cde3;
-  background-color: #f9f9f9;
+  background-color: #585858;
 }
 
 .story-title {
-  color: $text-black;
-  left: 10px;
   font-family: $body-text;
   font-size: 18px;
   text-transform: uppercase;
@@ -375,23 +411,24 @@ Begin Related Stories
   @media (max-width: 40em){
     margin-top: 10px;
   }
+  color: white;
 }
 
 .dateline {
   margin: 0;
-  padding: 0;
   line-height: 1.2em;
   font-family: $large-text;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;
-  color: $text-black;
+  color: white;
 }
 .story-tease {
   margin-top: 10px;
   margin-bottom: 0;
   font-family: $large-text;
   font-size: 14px;
+  color: white;
 }
 
 .text {
@@ -419,6 +456,9 @@ Begin credits
     div {
       margin-left: 40px;
     }
+  }
+  @media (min-width: 1000px){
+    margin-top: 100px;
   }
 }
 /******************** 

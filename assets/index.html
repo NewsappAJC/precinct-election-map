@@ -40,83 +40,54 @@
 }(document, 'script', 'facebook-jssdk'));</script> <div id="fb-root"></div>
 -->
 
-<!-- Nav -->
-<div id="nav">
-  <div id="nav-left">
-    <div id="nav-logo">
-      <a href="http://myajc.com" target="_blank">
-        <img src="./img/ajc-logo.png" >
-      </a> 
+  <!-- Nav -->
+  <div id="nav">
+    <div id="nav-left">
+      <div id="nav-logo">
+        <a href="http://myajc.com" target="_blank">
+          <img src="./img/ajc-logo.png" >
+        </a> 
+      </div>
+      <div id="nav-title">A Deadly Encounter</div>
     </div>
-    <div id="nav-title">A Deadly Encounter</div>
   </div>
-  <!--Facebook share button-->
-  <!--
-  <div class="fb-share">
-   <div class="fb-share-button" 
-     data-href="http://investigations.myajc.com/deadly-encounter" 
-     data-layout="button_count" 
-     data-size="large" 
-     data-mobile-iframe="true">
-     <a class="fb-xfbml-parse-ignore" 
-       target="_blank" 
-       href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Finvestigations.myajc.com%2Fdeadly-encounter&amp;src=sdkpreparse">Share
-     </a>
-   </div>
- </div>
-  -->
-</div>
 
   <!-- Main app -->
-  <div class="row">
+  <div id="jumbotron">
     <div id="main">
-      <div class="small-12 medium-12 columns small-centered">
-        <div >
-          <div id="app">
-            <div class="row">
-              <div class="medium-6 columns">
-                <div id="wrapper">
-                  <img id="map" src="./img/bak.jpg"/>
-                  <div id="map-link">
-                      <a target="_blank" rel="noopener" href="https://www.google.com/maps/place/33%C2%B048'36.2%22N+84%C2%B022'13.3%22W/@33.8101522,-84.3723884,16.82z/data=!4m5!3m4!1s0x0:0x0!8m2!3d33.810044!4d-84.370354">View in Google Maps</a>
-                  </div>
-                  <div id="canvas" class="content"></div>
-                  <div id="overlay">
-                    <div id="progress-bar"></div>
-                    <div id="cover" class="content">
-                      <div id="instructions" class="helper"></div>
-                    </div>
-                  </div>
-                  <div id="finished" class="helper"></div>
-                </div>
-              <div id="buttons">
-                <div id="back-button">BACK</div>
-                <div id="next-button">NEXT</div>
-              </div>
-              </div>
-              <div class="medium-6 columns">
-                <div id="descs"></div>
-              </div>
-            </div>
-          </div>
+      <div id="wrapper">
+        <div id="app">
+          <div id="progress-bar"></div>
+          <img id="map" src="./img/bak2.jpg"/>
+          <div id="canvas" class="content"></div>
+          <div id="cover" class="content"></div>
+          <div id="instructions" class="helper"></div>
         </div>
+        <div id="finished" class="helper"></div>
+        <div id="map-link">
+          <a target="_blank" href="https://www.google.com/maps/place/33%C2%B048'36.2%22N+84%C2%B022'13.3%22W/@33.8101522,-84.3723884,16.82z/data=!4m5!3m4!1s0x0:0x0!8m2!3d33.810044!4d-84.370354">View in Google Maps</a>
+        </div>
+      </div>
+      <div id="buttons">
+        <div id="back-button">BACK</div>
+        <div id="next-button">NEXT</div>
+      </div>
+      <div id="descs"></div>
+    </div>
+    <div class="right">
+      <div id="stories-holder">
+        <h2>Related Features</h2>
+        <div id="stories" class="row"></div>
       </div>
     </div>
   </div>
-
-  <!-- Stories -->
-  <div id="stories-holder">
-    <h2>Related Features</h2>
-    <div id="stories" class="row"></div>
-  </div>
-
-  <!-- Load script -->
-  <script type="text/javascript" src="./main.js"></script>
-
   <!-- Credits -->
   <div id="credits">
     <div id="editorial-credit">Reporting by Brad Schrade and Ken Foskett</div>
     <div id="design-credit">Design and development by Jonathan Cox</div>
   </div>
+
+  <!-- Load script -->
+  <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
