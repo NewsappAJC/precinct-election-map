@@ -49,7 +49,7 @@ class App {
     $('#next-button').mouseup(() => {
       this.handleClick(1);
     })
-    $('#app').mouseup(() => {
+    $('#wrapper').mouseup(() => {
       this.handleClick(1)
     })
 
