@@ -129,8 +129,6 @@ class App {
 
       // Unhide the relevant div
       this.descs[step].style.display = 'initial';
-      this.descs[step].style.color = this.colors[parseInt(entry.id)];
-
     };
 
       // If necessary, display the finished message 

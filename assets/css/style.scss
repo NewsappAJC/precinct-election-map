@@ -151,14 +151,18 @@ body {
 }
 
 #descs {
+  color: white;
   height: 9em;
   max-width: 500px;
+}
+
+.right {
   @media (min-width: 1000px){ 
+    top: 0;
+    padding-top: 20px;
     position: absolute;
     left: 500px;
     padding-left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
   }
 }
 
@@ -353,42 +357,33 @@ Begin Related Stories
 }
 
 #stories-holder {
-  background-color: $gray-bg;
-  padding: 40px 20px;
+  color: white;
+  padding: 0px 20px;
   @media (max-width: 40em){
     padding: 40px 0;
   }
   h2 {
-    text-align: center;
-    color: $text-black;
+    padding-left: 10px;
     font-family: $body-text;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .5px;
     font-size: 24px;
+    color: white;
   }
 }
 
 .story-card {
-  background-color: white;
-  padding: 20px;
-  color: $text-black;
+  padding: 10px;
   margin-bottom: 20px;
-  @media (min-width: 640px) {
-    height: 275px;
-  }
-  @media (min-width: 940px) {
-    height: 175px;
-  }
+  color: white;
 }
 
 .story-card:hover, .story-card:focus {
   outline: 2px solid #b5cde3;
-  background-color: #f9f9f9;
 }
 
 .story-title {
-  color: $text-black;
   left: 10px;
   font-family: $body-text;
   font-size: 18px;
@@ -399,6 +394,7 @@ Begin Related Stories
   @media (max-width: 40em){
     margin-top: 10px;
   }
+  color: white;
 }
 
 .dateline {
@@ -409,13 +405,14 @@ Begin Related Stories
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;
-  color: $text-black;
+  color: white;
 }
 .story-tease {
   margin-top: 10px;
   margin-bottom: 0;
   font-family: $large-text;
   font-size: 14px;
+  color: white;
 }
 
 .text {
