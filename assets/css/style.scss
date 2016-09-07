@@ -31,6 +31,18 @@ $body-text: 'Boomer';
 $bg-color: #222;
 $text-black: #121212;
 $gray-bg: #e7e7e7;
+
+/******************** 
+Begin mixins
+********************/
+.no-double-click {
+  /* Prevent double-click from selecting text
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
+}
+
 /******************** 
 Begin positioning
 ********************/
@@ -116,6 +128,7 @@ body {
 }
 
 .finished-link {
+  @extend .no-double-click;
   text-decoration: underline;
   color: $text-black;
 }
@@ -149,17 +162,13 @@ body {
 }
 
 #buttons {
+  @extend .no-double-click;
   height: 2.5em;
   padding: .3em 0;
   color: #A4A4A4;
   font-family: $body-text;
   font-weight: 700;
   font-size: .8em;
-  /* Prevent double-click on back or next button from selecting the text. */
-  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-  -moz-user-select: none; /* mozilla browsers */
-  -khtml-user-select: none; /* webkit (konqueror) browsers */
-  -ms-user-select: none; /* IE10+ */
   div {
     cursor: pointer;
     text-decoration: underline;
