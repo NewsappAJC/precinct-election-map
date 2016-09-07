@@ -47,7 +47,6 @@ body {
 
 #jumbotron {
   position: relative;
-  height: 800px;
   max-width: 1000px;
   left: 50%;
   transform: translate(-50%);
@@ -163,7 +162,7 @@ body {
 .right {
   @media (min-width: 1000px){ 
     margin-left: 100px;
-    top: 0;
+    top: 60px;
     position: absolute;
     left: 500px;
     padding-left: 20px;
@@ -341,9 +340,6 @@ Begin navbar
   font-size: 20px;
   color: #fff;
   text-transform: uppercase;
-  @media (max-width: 540px) {
-    display: none;
-  }
 }
 
 .fb-share {
@@ -381,6 +377,9 @@ Begin Related Stories
     letter-spacing: .5px;
     font-size: 24px;
     color: white;
+  }
+  @media (max-width: 1000px) {
+    position: relative;
   }
 }
 
@@ -448,6 +447,9 @@ Begin credits
     div {
       margin-left: 40px;
     }
+  }
+  @media (min-width: 1000px){
+    margin-top: 100px;
   }
 }
 /******************** 
