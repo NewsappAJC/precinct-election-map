@@ -57,7 +57,11 @@ body {
   text-decoration: underline;
   background: white;
 }
-
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 #cover {
   background-color: white;
   opacity: .5;
@@ -76,11 +80,7 @@ body {
 }
 
 .content {
-  position: absolute;
   width: 100%;
-  height: 100%;
-  //left: 0;
-  top: 0;
 }
 
 #progress-bar {
