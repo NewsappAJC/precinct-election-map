@@ -152,14 +152,16 @@ body {
 
 #descs {
   color: white;
-  height: 9em;
   max-width: 500px;
+  @media (min-width: 1000px) {
+    height: 200px;
+  }
 }
 
 .right {
   @media (min-width: 1000px){ 
+    margin-left: 100px;
     top: 0;
-    padding-top: 20px;
     position: absolute;
     left: 500px;
     padding-left: 20px;
@@ -349,7 +351,6 @@ End navbar
 Begin Related Stories
 ********************/
 #related-content {
-  padding-top: 40px;
   padding-bottom: 40px;
   position: relative;
   width: 100%;
@@ -357,7 +358,7 @@ Begin Related Stories
 }
 
 #stories-holder {
-  color: white;
+  color: #F2F2F2;
   padding: 0px 20px;
   @media (max-width: 40em){
     padding: 40px 0;
@@ -369,14 +370,14 @@ Begin Related Stories
     text-transform: uppercase;
     letter-spacing: .5px;
     font-size: 24px;
-    color: white;
+    color: #D8D8D8;
   }
 }
 
 .story-card {
   padding: 10px;
   margin-bottom: 20px;
-  color: white;
+  color: #D8D8D8;
 }
 
 .story-card:hover, .story-card:focus {
@@ -394,7 +395,7 @@ Begin Related Stories
   @media (max-width: 40em){
     margin-top: 10px;
   }
-  color: white;
+  color: #D8D8D8;
 }
 
 .dateline {
@@ -405,7 +406,7 @@ Begin Related Stories
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;
-  color: white;
+  color: #D8D8D8;
 }
 .story-tease {
   margin-top: 10px;
