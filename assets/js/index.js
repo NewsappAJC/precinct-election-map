@@ -228,6 +228,7 @@ class App {
     // Remove the existing message by emptying the message div.
     $('#instructions').empty();
     $('#finished').empty();
+    $('#finished').hide();
 
     // If the user hasn't started yet, show them instructions.
     if (!this.started) {
@@ -243,6 +244,7 @@ class App {
           Read more
         </a>`
       $('#finished').append(msg);
+      $('#finished').show();
     }
   }
 }
