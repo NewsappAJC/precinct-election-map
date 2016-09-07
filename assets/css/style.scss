@@ -45,6 +45,20 @@ body {
   color: $text-black;
 }
 
+#main {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#app {
+  border: 1px solid white;
+  position: relative;
+  cursor: default;
+}
+
 #map-link {
   position: absolute;
   top: 0;
@@ -62,6 +76,7 @@ body {
   top: 0;
   left: 0;
 }
+
 #cover {
   background-color: white;
   opacity: .5;
@@ -69,7 +84,6 @@ body {
 }
 
 #map {
-  max-width: 100%;
   z-index: -1;
   border: 1px solid white;
 }
@@ -80,7 +94,10 @@ body {
 }
 
 .content {
+  position: absolute;
+  top: 0;
   width: 100%;
+  height: 100%;
 }
 
 #progress-bar {
