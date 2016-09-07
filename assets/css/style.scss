@@ -45,12 +45,22 @@ body {
   color: $text-black;
 }
 
-#main {
+#jumbotron {
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  height: 800px;
+  max-width: 1000px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%);
+  @media (max-width: 1000px) {
+    max-width: 500px;
+    padding: 10px;
+  }
+}
+
+#main {
+  float: left;
+  position: relative;
+  max-width: 500px;
 }
 
 #app {
@@ -143,6 +153,14 @@ body {
 
 #descs {
   height: 9em;
+  max-width: 500px;
+  @media (min-width: 1000px){ 
+    position: absolute;
+    left: 500px;
+    padding-left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 .desc {
@@ -157,7 +175,6 @@ body {
   font-size: 1.13em;
   text-align: left;
   box-sizing: border-box;
-  color: white;
   line-height: 1.4;
   padding: 0 10px;
   @media (max-width: 400px){

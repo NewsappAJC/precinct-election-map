@@ -6,16 +6,10 @@ class App {
   constructor() {
     this.started = false;
     this.finished = false;
+    this.colors = ['#F78181', '#F2E241', '#2ECCFA'];
     this.step = -1; // Needs to start at -1 because it is used as an index after being incremented by one.
     var $map = $("#map"), $overlay = $("#overlay");
     this.mapDems = {width: $map.outerWidth(), height: $map.outerHeight()};
-
-    // Set the image cover to the size of the map image
-    $("#wrapper").css("max-width", this.mapDems.width);
-    $overlay.css("width", this.mapDems.width);
-    $overlay.css("height", this.mapDems.height);
-    $("#cover").css("height", this.mapDems.height);
-
 
     // Get the data containing a list of steps.
     var Input = new Data;
@@ -135,6 +129,7 @@ class App {
 
       // Unhide the relevant div
       this.descs[step].style.display = 'initial';
+      this.descs[step].style.color = this.colors[parseInt(entry.id)];
 
     };
 
@@ -175,8 +170,7 @@ class App {
       `).html(pin);
       
       // Set colors of the pin based on the character it represents.
-      var colors = ['#F78181', '#F2E241', '#2ECCFA'];
-      pinDiv.find('path')[0].setAttribute('fill', colors[entry.id]);
+      pinDiv.find('path')[0].setAttribute('fill', this.colors[entry.id]);
 
       $('#canvas').append(pinDiv);
 
