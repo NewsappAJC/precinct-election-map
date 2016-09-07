@@ -23,5 +23,5 @@ npm run build-prod
 
 Deploy
 ```
-npm run deploy
+npm run deploy-staging or npm run deploy-production
 ```
