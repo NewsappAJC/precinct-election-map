@@ -151,8 +151,10 @@ body {
 }
 
 #descs {
+  margin-bottom: 20px;
   color: white;
   max-width: 500px;
+  padding: 0px 20px;
   @media (min-width: 1000px) {
     height: 200px;
   }
@@ -181,7 +183,6 @@ body {
   text-align: left;
   box-sizing: border-box;
   line-height: 1.4;
-  padding: 0 10px;
   @media (max-width: 400px){
     font-size: .8em;
   }
@@ -358,34 +359,32 @@ Begin Related Stories
 }
 
 #stories-holder {
+  padding: 20px;
+  background-color: #424242;
   color: #F2F2F2;
-  padding: 0px 20px;
   @media (max-width: 40em){
     padding: 40px 0;
   }
   h2 {
-    padding-left: 10px;
     font-family: $body-text;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .5px;
     font-size: 24px;
-    color: #D8D8D8;
+    color: white;
   }
 }
 
 .story-card {
   padding: 10px;
-  margin-bottom: 20px;
-  color: #D8D8D8;
+  color: white;
 }
 
 .story-card:hover, .story-card:focus {
-  outline: 2px solid #b5cde3;
+  background-color: #585858;
 }
 
 .story-title {
-  left: 10px;
   font-family: $body-text;
   font-size: 18px;
   text-transform: uppercase;
@@ -395,18 +394,17 @@ Begin Related Stories
   @media (max-width: 40em){
     margin-top: 10px;
   }
-  color: #D8D8D8;
+  color: white;
 }
 
 .dateline {
   margin: 0;
-  padding: 0;
   line-height: 1.2em;
   font-family: $large-text;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;
-  color: #D8D8D8;
+  color: white;
 }
 .story-tease {
   margin-top: 10px;
