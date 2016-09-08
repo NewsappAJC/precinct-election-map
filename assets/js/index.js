@@ -1,6 +1,7 @@
 import Data from './data';
 import Stories from './stories';
 import $ from 'jquery';
+import * as _ from 'underscore';
 
 class App {
   constructor() {
