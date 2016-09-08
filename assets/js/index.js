@@ -71,6 +71,17 @@ class App {
 
     // Last of all, display the instructions.
     this.getMessage();
+    // Check if the pin SVG is loaded before rendering pins. If not, wait .1 second and try again.
+    var checkPin = (i) => {
+      if ($('#firstPin').html() != undefined) {
+        this.addPins();
+      }
+      else {
+        setTimeout(checkPin.bind(i-1), 100)
+      }
+    }
+
+    checkPin(30);
   }
 
 
@@ -151,77 +162,64 @@ class App {
         'width': `${ 100 * ((this.step + 1) / (this.data.length + 1)) }%`
       });
 
-      // Check if the pin SVG is loaded. If not, wait .1 second and try again.
-      var checkPin = (i) => {
-        if ($('#firstPin') != undefined) {
-          this.addPin();
-        }
-        else {
-          setTimeout(checkPin.bind(i-1), 100)
-        }
-      }
-
-      checkPin(30);
+      this.setOpacity();
   };
 
-  addPin(file) {
-      // Append a pin for this step.
+  addPins() {
+    this.data.forEach((entry) => {
       var pin = $('#firstPin').clone();
       pin.removeAttr('id');
-      if (!this.data[this.step]) {
-        return;
-      }
-      var entry = this.data[this.step];
 
       var pinDiv = $(`
-          <div class="point character${entry.id}" 
-            style="left:${entry.x}%; top:${entry.y}%"/>
+          <div data-character=${entry.id} data-step=${entry.step} class="point" 
+            style="left:${entry.x}%; top:${entry.y}%; opacity: 0"/>
       `).html(pin);
       
       // Set colors of the pin based on the character it represents.
       pinDiv.find('path')[0].setAttribute('fill', this.colors[entry.id]);
 
       $('#canvas').append(pinDiv);
+    })
+  }
 
-      // Select all pins on the page
+  setOpacity() {
+      // Select all pins on the page and hide any that
+      var entry = this.data[this.step];
       var points = $('.point');
+      points.each(function() {
+        var character = $(this).data('character');
+        if (entry.present.indexOf(character) === -1 || entry.id == character) {
+          $(this).css({'opacity': 0});
+        };
+      });
 
       // thisId will hold a list of all pins that match 
       // the id of the current entry, which is linked to a given character.
       var thisId = [];
 
-      for (var i = 0; i < points.length; i++) {
-        // Use regex to get the id number from the pointer's class name, and coerce
-        // it from a string to a number.
-        var id = points[i].getAttribute('class').match(/\d/)[0];
-        var num = parseInt(id);
-        // If a particular pointer is not relevant at this step, it will not be 
-        // in the entry variable's present[] array. If so, change its opacity to zero.
-        if (entry.present.indexOf(num) === -1) {
-          points[i].style.opacity = 0;
-        }
-        // Create a list of all the pins that correspond to this character.
-        if (entry.id === num) {
-          thisId.push(points[i])
-        }
-      }
+      points.each(function(i) {
+        if (parseInt($(this).data('character')) === entry.id) {
+          thisId.push(this);
+        };
+      })
 
-      // Loop through this character's pins. Set the opacity
-      // of the previous pin to .3. Hide earlier pins
-      // by setting their opacity to 0.
-      if (thisId.length > 1) {
-        for (var i = 0; i < thisId.length; i++) {
-          if (i === thisId.length - 2) {
-            thisId[i].style.opacity = .3;
-          }
-          else {
-            thisId[i].style.opacity = 0;
-          }
+      var sorted = _.sortBy(thisId, (point) => {
+        return $(point).data('step');
+      });
+
+      for (var i = 0; i < sorted.length; i++) {
+        if ($(sorted[i]).data('step') === entry.step) {
+          var thisStep = i;
         };
       };
 
-      thisId[thisId.length-1].style.opacity = 1;
-    };
+      // Set opacity of previous pin to .3, set opacity of current pin to 1
+      if (sorted.slice(0,thisStep+1).length > 1) {
+        sorted[thisStep - 1].style.opacity = .3;
+      };
+
+      sorted[thisStep].style.opacity = 1;
+  };
 
 
   /* 
