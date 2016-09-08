@@ -107,6 +107,7 @@ gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done)
   done();
 }));
 
+/*
 gulp.task('publish', function(){
   var AWS = require('aws-sdk');
 
@@ -146,8 +147,8 @@ gulp.task('publish', function(){
   DO NOT RUN `publisher.sync()` when targeting
   a child directory of a bucket or it will 
   delete everything else in the bucket
-  *********************************************/
-  return gulp.src(PROD + '**/*')
+  *********************************************
+  return gulp.src(PROD + '**\/*')
     //because we are targeting a child path of a bucket we need to modify the path the reflect that
     .pipe(rename(function(filePath) {
       filePath.dirname = path.join(s3_subdir, filePath.dirname);
@@ -166,4 +167,4 @@ gulp.task('publish', function(){
 
 gulp.task('deploy', gulp.series('build', 'publish', function(done){
   done();
-}));
+})); */

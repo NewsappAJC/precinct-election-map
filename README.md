@@ -1,27 +1,22 @@
-Stepr
-====
-Display markers and text captions for each event in a sequence of events on a static image or map. One event displays at a time. The user can 'step' through the sequence by clicking the 'next' button, and see their progress tracked by a progress bar and in the URL. 
+Precinct-level Election Results
+===============================
 
-Installation
-------------
-Install the app and all necessary dependencies.
-```
-npm install
-```
+Description: Map of GA's precinct-level election results. 
 
-Build, watch for changes, and run server
-```
-npm run serve-dev
-//OR
-npm run serve-prod
-```
+Published: TKTK
 
-Build for production
-```
-npm run build-prod
-```
+Lives Here: TKTK
 
-Deploy
-```
-npm run deploy-staging or npm run deploy-production
-```
+Hosted Here: TKTK
+
+Dependencies
+---
+
+Plugins
+---
+
+Notes
+---
+
+Todo
+---
