@@ -12,6 +12,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var precinctBoundary = new L.geoJson();
 precinctBoundary.addTo(map);
 
+// Get shapefiles
 $.ajax({
   dataType: 'json',
   url: './precincts.geojson',
