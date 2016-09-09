@@ -15,9 +15,9 @@ precinctBoundary.addTo(map);
 // Get shapefiles
 $.ajax({
   dataType: 'json',
-  url: './precincts.geojson',
+  url: './atlanta-precincts.json',
   success: function(data) {
-    $(data.features).each(function(key, data) {
+    $(data).each(function(key, data) {
       precinctBoundary.addData(data);
       console.log(data);
     });
