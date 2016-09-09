@@ -77,13 +77,16 @@ gulp.task('build-assets', function() {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(ENV + 'img'));
 
+  var geojson = gulp.src(SRC + 'data/**')
+    .pipe(gulp.dest(ENV));
+
   var css = gulp.src(ENV + 'css/style.css')
     .pipe(cssnano())
     .pipe(gulp.dest(function(file){
       return file.base; //replace current file
     }));
 
-  return merge(html, fonts, images, css); // Merge emits events from multiple streams
+  return merge(html, fonts, images, css, geojson); // Merge emits events from multiple streams
 })
 
 gulp.task('watch', function(done) {
