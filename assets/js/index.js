@@ -33,10 +33,12 @@ function drawPrecincts(precincts) {
   });
 
   L.geoJson(features, {style: function(feature) {
+      var style = {'stroke-width': 0};
       switch (feature.properties.party) {
-        case 'Republican': return {color: 'red'};
-        case 'Democrat': return {color: 'blue'};
+        case 'Republican': style.color = 'red';
+        case 'Democrat': style.color = 'green';
       };
+      return style;
     }
   }).addTo(map);
 };
