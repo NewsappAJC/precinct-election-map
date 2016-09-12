@@ -3,10 +3,10 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   buffer = require('vinyl-buffer'), // Vinyl is an interface between browserify and gulp
   livereload = require('gulp-livereload'),
-  awspublish = require('gulp-awspublish');
+  awspublish = require('gulp-awspublish'),
   source = require('vinyl-source-stream'),
   sourcemaps = require('gulp-sourcemaps'),
-  rimraf = require('rimraf');
+  rimraf = require('rimraf'),
   sass = require('gulp-sass'),
   browserify = require('browserify'),
   bs = require('browser-sync'),
@@ -14,7 +14,7 @@ var gulp = require('gulp'),
   webserver = require('gulp-webserver'),
   merge = require('merge-stream'),
   uglify = require('gulp-uglify'),
-  cssnano = require('gulp-cssnano');
+  cssnano = require('gulp-cssnano'),
   path   = require('path'),
   rename = require('gulp-rename'),
   awspublish = require('gulp-awspublish');
@@ -42,6 +42,10 @@ gulp.task('bundle', function() {
   });
 
   return bundle = b.bundle()
+    .on('error', function(err) {
+      console.log(err.toString());
+      this.emit('end');
+    })
     .pipe(source(SRC + 'js/index.js'))
     .pipe(buffer())
     .pipe(rename('main.js'))

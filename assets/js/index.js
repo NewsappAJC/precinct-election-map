@@ -1,4 +1,5 @@
 import * as L from 'leaflet';
+import * as d3 from 'd3';
 import $ from 'jquery';
 
 var map = L.map('map').setView([33.7, -84.3], 12);
@@ -23,11 +24,12 @@ function getPrecincts(cb) {
   });
 };
 
-var features = [];
 
 // Set the color of the precinct polygon and append to the 
 // map.
 function drawPrecincts(precincts) {
+  var features = [];
+
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
@@ -38,11 +40,11 @@ function drawPrecincts(precincts) {
       var style = {stroke: false};
       switch (feature.properties.party) {
         case 'Republican': {
-          style.color = 'red';
+          style.fillColor = 'red';
           break;
         }
         case 'Democrat': {
-          style.color = 'blue';
+          style.fillColor = 'blue';
           break;
         }
       };
@@ -52,12 +54,22 @@ function drawPrecincts(precincts) {
 
   function onEachFeature(feature, layer) {
     layer.on({
-      mouseover: onHover
+      mouseover: mouseover,
+      mouseout: mouseout
     })
   };
 
-  function onHover(e) {
-    e.target.setStyle({stroke: true});
+  function mouseover(e) {
+    e.target.setStyle({
+      stroke: true,
+      weight: 2,
+      color: 'black',
+      opacity: 1
+    });
+  }
+
+  function mouseout(e) {
+    e.target.setStyle({stroke: false});
   }
 };
 
