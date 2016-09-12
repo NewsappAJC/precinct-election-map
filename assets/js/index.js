@@ -32,15 +32,33 @@ function drawPrecincts(precincts) {
     features.push(feature);
   });
 
-  L.geoJson(features, {style: function(feature) {
-      var style = {'stroke-width': 0};
+  L.geoJson(features, {
+    onEachFeature: onEachFeature, 
+    style: function(feature) {
+      var style = {stroke: false};
       switch (feature.properties.party) {
-        case 'Republican': style.color = 'red';
-        case 'Democrat': style.color = 'green';
+        case 'Republican': {
+          style.color = 'red';
+          break;
+        }
+        case 'Democrat': {
+          style.color = 'blue';
+          break;
+        }
       };
       return style;
     }
   }).addTo(map);
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+      mouseover: onHover
+    })
+  };
+
+  function onHover(e) {
+    e.target.setStyle({stroke: true});
+  }
 };
 
 getPrecincts(drawPrecincts)

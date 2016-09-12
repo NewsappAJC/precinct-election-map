@@ -4,9 +4,9 @@
   "description": "Render a sequence of events over a map or image",
   "main": "assets/index.js",
   "scripts": {
-    "serve-dev": "rimraf ./dist/dev && gulp serve",
-    "serve-prod": "rimraf ./dist/prod && gulp serve --production",
-    "build-prod": "rimraf ./dist/prod && gulp build --production",
+    "serve-dev": "rimraf ./dist/dev && python filter.py && gulp serve",
+    "serve-prod": "rimraf ./dist/prod && python filter.py && gulp serve --production",
+    "build-prod": "rimraf ./dist/prod && python filter.py && gulp build --production",
     "deploy-staging": "gulp deploy --staging",
     "deploy-production": "gulp deploy --production"
   },
