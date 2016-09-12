@@ -1,5 +1,4 @@
 import * as L from 'leaflet';
-import * as d3 from 'd3';
 import $ from 'jquery';
 
 var map = L.map('map').setView([33.7, -84.3], 12);
@@ -52,25 +51,84 @@ function drawPrecincts(precincts) {
     }
   }).addTo(map);
 
+  var info = L.control();
+
+  info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this._div;
+  };
+
+  info.update = function (props) {
+    try {
+      this._div.innerHTML = `
+        <h4 class="candidate-table-title">${props.NAMELSAD10}</h4>
+        <table class="candidate-table">
+          <thead>
+            <tr>
+              <th class='eln-header'>Candidates</th>
+              <th class='eln-header'>Votes</th>
+              <th class='eln-header'>Pct.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="eln-row">
+              <td>
+                <div class="dem-party-tag"></div>
+                <span class="candidate-name">Hillary Clinton</span>
+              </td>
+              <td>586,015</td>
+              <td>35.4</td> 
+            </tr>
+            <tr class="eln-row">
+              <td>
+                <div class="gop-party-tag"></div>
+                <span class="candidate-name">Donald Trump</span>
+              </td>
+              <td>586,015</td>
+              <td>35.4</td> 
+            </tr>
+          </tbody>
+        
+        </table>
+      `;
+    }
+    catch (TypeError) {
+      console.log('whatever');
+    }
+  };
+
+  info.addTo(map);
+  
   function onEachFeature(feature, layer) {
     layer.on({
-      mouseover: mouseover,
-      mouseout: mouseout
+      click: zoomToFeature,
+      mouseover: highlightFeature,
+      mouseout: resetStyle
     })
   };
 
-  function mouseover(e) {
-    e.target.setStyle({
+  function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
       stroke: true,
       weight: 2,
       color: 'black',
       opacity: 1
     });
+
+    info.update(layer.feature.properties);
   }
 
-  function mouseout(e) {
+  function resetStyle(e) {
     e.target.setStyle({stroke: false});
   }
+
+  function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+  }
+
 };
 
 getPrecincts(drawPrecincts)

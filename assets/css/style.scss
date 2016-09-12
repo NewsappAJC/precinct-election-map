@@ -38,4 +38,85 @@ Begin map
 
 #map {
   height: 800px;
+  width: 800px;
 }
+
+/* Begin candidate table style */
+.info {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  width: 400px;
+}
+
+.candidate-table {
+  width: 100%;
+}
+
+tbody {
+  line-height: 1.8;
+  display: table-row-group;
+  vertical-align: middle;
+}
+
+tr.eln-row {
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.eln-header {
+  font-size: .8em;
+  text-align: left;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e2e2e2;
+  color: #999999;
+}
+
+.gop-party-tag, .dem-party-tag {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+
+.dem-party-tag {
+  background-color: #00BFFF;
+}
+
+.gop-party-tag {
+  background-color: #FE2E2E;
+}
+
+h4.candidate-table-title {
+  font-size: 1.3em;
+  text-align: left;
+}
+
+/* End candidate table style */
+
+/* Begin title */
+
+div#title-holder {
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  width: 600px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h1#main-title {
+  line-height: 1;
+  font-family: 'Publico';
+  font-size: 2.4em;
+}
+
+span#timestamp {
+  font-family: 'Boomer';
+  font-size: .9em;
+  text-transform: uppercase;
+}
+
+/* End title */
