@@ -17,6 +17,37 @@ export default function(filter) {
     if (el[0] === filter) {
       $('#results-summary-title').empty();
       $('#results-summary-title').append(`Results in areas with ${el[1]}.`);
+
+      $('#results-summary-table').empty();
+      $('#results-summary-table').append(`
+        <table class="candidate-table">
+          <thead>
+            <tr>
+              <th class='eln-header'>Candidates</th>
+              <th class='eln-header'>Votes</th>
+              <th class='eln-header'>Pct.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="eln-row">
+              <td>
+                <div class="dem-party-tag"></div>
+                <span class="candidate-name">Hillary Clinton</span>
+              </td>
+              <td>586,015</td>
+              <td>35.4</td> 
+            </tr>
+            <tr class="eln-row">
+              <td>
+                <div class="gop-party-tag"></div>
+                <span class="candidate-name">Donald Trump</span>
+              </td>
+              <td>586,015</td>
+              <td>35.4</td> 
+            </tr>
+          </tbody>
+        </table>
+      `)
     };
   });
 };
