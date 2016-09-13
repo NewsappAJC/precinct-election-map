@@ -134,13 +134,22 @@ function drawPrecincts(precincts) {
 
 /* Add event listeners to autocomplete input field and query Google
  * Places API */
+var autocomplete; 
 
 function initInput() {
   // var defaultBounds = TKTK;
 
   var input = document.getElementById('autocomplete');
   var options = {types: ['address']}
-  var autocomplete = new google.maps.places.Autocomplete(input, options);
+  autocomplete = new google.maps.places.Autocomplete(input, options);
+
+  autocomplete.addListener('place_changed', onPlaceChanged)
+}
+
+function onPlaceChanged() {
+  var lat = autocomplete.getPlace().geometry.location.lat();
+  var lng = autocomplete.getPlace().geometry.location.lng();
+  map.setView(new L.LatLng(lat, lng), 15);
 }
 
 initInput();
