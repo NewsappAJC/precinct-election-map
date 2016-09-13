@@ -3,6 +3,10 @@ import $ from 'jquery';
 
 var API_KEY = 'AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8';
 
+var features = [];
+var geojsonLayer;
+var info;
+
 var map = L.map('map').setView([33.7, -84.3], 12);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -25,17 +29,18 @@ function getPrecincts(cb) {
   });
 };
 
-
-// Set the color of the precinct polygon and append to the 
+// Set the color of the precinct polygon and append it to the 
 // map.
-function drawPrecincts(precincts) {
-  var features = [];
-
+function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
 
-  L.geoJson(features, {
+  drawPrecincts();
+}
+
+function generateLayer(f) {
+  geojsonLayer = L.geoJson(f, {
     onEachFeature: onEachFeature, 
     style: function(feature) {
       var style = {stroke: false};
@@ -52,8 +57,31 @@ function drawPrecincts(precincts) {
       return style;
     }
   }).addTo(map);
+}
 
-  var info = L.control();
+function drawPrecincts() {
+  generateLayer(features)
+
+  // Add event listeners
+  $('.filter').each(function(i, feature) {
+    feature.addEventListener('click', function() {
+      var filter = this.dataset.filter;
+      geojsonLayer.clearLayers();
+      var nfeatures = [];
+      features.forEach((f) => {
+        if (f.properties.race == filter) {
+          nfeatures.push(f)
+        };
+      });
+      generateLayer(nfeatures);
+    })
+  })
+
+  createInfo();
+}
+
+function createInfo() {
+  info = L.control();
 
   info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info');
@@ -101,44 +129,42 @@ function drawPrecincts(precincts) {
   };
 
   info.addTo(map);
-  
-  function onEachFeature(feature, layer) {
-    layer.on({
-      click: zoomToFeature,
-      mouseover: highlightFeature,
-      mouseout: resetStyle
-    })
-  };
-
-  function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-      stroke: true,
-      weight: 2,
-      color: 'black',
-      opacity: 1
-    });
-
-    info.update(layer.feature.properties);
-  }
-
-  function resetStyle(e) {
-    e.target.setStyle({stroke: false});
-  }
-
-  function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-  }
 };
+
+function onEachFeature(feature, layer) {
+  layer.on({
+    click: zoomToFeature,
+    mouseover: highlightFeature,
+    mouseout: resetStyle
+  })
+};
+
+function highlightFeature(e) {
+  var layer = e.target;
+
+  layer.setStyle({
+    stroke: true,
+    weight: 2,
+    color: 'black',
+    opacity: 1
+  });
+
+  info.update(layer.feature.properties);
+}
+
+function resetStyle(e) {
+  e.target.setStyle({stroke: false});
+}
+
+function zoomToFeature(e) {
+  map.fitBounds(e.target.getBounds());
+}
 
 /* Add event listeners to autocomplete input field and query Google
  * Places API */
 var autocomplete; 
 
 function initInput() {
-  // var defaultBounds = TKTK;
-
   var input = document.getElementById('autocomplete');
   var options = {types: ['address']}
   autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -152,6 +178,8 @@ function onPlaceChanged() {
   map.setView(new L.LatLng(lat, lng), 15);
 }
 
+/* Add event listeners to filter options */
+
 initInput();
-getPrecincts(drawPrecincts)
+getPrecincts(addPrecincts);
 

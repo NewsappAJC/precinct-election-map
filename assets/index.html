@@ -17,9 +17,48 @@
     </div>
     <div class="row">
       <div class="small-12 large-3 columns g-filter">
-        <h4>Group filters will go here</h4>
         <label for="autocomplete">Find your area</label>
         <input placeholder="Enter address" id="autocomplete"/>
+        <h4>Group filters will go here</h4>
+        <!-- use es6 for this instead of writing it out like an idiot -->
+        <div id="filters">
+          <a class="filter" data-filter="white">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              White
+            </span>
+          </a>
+          <a class="filter" data-filter="black">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              Black
+            </span>
+          </a>
+          <a class="filter" data-filter="hispanic">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              Hispanic
+            </span>
+          </a>
+          <a class="filter" data-filter="rich">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              Over $100,000 
+            </span>
+          </a>
+          <a class="filter" data-filter="middle">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              $50,000 to $100,000
+            </span>
+          </a>
+          <a class="filter" data-filter="poor">
+            <img src="https://placekitten.com/g/200/200"/>
+            <span class="filter-title">
+              Under $50,000
+            </span>
+          </a>
+        </div>
       </div>
       <div class="small-12 large-9 columns main-map">
         <div id="map"></div>

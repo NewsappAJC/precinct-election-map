@@ -121,7 +121,7 @@ span#timestamp {
 
 /* End title */
 
-/* Address search */
+/* Begin address search */
 #autocomplete {
   font-family: 'Boomer';
   box-shadow: inset 2px 3px 3px rgba(0,0,0,0.1);
@@ -139,3 +139,24 @@ input {
   padding: 8px;
   font-size: .9em;
 }
+/* End address search */
+
+/* Begin filter options */
+
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter {
+  padding: 5px;
+  display: block;
+  text-align: center;
+  width: 50%;
+}
+
+#filter img {
+  display: block;
+}
+
+/* End filter options */
