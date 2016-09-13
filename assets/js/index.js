@@ -1,3 +1,5 @@
+import updateSummary from './summary';
+import makeFilters from './filters';
 import * as L from 'leaflet';
 import $ from 'jquery';
 
@@ -44,11 +46,28 @@ function addPrecincts(precincts) {
 /* Generate a map and a list of filter options */
 function createMap() {
   generateLayers(features)
+  $('#all').attr('class', 'filter-selected')
+
+  // Render filters
+  makeFilters();
+
+  // Summary should default to all.
+  //updateSummary('all');
 
   // Add event listeners to filter precincts by certain criteria.
-  $('.filter').each(function(i, feature) {
-    feature.addEventListener('click', function() {
+  $('.filter, .filter-selected').each(function(i, el) {
+    el.addEventListener('click', function() {
       var filter = this.dataset.filter;
+
+      // Update the summary results
+      updateSummary(filter);
+
+      // unselect all filters
+      $('.filter-selected').attr('class', 'filter')
+
+      // Set style of selected element
+      $(this).attr('class', 'filter-selected')
+
       geojsonLayer.clearLayers();
       var nfeatures = [];
       if (filter === 'all') {

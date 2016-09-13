@@ -36,6 +36,7 @@ $gray-bg: #e7e7e7;
 Begin map
 *********/
 
+
 #map {
   height: 800px;
   width: 800px;
@@ -144,11 +145,13 @@ input {
 /* Begin filter options */
 
 #filters {
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.filter {
+.filter, .filter-selected{
+  font-family: 'Boomer';
   padding: 5px;
   display: block;
   text-align: center;
@@ -159,4 +162,40 @@ input {
   display: block;
 }
 
+.filter-title {
+  padding: 2px 8px;
+  font-size: .9em;
+  border-radius: 3px;
+  color: black;
+}
+
+.filter img {
+  opacity: .5;
+}
+
+.filter:hover, .filter:focus{
+  img {
+    opacity: .7;
+  }
+  span.filter-title {
+    background-color: #E2E2E2;
+  }
+}
+
+.filter-selected {
+  .filter-title {
+    color: white;
+    background-color: #444;
+  }
+  img {
+    opacity: 1;
+  }
+}
 /* End filter options */
+
+/* Begin results summary */
+
+#results-summary-title {
+  font-size: 14px;
+  font-family: 'Boomer';
+}
