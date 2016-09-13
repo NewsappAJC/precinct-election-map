@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="./css/vendor/foundation.min.css"/>
     <link rel="stylesheet" type="text/css" href="./css/vendor/leaflet.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    // Load Google Places library
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8&libraries=places"></script>
   </head>
   <body>
     <div id="title-holder">
@@ -17,8 +19,8 @@
     <div class="row">
       <div class="small-12 large-3 columns g-filter">
         <h4>Group filters will go here</h4>
-        <label for="area-search-title">Find your area</label>
-        <input placeholder="Enter address"/>
+        <label for="autocomplete">Find your area</label>
+        <input placeholder="Enter address" id="autocomplete"/>
       </div>
       <div class="small-12 large-9 columns main-map">
         <div id="map"></div>

@@ -1,6 +1,8 @@
 import * as L from 'leaflet';
 import $ from 'jquery';
 
+var API_KEY = 'AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8';
+
 var map = L.map('map').setView([33.7, -84.3], 12);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -128,7 +130,19 @@ function drawPrecincts(precincts) {
   function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
   }
-
 };
 
+/* Add event listeners to autocomplete input field and query Google
+ * Places API */
+
+function initInput() {
+  // var defaultBounds = TKTK;
+
+  var input = document.getElementById('autocomplete');
+  var options = {types: ['address']}
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+}
+
+initInput();
 getPrecincts(drawPrecincts)
+
