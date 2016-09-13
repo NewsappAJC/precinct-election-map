@@ -3,11 +3,11 @@ import $ from 'jquery';
 
 var API_KEY = 'AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8';
 
+var autocomplete;
 var features = [];
 var geojsonLayer;
 var info;
-
-var map = L.map('map').setView([33.7, -84.3], 12);
+var map = L.map('map').setView([33.7, -84.3], 10);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
   maxZoom: 18,
@@ -15,7 +15,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: 'pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw'
 }).addTo(map);
 
-// Get shapefiles.
+
+/* Get shapefiles */
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
@@ -29,17 +30,48 @@ function getPrecincts(cb) {
   });
 };
 
-// Set the color of the precinct polygon and append it to the 
-// map.
+
+/* Append precincts from .json file to list of features. */
 function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
 
-  drawPrecincts();
+  createMap();
 }
 
-function generateLayer(f) {
+
+/* Generate a map and a list of filter options */
+function createMap() {
+  generateLayers(features)
+
+  // Add event listeners to filter precincts by certain criteria.
+  $('.filter').each(function(i, feature) {
+    feature.addEventListener('click', function() {
+      var filter = this.dataset.filter;
+      geojsonLayer.clearLayers();
+      var nfeatures = [];
+      if (filter === 'all') {
+        nfeatures = features;
+      }
+      else {
+        features.forEach((f) => {
+          if (f.properties.race == filter || f.properties.median_income == filter) {
+            nfeatures.push(f);
+          };
+        });
+      }
+      generateLayers(nfeatures); // Generate a new layer with the filtered precincts
+      map.setView([33.7, -84.3], 10);
+    })
+  })
+
+  createInfo();
+}
+
+
+/* generate a geoJson layer from the data and add event listeners. */
+function generateLayers(f) {
   geojsonLayer = L.geoJson(f, {
     onEachFeature: onEachFeature, 
     style: function(feature) {
@@ -57,29 +89,47 @@ function generateLayer(f) {
       return style;
     }
   }).addTo(map);
-}
 
-function drawPrecincts() {
-  generateLayer(features)
-
-  // Add event listeners
-  $('.filter').each(function(i, feature) {
-    feature.addEventListener('click', function() {
-      var filter = this.dataset.filter;
-      geojsonLayer.clearLayers();
-      var nfeatures = [];
-      features.forEach((f) => {
-        if (f.properties.race == filter) {
-          nfeatures.push(f)
-        };
-      });
-      generateLayer(nfeatures);
+  // Add event handlers to precinct layers
+  function onEachFeature(feature, layer) {
+    layer.on({
+      click: zoomToFeature,
+      mouseover: highlightFeature,
+      mouseout: resetStyle
     })
-  })
+  };
 
-  createInfo();
-}
+  /*********************** 
+  * Begin helper functions 
+  ************************/
+  function highlightFeature(e) {
+    var layer = e.target;
 
+    layer.setStyle({
+      stroke: true,
+      weight: 2,
+      color: 'black',
+      opacity: 1
+    });
+
+    info.update(layer.feature.properties);
+  };
+
+  function resetStyle(e) {
+    e.target.setStyle({stroke: false});
+  };
+
+  function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+  };
+  /**********************
+  * End helper functions 
+  ***********************/
+
+};
+
+
+/* Add an info box to the main map */
 function createInfo() {
   info = L.control();
 
@@ -124,46 +174,16 @@ function createInfo() {
       `;
     }
     catch (TypeError) {
-      console.log('whatever');
+      console.log('no data');
     }
   };
 
   info.addTo(map);
 };
 
-function onEachFeature(feature, layer) {
-  layer.on({
-    click: zoomToFeature,
-    mouseover: highlightFeature,
-    mouseout: resetStyle
-  })
-};
-
-function highlightFeature(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-    stroke: true,
-    weight: 2,
-    color: 'black',
-    opacity: 1
-  });
-
-  info.update(layer.feature.properties);
-}
-
-function resetStyle(e) {
-  e.target.setStyle({stroke: false});
-}
-
-function zoomToFeature(e) {
-  map.fitBounds(e.target.getBounds());
-}
 
 /* Add event listeners to autocomplete input field and query Google
  * Places API */
-var autocomplete; 
-
 function initInput() {
   var input = document.getElementById('autocomplete');
   var options = {types: ['address']}
@@ -178,8 +198,7 @@ function onPlaceChanged() {
   map.setView(new L.LatLng(lat, lng), 15);
 }
 
-/* Add event listeners to filter options */
-
+/* Finally, run main function to generate the map */
 initInput();
 getPrecincts(addPrecincts);
 

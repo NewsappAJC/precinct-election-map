@@ -18,8 +18,17 @@ for i, precinct in enumerate(features):
         else: 
             precinct['properties']['party'] = 'Democrat'
         precinct['properties']['median_income'] = random.random() * 100000
-        precinct['properties']['race'] = ['white','black','hispanic'][random.randint(0,2)]
-
+        if county_name in ['121', '135', '063']:
+            race = 'white'
+            income = 'rich'
+        elif county_name in ['089', '097']:
+            race = 'black'
+            income = 'middle'
+        else: 
+            race = 'hispanic'
+            income = 'poor'
+        precinct['properties']['race'] = race
+        precinct['properties']['median_income'] = income
         filtered.append(precinct)
         cnt[county_name] += 1
 
