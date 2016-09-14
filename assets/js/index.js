@@ -7,22 +7,23 @@ import $ from 'jquery';
 var autocomplete;
 var selectedBucket = 'all';
 var features = [];
-var geojsonLayer;
+var geojson;
 var interactiveLayer;
 var info;
 
 // Create map and get tiles from custom map on MapBox
-var map = L.map('map').setView([33.7, -84.3], 10);
+var map = L.map('map');
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
-map.createPane('bottom');
-map.createPane('precincts');
-map.createPane('label');
-map.createPane('interactive');
+map.createPane('labels');
+map.getPane('labels').style.zIndex = 650;
+map.getPane('labels').style.pointerEvents = 'none';
 
-L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw', {pane: 'bottom'}).addTo(map);
+/* Create base map */ 
+L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
 
-L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'label'}).addTo(map);
+// Create labels
+L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels'}).addTo(map);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -56,8 +57,8 @@ function createMap() {
   $('.filter[data-filter="all"]').attr('class', 'filter-selected');
 
   // Default to display all precincts without any filtering
-  geojsonLayer.addTo(map);
-  interactiveLayer.addTo(map);
+  geojson.addTo(map);
+  map.setView({ lat: 33, lng: -88}, 4)
   updateSummary('all');
 
   // Add event listeners to filter precincts by certain criteria.
@@ -66,7 +67,7 @@ function createMap() {
       // Update the layers on the map
       selectedBucket= this.dataset.filter;
 
-      geojsonLayer.eachLayer(function (layer) {
+      geojson.eachLayer(function (layer) {
         var layerParty = layer.feature.properties.party;
         var layerRace = layer.feature.properties.race;
         var layerIncome = layer.feature.properties.median_income;
@@ -117,18 +118,7 @@ function setColor(party) {
 
 /* generate a geoJson layer from the data and add event listeners. */
 function generateLayers() {
-  interactiveLayer = L.geoJson(features, {
-    onEachFeature: onEachFeature,
-    style: function() {
-        return {
-          stroke: null,
-          fill: null
-        }
-      },
-    pane: 'interactive'
-  })
-
-  geojsonLayer = L.geoJson(features, {
+  geojson = L.geoJson(features, {
       style: function(feature) { 
         var style = {stroke: false};
         switch (feature.properties.party) {
@@ -148,8 +138,7 @@ function generateLayers() {
           }
         };
         return style;
-      },
-    pane: 'precincts'
+      }
   });
 
   // Add event handlers to precinct layers
