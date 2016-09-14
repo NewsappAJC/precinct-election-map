@@ -1,5 +1,7 @@
 import updateSummary from './summary';
 import makeFilters from './filters';
+import countries from './eu_countries';
+
 import * as L from 'leaflet';
 import $ from 'jquery';
 
@@ -20,9 +22,8 @@ map.getPane('labels').style.zIndex = 650;
 map.getPane('labels').style.pointerEvents = 'none';
 
 /* Create base map */ 
-L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png').addTo(map);
 
-// Create labels
 L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels'}).addTo(map);
 
 /* Get shapefiles */
@@ -255,6 +256,5 @@ function onPlaceChanged() {
 
 /* Finally, run main function to generate the map */
 initInput();
-getPrecincts(addPrecincts);
-
+addPrecincts(countries());
 
