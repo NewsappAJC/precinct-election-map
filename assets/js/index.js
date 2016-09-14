@@ -12,7 +12,11 @@ var info;
 
 // Create map and get tiles from custom map on MapBox
 var map = L.map('map').setView([33.7, -84.3], 10);
-L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
+
+var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
+var topLayer = L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png').addTo(map);
+topPane.appendChild(topLayer.getContainer());
+topLayer.setZIndex(9);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
