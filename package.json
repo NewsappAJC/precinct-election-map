@@ -40,7 +40,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-webserver": "^0.9.1",
     "jquery": "^3.1.0",
-    "leaflet": "^0.7.7",
+    "leaflet": "^1.0.0-rc.3",
     "livereload": "^0.5.0",
     "merge-stream": "^1.0.0",
     "node-sass": "^3.8.0",
@@ -54,7 +54,6 @@
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "yargs": "^5.0.0",
-    "template-style": "git://github.com/NewsappAJC/digital-design-guide.git#master"
+    "yargs": "^5.0.0"
   }
 }

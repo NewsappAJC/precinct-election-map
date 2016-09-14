@@ -41,6 +41,9 @@ Begin map
   height: 800px;
   width: 800px;
 }
+.leaflet-interactive {
+  z-index: 99999;
+}
 
 .main-map {
   border-left: 1px solid black;

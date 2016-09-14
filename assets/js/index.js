@@ -8,17 +8,21 @@ var autocomplete;
 var selectedBucket = 'all';
 var features = [];
 var geojsonLayer;
+var interactiveLayer;
 var info;
 
 // Create map and get tiles from custom map on MapBox
 var map = L.map('map').setView([33.7, -84.3], 10);
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
-var bottomLayer=  L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
-var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
-var topLayer = L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png').addTo(map);
-topPane.appendChild(topLayer.getContainer());
-topLayer.setZIndex(9);
+map.createPane('bottom');
+map.createPane('precincts');
+map.createPane('label');
+map.createPane('interactive');
+
+L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw', {pane: 'bottom'}).addTo(map);
+
+L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'label'}).addTo(map);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -53,8 +57,8 @@ function createMap() {
 
   // Default to display all precincts without any filtering
   geojsonLayer.addTo(map);
+  interactiveLayer.addTo(map);
   updateSummary('all');
-
 
   // Add event listeners to filter precincts by certain criteria.
   $('.filter, .filter-selected').each(function() {
@@ -113,8 +117,18 @@ function setColor(party) {
 
 /* generate a geoJson layer from the data and add event listeners. */
 function generateLayers() {
+  interactiveLayer = L.geoJson(features, {
+    onEachFeature: onEachFeature,
+    style: function() {
+        return {
+          stroke: null,
+          fill: null
+        }
+      },
+    pane: 'interactive'
+  })
+
   geojsonLayer = L.geoJson(features, {
-      onEachFeature: onEachFeature, 
       style: function(feature) { 
         var style = {stroke: false};
         switch (feature.properties.party) {
@@ -134,10 +148,9 @@ function generateLayers() {
           }
         };
         return style;
-      }
-    }
-  );
-
+      },
+    pane: 'precincts'
+  });
 
   // Add event handlers to precinct layers
   function onEachFeature(feature, layer) {
