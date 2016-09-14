@@ -6,6 +6,7 @@ import $ from 'jquery';
 var API_KEY = 'AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8';
 
 var autocomplete;
+var selectedBucket = 'all';
 var features = [];
 var geojsonLayer;
 var info;
@@ -38,76 +39,92 @@ function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
-
+  generateLayers();
   createMap();
 }
 
 
 /* Generate a map and a list of filter options */
 function createMap() {
-  generateLayers(features)
-  $('#all').attr('class', 'filter-selected')
-
   // Render filters
   makeFilters();
+  $('.filter[data-filter="all"]').attr('class', 'filter-selected');
 
-  // Summary should default to all.
-  //updateSummary('all');
+  // Default to display all precincts without any filtering
+  geojsonLayer.addTo(map);
+  updateSummary('all');
+
 
   // Add event listeners to filter precincts by certain criteria.
-  $('.filter, .filter-selected').each(function(i, el) {
-    el.addEventListener('click', function() {
-      var filter = this.dataset.filter;
+  $('.filter, .filter-selected').each(function() {
+    $(this).on('click', function() {
+      // Update the layers on the map
+      selectedBucket= this.dataset.filter;
 
-      // Update the summary results
-      updateSummary(filter);
+      geojsonLayer.eachLayer(function (layer) {
+        var layerParty = layer.feature.properties.party;
+        var layerRace = layer.feature.properties.race;
+        var layerIncome = layer.feature.properties.median_income;
 
-      // unselect all filters
+        if (layerRace === selectedBucket || 
+        layerIncome === selectedBucket || 
+        selectedBucket === 'all') {
+          layer.setStyle(setColor(layerParty));
+        }
+        else {
+          layer.setStyle({fillOpacity: 0});
+        };
+      });
+
+      // Update the summary table results
+      updateSummary(selectedBucket);
+
+      // Unset style of all filter elements then set style of selected filter
       $('.filter-selected').attr('class', 'filter')
-
-      // Set style of selected element
       $(this).attr('class', 'filter-selected')
-
-      geojsonLayer.clearLayers();
-      var nfeatures = [];
-      if (filter === 'all') {
-        nfeatures = features;
-      }
-      else {
-        features.forEach((f) => {
-          if (f.properties.race == filter || f.properties.median_income == filter) {
-            nfeatures.push(f);
-          };
-        });
-      }
-      generateLayers(nfeatures); // Generate a new layer with the filtered precincts
-      map.setView([33.7, -84.3], 10);
     })
   })
 
   createInfo();
-}
+};
+
+function setColor(party) {
+  var style = {fillOpacity: .3};
+  switch (party) {
+    case 'Republican': {
+      style.fillColor = 'red';
+      break;
+    }
+    case 'Democrat': {
+      style.fillColor = 'blue';
+      break;
+    }
+  };
+  return style;
+};
 
 
 /* generate a geoJson layer from the data and add event listeners. */
-function generateLayers(f) {
-  geojsonLayer = L.geoJson(f, {
-    onEachFeature: onEachFeature, 
-    style: function(feature) {
-      var style = {stroke: false};
-      switch (feature.properties.party) {
-        case 'Republican': {
-          style.fillColor = 'red';
-          break;
-        }
-        case 'Democrat': {
-          style.fillColor = 'blue';
-          break;
-        }
-      };
-      return style;
+function generateLayers() {
+  geojsonLayer = L.geoJson(features, {
+      onEachFeature: onEachFeature, 
+      style: function(feature) { 
+        var style = {stroke: false};
+        switch (feature.properties.party) {
+          case 'Republican': {
+            style.fillColor = 'red';
+            break;
+          }
+          case 'Democrat': {
+            style.fillColor = 'blue';
+            break;
+          }
+        };
+        return style;
+      }
     }
-  }).addTo(map);
+  );
+
 
   // Add event handlers to precinct layers
   function onEachFeature(feature, layer) {
@@ -144,7 +161,6 @@ function generateLayers(f) {
   /**********************
   * End helper functions 
   ***********************/
-
 };
 
 
