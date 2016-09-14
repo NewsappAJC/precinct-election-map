@@ -3,15 +3,16 @@ import makeFilters from './filters';
 import * as L from 'leaflet';
 import $ from 'jquery';
 
-var API_KEY = 'AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8';
-
+// Set variables for this project
 var autocomplete;
 var selectedBucket = 'all';
 var features = [];
 var geojsonLayer;
 var info;
-var map = L.map('map').setView([33.7, -84.3], 10);
 
+// Create map and get tiles from custom map on MapBox
+var map = L.map('map').setView([33.7, -84.3], 10);
+L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -113,15 +114,15 @@ function generateLayers() {
         switch (feature.properties.party) {
           case 'Republican': {
             style.fillColor = 'red';
-            style.stroke = 'red';
-            style.opacity = .3;
+            style.stroke = 'grey';
+            style.opacity = .2;
             style.weight = 1;
             break;
           }
           case 'Democrat': {
             style.fillColor = 'blue';
-            style.stroke = 'blue';
-            style.opacity = .3;
+            style.stroke = 'grey';
+            style.opacity = .2;
             style.weight = 1;
             break;
           }
@@ -137,7 +138,7 @@ function generateLayers() {
     layer.on({
       click: zoomToFeature,
       mouseover: highlightFeature,
-      mouseout: resetStyle.bind(layer)
+      mouseout: resetStyle
     })
   };
 
@@ -148,7 +149,6 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      stroke: true,
       weight: 2,
       color: 'black',
       opacity: 1
@@ -161,8 +161,14 @@ function generateLayers() {
     map.fitBounds(e.target.getBounds());
   };
 
-  function resetStyle(layer) {
-    console.log('cool')
+  function resetStyle(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+      stroke: 'grey',
+      opacity: .2,
+      weight: 1
+    })
   }
   /**********************
   * End helper functions 
@@ -243,5 +249,4 @@ function onPlaceChanged() {
 initInput();
 getPrecincts(addPrecincts);
 
-L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
 
