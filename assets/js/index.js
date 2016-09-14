@@ -12,12 +12,6 @@ var geojsonLayer;
 var info;
 var map = L.map('map').setView([33.7, -84.3], 10);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  maxZoom: 18,
-  id: 'mapbox.streets',
-  accessToken: 'pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw'
-}).addTo(map);
-
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -93,10 +87,16 @@ function setColor(party) {
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
+      style.stroke = 'red';
+      style.opacity = .3;
+      style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
+      style.stroke = 'blue';
+      style.opacity = .3;
+      style.weight = 1;
       break;
     }
   };
@@ -113,10 +113,16 @@ function generateLayers() {
         switch (feature.properties.party) {
           case 'Republican': {
             style.fillColor = 'red';
+            style.stroke = 'red';
+            style.opacity = .3;
+            style.weight = 1;
             break;
           }
           case 'Democrat': {
             style.fillColor = 'blue';
+            style.stroke = 'blue';
+            style.opacity = .3;
+            style.weight = 1;
             break;
           }
         };
@@ -131,7 +137,7 @@ function generateLayers() {
     layer.on({
       click: zoomToFeature,
       mouseover: highlightFeature,
-      mouseout: resetStyle
+      mouseout: resetStyle.bind(layer)
     })
   };
 
@@ -151,13 +157,13 @@ function generateLayers() {
     info.update(layer.feature.properties);
   };
 
-  function resetStyle(e) {
-    e.target.setStyle({stroke: false});
-  };
-
   function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
   };
+
+  function resetStyle(layer) {
+    console.log('cool')
+  }
   /**********************
   * End helper functions 
   ***********************/
@@ -236,4 +242,6 @@ function onPlaceChanged() {
 /* Finally, run main function to generate the map */
 initInput();
 getPrecincts(addPrecincts);
+
+L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
 
