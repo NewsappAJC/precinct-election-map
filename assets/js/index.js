@@ -1,9 +1,10 @@
-import updateSummary from './summary';
-import makeFilters from './filters';
-import countries from './eu_countries';
-
+// Third party libraries
 import * as L from 'leaflet';
 import $ from 'jquery';
+
+// Local module imports
+import updateSummary from './summary';
+import makeFilters from './filters';
 
 // Set variables for this project
 var autocomplete;
@@ -15,16 +16,20 @@ var info;
 
 // Create map and get tiles from custom map on MapBox
 var map = L.map('map');
+map.setView({ lat: 33, lng: -88}, 4)
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
 map.createPane('labels');
-map.getPane('labels').style.zIndex = 650;
-map.getPane('labels').style.pointerEvents = 'none';
+//map.getPane('labels').style.zIndex = 650;
+//map.getPane('labels').style.pointerEvents = 'none';
+
+var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+
+/* add labels */
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels', attribution: cartodbAttribution}).addTo(map);
 
 /* Create base map */ 
-L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png').addTo(map);
-
-L.tileLayer('http://c.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels'}).addTo(map);
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: cartodbAttribution}).addTo(map);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -59,7 +64,6 @@ function createMap() {
 
   // Default to display all precincts without any filtering
   geojson.addTo(map);
-  map.setView({ lat: 33, lng: -88}, 4)
   updateSummary('all');
 
   // Add event listeners to filter precincts by certain criteria.
@@ -255,6 +259,6 @@ function onPlaceChanged() {
 }
 
 /* Finally, run main function to generate the map */
-initInput();
-addPrecincts(countries());
+//initInput();
+//getPrecincts(addPrecincts);
 
