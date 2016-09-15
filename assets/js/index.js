@@ -1,20 +1,35 @@
-import updateSummary from './summary';
-import makeFilters from './filters';
+// Third party libraries
 import * as L from 'leaflet';
 import $ from 'jquery';
+
+// Local module imports
+import updateSummary from './summary';
+import makeFilters from './filters';
 
 // Set variables for this project
 var autocomplete;
 var selectedBucket = 'all';
 var features = [];
-var geojsonLayer;
+var geojson;
+var interactiveLayer;
 var info;
 
 // Create map and get tiles from custom map on MapBox
-var map = L.map('map').setView([33.7, -84.3], 10);
+var map = L.map('map', {maxZoom: 16});
+map.setView({ lat: 33.74, lng: -84.38}, 10)
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
-L.tileLayer('https://api.mapbox.com/styles/v1/geezhawk/cit35fj1h000b2xs6g75pyon7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2Vlemhhd2siLCJhIjoiY2ltcDFpY2dwMDBub3VtbTFkbWY5b3BhMSJ9.4mN7LI5CJMCDFvqkx1OJZw').addTo(map);
+map.createPane('labels');
+map.getPane('labels').style.zIndex = 650;
+map.getPane('labels').style.pointerEvents = 'none';
+
+var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+
+/* add labels */
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels', attribution: cartodbAttribution}).addTo(map);
+
+/* Create base map */ 
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: cartodbAttribution}).addTo(map);
 
 /* Get shapefiles */
 function getPrecincts(cb) {
@@ -48,9 +63,8 @@ function createMap() {
   $('.filter[data-filter="all"]').attr('class', 'filter-selected');
 
   // Default to display all precincts without any filtering
-  geojsonLayer.addTo(map);
+  geojson.addTo(map);
   updateSummary('all');
-
 
   // Add event listeners to filter precincts by certain criteria.
   $('.filter, .filter-selected').each(function() {
@@ -58,7 +72,7 @@ function createMap() {
       // Update the layers on the map
       selectedBucket= this.dataset.filter;
 
-      geojsonLayer.eachLayer(function (layer) {
+      geojson.eachLayer(function (layer) {
         var layerParty = layer.feature.properties.party;
         var layerRace = layer.feature.properties.race;
         var layerIncome = layer.feature.properties.median_income;
@@ -90,14 +104,14 @@ function setColor(party) {
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
-      style.stroke = 'red';
+      style.stroke = 'grey';
       style.opacity = .3;
       style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
-      style.stroke = 'blue';
+      style.stroke = 'grey';
       style.opacity = .3;
       style.weight = 1;
       break;
@@ -109,31 +123,23 @@ function setColor(party) {
 
 /* generate a geoJson layer from the data and add event listeners. */
 function generateLayers() {
-  geojsonLayer = L.geoJson(features, {
-      onEachFeature: onEachFeature, 
+  geojson = L.geoJson(features, {
+      onEachFeature: onEachFeature,
       style: function(feature) { 
-        var style = {stroke: false};
+        var style = {stroke: 'grey', fillOpacity: .3, opacity: .3, weight: 1};
         switch (feature.properties.party) {
           case 'Republican': {
             style.fillColor = 'red';
-            style.stroke = 'grey';
-            style.opacity = .2;
-            style.weight = 1;
             break;
           }
           case 'Democrat': {
             style.fillColor = 'blue';
-            style.stroke = 'grey';
-            style.opacity = .2;
-            style.weight = 1;
             break;
           }
         };
         return style;
       }
-    }
-  );
-
+  });
 
   // Add event handlers to precinct layers
   function onEachFeature(feature, layer) {
@@ -167,7 +173,7 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      stroke: 'grey',
+      color: 'grey',
       opacity: .2,
       weight: 1
     })
@@ -250,5 +256,4 @@ function onPlaceChanged() {
 /* Finally, run main function to generate the map */
 initInput();
 getPrecincts(addPrecincts);
-
 
