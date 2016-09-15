@@ -20,8 +20,8 @@ map.setView({ lat: 33, lng: -88}, 4)
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
 map.createPane('labels');
-//map.getPane('labels').style.zIndex = 650;
-//map.getPane('labels').style.pointerEvents = 'none';
+map.getPane('labels').style.zIndex = 650;
+map.getPane('labels').style.pointerEvents = 'none';
 
 var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
 
@@ -259,6 +259,6 @@ function onPlaceChanged() {
 }
 
 /* Finally, run main function to generate the map */
-//initInput();
-//getPrecincts(addPrecincts);
+initInput();
+getPrecincts(addPrecincts);
 
