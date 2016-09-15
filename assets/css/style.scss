@@ -35,9 +35,15 @@ $gray-bg: #e7e7e7;
 /********
 Begin map
 *********/
-
+#jumbotron {
+  width: 1200px;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+}
 
 #map {
+  float: left;
   height: 800px;
   width: 800px;
 }
@@ -61,6 +67,7 @@ Begin map
 }
 
 .candidate-table {
+  font-family: 'Boomer';
   width: 100%;
 }
 
@@ -130,46 +137,51 @@ span#timestamp {
 /* End title */
 
 /* Begin address search */
-#autocomplete {
+#search-bar {
+  margin: 20px 0px;
+}
+
+label {
+  font-family: 'Boomer';
+}
+
+#address-input {
   font-family: 'Boomer';
   box-shadow: inset 2px 3px 3px rgba(0,0,0,0.1);
   outline: none;
   width: 100%;
-  height: 36px;
   padding-right: 10px;
   font-size: 14px;
   line-height: 15px;
   border-radius: 3px;
   border: 1px #e2e2e2 solid;
+  box-sizing: border-box;
 }
 
 input {
   padding: 8px;
   font-size: .9em;
 }
-#search-bar {
-  margin-top: 20px;
-}
 /* End address search */
 
 /* Begin filter options */
 
-#filters {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
+#left {
+  padding-right: 20px;
+  float:left; 
+  width: 300px;
 }
 
 .filter, .filter-selected{
+  cursor: pointer;
   font-family: 'Boomer';
   padding: 5px;
-  display: block;
+  display: inline-block;
   text-align: center;
-  width: 50%;
-}
-
-#filter img {
-  display: block;
+  width: 40%;
+  img {
+    width: 100%;
+  }
 }
 
 .filter-title {

@@ -15,8 +15,8 @@ var interactiveLayer;
 var info;
 
 // Create map and get tiles from custom map on MapBox
-var map = L.map('map');
-map.setView({ lat: 33, lng: -88}, 4)
+var map = L.map('map', {maxZoom: 16});
+map.setView({ lat: 33.74, lng: -84.38}, 10)
 
 // Fanciness to render a pane with place labels on top of the GeoJSON layers.
 map.createPane('labels');
@@ -104,14 +104,14 @@ function setColor(party) {
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
-      style.stroke = 'red';
+      style.stroke = 'grey';
       style.opacity = .3;
       style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
-      style.stroke = 'blue';
+      style.stroke = 'grey';
       style.opacity = .3;
       style.weight = 1;
       break;
@@ -124,21 +124,16 @@ function setColor(party) {
 /* generate a geoJson layer from the data and add event listeners. */
 function generateLayers() {
   geojson = L.geoJson(features, {
+      onEachFeature: onEachFeature,
       style: function(feature) { 
-        var style = {stroke: false};
+        var style = {stroke: 'grey', fillOpacity: .3, opacity: .3, weight: 1};
         switch (feature.properties.party) {
           case 'Republican': {
             style.fillColor = 'red';
-            style.stroke = 'grey';
-            style.opacity = .2;
-            style.weight = 1;
             break;
           }
           case 'Democrat': {
             style.fillColor = 'blue';
-            style.stroke = 'grey';
-            style.opacity = .2;
-            style.weight = 1;
             break;
           }
         };
@@ -178,7 +173,7 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      stroke: 'grey',
+      color: 'grey',
       opacity: .2,
       weight: 1
     })
