@@ -6,9 +6,9 @@ export default function() {
     ['white', 'White'],
     ['black', 'Black'],
     ['hispanic', 'Hispanic'],
-    ['rich', 'Over $100,000'],
+    ['high', 'Over $100,000'],
     ['middle', '$50,000 to $100,000'],
-    ['poor', 'Under $50,000']
+    ['low', 'Under $50,000']
   ];
 
   for (var i = 0; i < buckets.length; i++) {

@@ -1,4 +1,5 @@
 // Third party libraries
+import * as d3 from 'd3';
 import * as L from 'leaflet';
 import $ from 'jquery';
 
@@ -12,10 +13,11 @@ var selectedBucket = 'all';
 var features = [];
 var geojson;
 var interactiveLayer;
-var info;
+var app;
+var infoTip;
 
 // Create map and get tiles from Carto
-var map = L.map('map', {maxZoom: 11});
+var map = L.map('map');
 map.setView({ lat: 33.74, lng: -84.38}, 10)
 
 map.createPane('labels');
@@ -34,7 +36,7 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './atl_precincts_new_fmtd.json', // can also be './atlanta-precincts.json'
+    url: './atl-final-fmtd.json', // can also be './atlanta-precincts.json'
     success: function(data) {
       cb(data)
     },
@@ -64,18 +66,19 @@ function createMap() {
 
   // Default to display all precincts without any filtering
   geojson.addTo(map);
+  app = d3.select('#map')
   updateSummary('all');
 
   // Add event listeners to filter precincts by certain criteria.
   $('.filter, .filter-selected').each(function() {
     $(this).on('click', function() {
       // Update the layers on the map
-      selectedBucket= this.dataset.filter;
+      selectedBucket = this.dataset.filter;
 
       geojson.eachLayer(function (layer) {
         var layerParty = layer.feature.properties.party;
         var layerRace = layer.feature.properties.summarized;
-        var layerIncome = layer.feature.properties.summariz_1;
+        var layerIncome = layer.feature.properties.income;
 
         if (layerRace === selectedBucket || 
         layerIncome === selectedBucket || 
@@ -158,11 +161,10 @@ function generateLayers() {
 
     layer.setStyle({
       weight: 2,
-      color: 'black',
       opacity: 1
     });
 
-    info.update(layer.feature.properties);
+    updateInfo(layer.feature.properties);
   };
 
   function zoomToFeature(e) {
@@ -173,7 +175,6 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      color: 'grey',
       opacity: .2,
       weight: 1
     })
@@ -186,55 +187,52 @@ function generateLayers() {
 
 /* Add an info box to the main map */
 function createInfo() {
-  info = L.control();
+  infoTip = d3.select('#info');
+}
 
-  info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info');
-    this.update();
-    return this._div;
-  };
-
-  info.update = function (props) {
-    try {
-      this._div.innerHTML = `
-        <h4 class="candidate-table-title">${props.NAMELSAD10}</h4>
-        <table class="candidate-table">
-          <thead>
-            <tr>
-              <th class='eln-header'>Candidates</th>
-              <th class='eln-header'>Votes</th>
-              <th class='eln-header'>Pct.</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="eln-row">
-              <td>
-                <div class="dem-party-tag"></div>
-                <span class="candidate-name">Hillary Clinton</span>
-              </td>
-              <td>586,015</td>
-              <td>35.4</td> 
-            </tr>
-            <tr class="eln-row">
-              <td>
-                <div class="gop-party-tag"></div>
-                <span class="candidate-name">Donald Trump</span>
-              </td>
-              <td>586,015</td>
-              <td>35.4</td> 
-            </tr>
-          </tbody>
-        
-        </table>
-      `;
-    }
-    catch (TypeError) {
-      console.log('no data');
-    }
-  };
-
-  info.addTo(map);
+function updateInfo(props) {
+  try {
+    infoTip.html = `
+      <h4 class="candidate-table-title">${props.NAMELSAD10}</h4>
+      <table class="candidate-table">
+        <thead>
+          <tr>
+            <th class='eln-header'>Candidates</th>
+            <th class='eln-header'>Votes</th>
+            <th class='eln-header'>Pct.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="eln-row">
+            <td>
+              <div class="dem-party-tag"></div>
+              <span class="candidate-name">Hillary Clinton</span>
+            </td>
+            <td>586,015</td>
+            <td>35.4</td> 
+          </tr>
+          <tr class="eln-row">
+            <td>
+              <div class="gop-party-tag"></div>
+              <span class="candidate-name">Donald Trump</span>
+            </td>
+            <td>586,015</td>
+            <td>35.4</td> 
+          </tr>
+        </tbody>
+      
+      </table>
+    `;
+  }
+  catch (TypeError) {
+    infoTip.html = '<h1>Hover over a precinct to see details</h1>'
+  }
 };
+
+function updateLocation() {
+  infoTip.style('left', d3.event.pageX + 'px')
+  infoTip.style('top', d3.event.pageY + 'px')
+}
 
 
 /* Add event listeners to autocomplete input field and query Google
