@@ -2,7 +2,7 @@
 import * as L from 'leaflet';
 import $ from 'jquery';
 
-// Local module imports
+// Local modules
 import updateSummary from './summary';
 import makeFilters from './filters';
 
@@ -14,11 +14,10 @@ var geojson;
 var interactiveLayer;
 var info;
 
-// Create map and get tiles from custom map on MapBox
-var map = L.map('map', {maxZoom: 16});
+// Create map and get tiles from Carto
+var map = L.map('map', {maxZoom: 11});
 map.setView({ lat: 33.74, lng: -84.38}, 10)
 
-// Fanciness to render a pane with place labels on top of the GeoJSON layers.
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 650;
 map.getPane('labels').style.pointerEvents = 'none';
@@ -35,7 +34,7 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './atlanta-precincts.json',
+    url: './atl_precincts_new_fmtd.json', // can also be './atlanta-precincts.json'
     success: function(data) {
       cb(data)
     },
@@ -51,6 +50,7 @@ function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
+  console.log(features);
   generateLayers();
   createMap();
 }
@@ -74,8 +74,8 @@ function createMap() {
 
       geojson.eachLayer(function (layer) {
         var layerParty = layer.feature.properties.party;
-        var layerRace = layer.feature.properties.race;
-        var layerIncome = layer.feature.properties.median_income;
+        var layerRace = layer.feature.properties.summarized;
+        var layerIncome = layer.feature.properties.summariz_1;
 
         if (layerRace === selectedBucket || 
         layerIncome === selectedBucket || 
@@ -240,7 +240,7 @@ function createInfo() {
 /* Add event listeners to autocomplete input field and query Google
  * Places API */
 function initInput() {
-  var input = document.getElementById('autocomplete');
+  var input = document.getElementById('address-input');
   var options = {types: ['address']}
   autocomplete = new google.maps.places.Autocomplete(input, options);
 
