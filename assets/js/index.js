@@ -163,6 +163,7 @@ function generateLayers() {
     });
 
     updateInfo(layer.feature.properties);
+    $infoTip.show();
   };
 
   function zoomToFeature(e) {
@@ -170,6 +171,7 @@ function generateLayers() {
   };
 
   function resetStyle(e) {
+    $infoTip.hide();
     var layer = e.target;
 
     layer.setStyle({
@@ -187,8 +189,9 @@ function generateLayers() {
 function createInfo() {
   $infoTip = $('#info');
   $('#map').bind('mousemove', function(e) {
-    $infoTip.css({left: e.pageX - 150, top: e.pageY - 175})
+    $infoTip.css({left: e.pageX - 150, top: e.pageY + 20})
   })
+  $infoTip.hide();
 }
 
 function updateInfo(props) {
