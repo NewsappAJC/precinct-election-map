@@ -38,7 +38,7 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './atl-final-fmtd.json', // can also be './atlanta-precincts.json'
+    url: './2014_precincts_income_race.json', // can also be './atlanta-precincts.json'
     success: function(data) {
       cb(data)
     },
@@ -81,8 +81,20 @@ function createMap() {
 
       geojson.eachLayer(function (layer) {
         var layerParty = layer.feature.properties.party;
-        var layerRace = layer.feature.properties.summarized;
-        var layerIncome = layer.feature.properties.income;
+        var layerRace = layer.feature.properties.income_rac;
+
+        var layerIncome;
+        var income = layer.feature.properties.income_r_1;
+
+        if (income < 50000) {
+          layerIncome = 'low';
+        }
+        else if (income < 100000) {
+          layerIncome = 'middle';
+        }
+        else if (income > 100000) {
+          layerIncome = 'high'
+        }
 
         if (layerRace === selectedBucket || 
         layerIncome === selectedBucket || 
