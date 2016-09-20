@@ -71,6 +71,7 @@ function createMap() {
   updateSummary('all');
   $loading.hide();
   $map.show();
+  map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
 
   // Add event listeners to filter precincts by certain criteria.
   $('.filter, .filter-selected').each(function() {

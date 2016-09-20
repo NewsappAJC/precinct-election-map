@@ -1,7 +1,11 @@
 import $ from 'jquery';
 
 export default function(filter) {
+  var $table = $('#results-summary-table');
+  var $title = $('#results-summary-title');
+
   var map = [
+    ['all', 'Atlanta Results'],
     ['white', 'at least 50% white population'],
     ['black', 'at least 50% black population'],
     ['hispanic', 'at least 50% Hispanic population'],
@@ -10,16 +14,20 @@ export default function(filter) {
     ['poor', 'an average income below $50,000']
   ];
 
-  $('#results-summary-title').empty();
-  $('#results-summary-title').append(`Atlanta results`);
+  $title.empty();
 
   map.forEach((el) => {
     if (el[0] === filter) {
-      $('#results-summary-title').empty();
-      $('#results-summary-title').append(`Results in areas with ${el[1]}.`);
+      $title.empty();
+      if (filter === 'all') {
+        $title.append(`Atlanta results`);
+      }
+      else {
+        $title.append(`Results in areas with ${el[1]}.`);
+      }
 
-      $('#results-summary-table').empty();
-      $('#results-summary-table').append(`
+      $table.empty();
+      $table.append(`
         <table class="candidate-table">
           <thead>
             <tr>
