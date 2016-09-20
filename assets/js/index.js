@@ -125,14 +125,14 @@ function setColor(party) {
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
-      style.stroke = 'grey';
+      style.stroke = '#CCCCCC';
       style.opacity = .3;
       style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
-      style.stroke = 'grey';
+      style.color = '#CCCCCC';
       style.opacity = .3;
       style.weight = 1;
       break;
@@ -147,7 +147,7 @@ function generateLayers() {
   geojson = L.geoJson(features, {
       onEachFeature: onEachFeature,
       style: function(feature) { 
-        var style = {stroke: 'grey', fillOpacity: .3, opacity: .3, weight: 1};
+        var style = {color: '#2E64FE', fillOpacity: .3, opacity: .5, weight: 1};
         switch (feature.properties.party) {
           case 'Republican': {
             style.fillColor = 'red';
@@ -179,7 +179,8 @@ function generateLayers() {
 
     layer.setStyle({
       weight: 2,
-      opacity: 1
+      opacity: 1,
+      color: 'black'
     });
 
     updateInfo($infoTip, layer.feature.properties);
@@ -195,8 +196,9 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      opacity: .2,
-      weight: 1
+      opacity: .5,
+      weight: 1,
+      color: '#2E64FE'
     })
   }
   /**********************
