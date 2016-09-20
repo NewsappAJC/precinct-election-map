@@ -67,11 +67,8 @@ Begin map
 }
 
 /* Begin candidate summary table style */
-#info {
+.info {
   display: none;
-  pointer-events: none;
-  position: absolute;
-  width: 200px;
   padding: 6px 8px;
   font-family: 'Boomer';
   font-size: .8em;
@@ -79,6 +76,20 @@ Begin map
   box-shadow: 5px 5px 5px rgba(0,0,0,.8);
   border-radius: 5px;
   z-index: 999999;
+}
+
+.follow {
+  pointer-events: none;
+  position: absolute;
+  width: 200px;
+}
+
+.fixed-bottom {
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  height: 200px;
 }
 
 #results-summary-table {

@@ -14,11 +14,15 @@ var autocomplete,
   geojson,
   interactiveLayer,
   app,
-  $infoTip = $('#info'),
+  $infoTip = $($('.info')[0]),
   $loading = $('#loading'),
   $map = $('#map');
 
+console.log($infoTip)
+
 $map.hide(); // Map is hidden until it's done loading
+
+toggleMobile();
 
 // Create map and get tiles from Carto
 var map = L.map('map');
@@ -125,14 +129,12 @@ function setColor(party) {
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
-      style.stroke = '#CCCCCC';
       style.opacity = .3;
       style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
-      style.color = '#CCCCCC';
       style.opacity = .3;
       style.weight = 1;
       break;
@@ -210,9 +212,29 @@ function generateLayers() {
 /* Add an info box to the main map */
 function createInfo() {
   $('#map').bind('mousemove', function(e) {
-    $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
+    if ($(window).width() > 1200) {
+      $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
+    }
   })
   $infoTip.hide();
+
+  $(window).resize(function() {
+    $infoTip.hide();
+    toggleMobile();
+  });
+};
+
+function toggleMobile() {
+  if ($(window).width() < 1200) {
+    $infoTip.css({left: '', top: ''}); // Fix css styles added by mousemove event handler
+    $infoTip.toggleClass('fixed-bottom', true);
+    $infoTip.toggleClass('follow', false);
+    $infoTip.show();
+  }
+  else {
+    $infoTip.toggleClass('fixed-bottom', false);
+    $infoTip.toggleClass('follow', true);
+  }
 }
 
 
