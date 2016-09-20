@@ -38,14 +38,16 @@ $gray-bg: #e7e7e7;
 Begin map
 *********/
 #jumbotron {
-  width: 1200px;
+  max-width: 1200px;
   left: 50%;
   transform: translateX(-50%);
   position: relative;
 }
 
 #map, #loading {
-  float: left;
+  @media (min-width: 1200px) {
+    float: left;
+  }
   height: 800px;
   width: 800px;
 }
@@ -229,8 +231,11 @@ input {
 
 #left {
   padding-right: 20px;
-  float:left; 
-  width: 300px;
+  width: 100%;
+  @media (min-width: 1200px) {
+    float:left; 
+    width: 300px;
+  }
 }
 
 .filter, .filter-selected{
@@ -242,6 +247,9 @@ input {
   width: 40%;
   img {
     width: 100%;
+    @media (max-width: 1200px) {
+      display: none;
+    }
   }
 }
 
