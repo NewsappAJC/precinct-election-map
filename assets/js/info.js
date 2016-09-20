@@ -1,6 +1,8 @@
-export default function updateInfo($infoTip, props) {
+import $ from 'jquery';
+
+export default function updateInfo(props) {
   try {
-    $infoTip.html(`
+    $('#info-data').html(`
       <h4 class="tooltip-title">Precinct ${props.PRECINCT_I} (${props.COUNTY_NAM})</h4>
       <table class="tooltip-table">
         <thead class="eln-header">
@@ -33,6 +35,6 @@ export default function updateInfo($infoTip, props) {
     `);
   }
   catch (TypeError) {
-    infoTip.html = '<h1>Hover over a precinct to see details</h1>'
+    $('#info-data').html = '<h1>Hover over a precinct to see details</h1>'
   }
 };

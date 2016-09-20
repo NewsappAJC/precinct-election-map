@@ -16,7 +16,8 @@ var autocomplete,
   app,
   $infoTip = $($('.info')[0]),
   $loading = $('#loading'),
-  $map = $('#map');
+  $map = $('#map'),
+  $closeButton = $('#close-button');
 
 console.log($infoTip)
 
@@ -185,7 +186,7 @@ function generateLayers() {
       color: 'black'
     });
 
-    updateInfo($infoTip, layer.feature.properties);
+    updateInfo(layer.feature.properties);
     $infoTip.show();
   };
 
@@ -194,7 +195,9 @@ function generateLayers() {
   };
 
   function resetStyle(e) {
-    $infoTip.hide();
+    if ($(window).width() > 1200) {
+      $infoTip.hide();
+    }
     var layer = e.target;
 
     layer.setStyle({
@@ -222,16 +225,22 @@ function createInfo() {
     $infoTip.hide();
     toggleMobile();
   });
+
+  $closeButton.on('click', function() {
+    $infoTip.hide();
+  })
 };
 
 function toggleMobile() {
   if ($(window).width() < 1200) {
+    $closeButton.show();
     $infoTip.css({left: '', top: ''}); // Fix css styles added by mousemove event handler
     $infoTip.toggleClass('fixed-bottom', true);
     $infoTip.toggleClass('follow', false);
     $infoTip.show();
   }
   else {
+    $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);
   }
