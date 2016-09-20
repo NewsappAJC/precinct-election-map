@@ -5,6 +5,7 @@ import $ from 'jquery';
 // Local modules
 import updateSummary from './summary';
 import makeFilters from './filters';
+import updateInfo from './info';
 
 // Set globals
 var autocomplete,
@@ -181,7 +182,7 @@ function generateLayers() {
       opacity: 1
     });
 
-    updateInfo(layer.feature.properties);
+    updateInfo($infoTip, layer.feature.properties);
     $infoTip.show();
   };
 
@@ -207,49 +208,11 @@ function generateLayers() {
 /* Add an info box to the main map */
 function createInfo() {
   $('#map').bind('mousemove', function(e) {
-    $infoTip.css({left: e.pageX - 150, top: e.pageY + 20})
+    $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
   })
   $infoTip.hide();
 }
 
-function updateInfo(props) {
-  try {
-    $infoTip.html(`
-      <h4 class="candidate-table-title">${props.CTYSOSID}</h4>
-      <table class="candidate-table">
-        <thead>
-          <tr>
-            <th class='eln-header'>Candidates</th>
-            <th class='eln-header'>Votes</th>
-            <th class='eln-header'>Pct.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="eln-row">
-            <td>
-              <div class="dem-party-tag"></div>
-              <span class="candidate-name">Hillary Clinton</span>
-            </td>
-            <td>586,015</td>
-            <td>35.4</td> 
-          </tr>
-          <tr class="eln-row">
-            <td>
-              <div class="gop-party-tag"></div>
-              <span class="candidate-name">Donald Trump</span>
-            </td>
-            <td>586,015</td>
-            <td>35.4</td> 
-          </tr>
-        </tbody>
-      
-      </table>
-    `);
-  }
-  catch (TypeError) {
-    infoTip.html = '<h1>Hover over a precinct to see details</h1>'
-  }
-};
 
 /* Add event listeners to autocomplete input field and query Google
  * Places API */

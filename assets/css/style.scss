@@ -64,17 +64,17 @@ Begin map
   border-left: 1px solid black;
 }
 
-/* Begin candidate table style */
+/* Begin candidate summary table style */
 #info {
   display: none;
   pointer-events: none;
   position: absolute;
-  width: 300px;
+  width: 200px;
   padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
+  font-family: 'Boomer';
+  font-size: .8em;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 5px 5px 5px rgba(0,0,0,.8);
   border-radius: 5px;
   z-index: 999999;
 }
@@ -83,36 +83,39 @@ Begin map
   height: 200px;
 }
 
-.candidate-table {
+.candidate-table, .tooltip-table{
   font-family: 'Boomer';
   width: 100%;
+  tbody {
+    display: table-row-group;
+    vertical-align: middle;
+  }
+  tr.eln-row {
+    display: table-row;
+    font-family: 'Boomer';
+  }
+  tr.eln-row td {
+    border-bottom: 1px solid #e2e2e2;
+  }
+  .eln-header {
+    font-family: 'Boomer-Light';
+    text-align: left;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2e2e2;
+    font-size: .7em;
+    color: #999999;
+  }
 }
 
-tbody {
-  line-height: 1.8;
-  display: table-row-group;
-  vertical-align: middle;
-}
-
-tr.eln-row {
-  display: table-row;
-  font-family: 'Boomer';
-  font-size: .8em;
-  line-height: 30px;
-}
-
-tr.eln-row td {
-  border-bottom: 1px solid #e2e2e2;
-}
-
-.eln-header {
-  font-size: .7em;
-  font-family: 'Boomer-Light';
-  text-align: left;
-  text-transform: uppercase;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #e2e2e2;
-  color: #999999;
+.candidate-table {
+  tbody{ 
+    line-height: 1.8;
+  }
+  tr.eln-row {
+    font-size: .8em;
+    line-height: 30px;
+  }
 }
 
 .gop-party-tag, .dem-party-tag {
@@ -132,6 +135,10 @@ tr.eln-row td {
 h4.candidate-table-title {
   font-size: 1.3em;
   text-align: left;
+}
+
+h4.tooltip-title{
+  margin: 2px;
 }
 
 .participation {
