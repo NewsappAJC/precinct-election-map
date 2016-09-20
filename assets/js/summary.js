@@ -56,12 +56,8 @@ export default function(filter) {
             </tr>
           </tbody>
         </table>
-      `)
-
-      $participation.empty();
-      $participation.append(`
-          <span>${el[4]} votes</span><br>
-          <span>${el[2]} of ${el[3]} precincts reported votes</span>
+        <span class="participation">${el[4]} votes</span><br>
+        <span class="participation">${el[2]} of ${el[3]} precincts reported votes</span>
       `)
     };
   });

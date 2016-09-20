@@ -2,13 +2,13 @@ import $ from 'jquery';
 
 export default function() {
   var buckets = [
-    ['all', 'All'],
+    ['all', 'All precincts'],
     ['white', 'White'],
     ['black', 'Black'],
     ['hispanic', 'Hispanic'],
-    ['high', 'Over $100,000'],
-    ['middle', '$50,000 to $100,000'],
-    ['low', 'Under $50,000']
+    ['high', 'Over $100k'],
+    ['middle', '$50k to $100k'],
+    ['low', 'Under $50k']
   ];
 
   for (var i = 0; i < buckets.length; i++) {

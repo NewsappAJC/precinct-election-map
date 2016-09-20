@@ -79,6 +79,10 @@ Begin map
   z-index: 999999;
 }
 
+#results-summary-table {
+  height: 200px;
+}
+
 .candidate-table {
   font-family: 'Boomer';
   width: 100%;
@@ -130,13 +134,11 @@ h4.candidate-table-title {
   text-align: left;
 }
 
-#participation {
+.participation {
   font-size: .7em;
   font-family: 'Boomer';
   color: grey;
-  span {
-    line-height: 20px;
-  }
+  line-height: 20px;
 }
 
 /* End candidate table style */
@@ -168,7 +170,7 @@ span#timestamp {
 
 /* Begin address search */
 #search-bar {
-  margin: 40px 0px;
+  margin-bottom: 40px;
 }
 
 label {
@@ -215,8 +217,8 @@ input {
 }
 
 .filter-title {
-  padding: 2px 8px;
-  font-size: .9em;
+  padding: 6px 4px;
+  font-size: .8em;
   border-radius: 3px;
   color: black;
 }
