@@ -7,7 +7,7 @@ import updateSummary from './summary';
 import makeFilters from './filters';
 import updateInfo from './info';
 
-// Set globals
+// Globals
 var autocomplete,
   selectedBucket = 'all',
   features = [],
@@ -19,29 +19,28 @@ var autocomplete,
   $map = $('#map'),
   $closeButton = $('#close-button');
 
-console.log($infoTip)
-
 $map.hide(); // Map is hidden until it's done loading
+toggleMobile(); // Check size of display and show precinct information accordingly
 
-toggleMobile();
-
-// Create map and get tiles from Carto
+// Create Leaflet map and get tiles from Carto
 var map = L.map('map');
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
+// Use panes to "sandwich" GeoJSON features between map tiles and road labels
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 650;
 map.getPane('labels').style.pointerEvents = 'none';
 
+// Attribution
 var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
 
-/* add labels */
+// Labels
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {pane: 'labels', attribution: cartodbAttribution}).addTo(map);
 
-/* Create base map */ 
+// Create base map
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: cartodbAttribution}).addTo(map);
 
-/* Get shapefiles */
+// Get shapefiles
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
@@ -56,12 +55,11 @@ function getPrecincts(cb) {
 };
 
 
-/* Append precincts from .json file to list of features. */
+// Append precincts from .json file to list of features so that Leaflet can render them.
 function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
-  console.log(features);
   generateLayers();
   createMap();
 }
@@ -69,29 +67,31 @@ function addPrecincts(precincts) {
 
 /* Generate a map and a list of filter options */
 function createMap() {
-  // Render filters
+  // Render filters for demographic data like race and income
   makeFilters();
-  $('.filter[data-filter="all"]').attr('class', 'filter-selected');
 
   // Default to display all precincts without any filtering
-  geojson.addTo(map);
+  $('.filter[data-filter="all"]').attr('class', 'filter-selected');
+
+  // Add the geoJSON data to the map, hide the loading screen, and update the summary table
+  geojson.addTo(map); 
   updateSummary('all');
   $loading.hide();
   $map.show();
   map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
 
-  // Add event listeners to filter precincts by certain criteria.
+  // Add event listeners to filter precincts by the given criteria when clicked
   $('.filter, .filter-selected').each(function() {
     $(this).on('click', function() {
-      // Update the layers on the map
-      selectedBucket = this.dataset.filter;
+      selectedBucket = this.dataset.filter; // Get the filter from the data-filter attribute
 
+      // Loop through features in the geoJSON layer
       geojson.eachLayer(function (layer) {
-        var layerParty = layer.feature.properties.party;
-        var layerRace = layer.feature.properties.income_rac;
+        var layerParty = layer.feature.properties.party,
+            layerRace = layer.feature.properties.income_rac,
+            layerIncome;
 
-        var layerIncome;
-        var income = layer.feature.properties.income_r_1;
+        var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
 
         if (income < 50000) {
           layerIncome = 'low';
@@ -103,8 +103,9 @@ function createMap() {
           layerIncome = 'high'
         }
 
-        if (layerRace === selectedBucket || 
-        layerIncome === selectedBucket || 
+        // Check if each precinct meets the filter criteria, and color its fill accordingly
+        if (layerRace === selectedBucket ||
+        layerIncome === selectedBucket ||
         selectedBucket === 'all') {
           layer.setStyle(setColor(layerParty));
         }
@@ -113,31 +114,28 @@ function createMap() {
         };
       });
 
-      // Update the summary table results
+      // Update the summary table results for the given filter
       updateSummary(selectedBucket);
 
-      // Unset style of all filter elements then set style of selected filter
+      // Unset style of all filter options then style selected filter
       $('.filter-selected').attr('class', 'filter')
       $(this).attr('class', 'filter-selected')
     })
   })
 
-  createInfo();
+  createInfo(); // Create the info box that displays precinct information
 };
 
+// Return an object with appropriate styles given the party results of a given precinct
 function setColor(party) {
   var style = {fillOpacity: .3};
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
-      style.opacity = .3;
-      style.weight = 1;
       break;
     }
     case 'Democrat': {
       style.fillColor = 'blue';
-      style.opacity = .3;
-      style.weight = 1;
       break;
     }
   };
@@ -145,7 +143,7 @@ function setColor(party) {
 };
 
 
-/* generate a geoJson layer from the data and add event listeners. */
+// generate a geoJson layer from the data, set initial styles, and add event listeners.
 function generateLayers() {
   geojson = L.geoJson(features, {
       onEachFeature: onEachFeature,
@@ -165,7 +163,7 @@ function generateLayers() {
       }
   });
 
-  // Add event handlers to precinct layers
+  // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
     layer.on({
       click: zoomToFeature,
@@ -181,7 +179,7 @@ function generateLayers() {
     var layer = e.target;
 
     layer.setStyle({
-      weight: 2,
+      weight: 3,
       opacity: 1,
       color: 'black'
     });
@@ -191,6 +189,7 @@ function generateLayers() {
   };
 
   function zoomToFeature(e) {
+    highlightFeature(e);
     map.fitBounds(e.target.getBounds());
   };
 
@@ -198,9 +197,8 @@ function generateLayers() {
     if ($(window).width() > 1200) {
       $infoTip.hide();
     }
-    var layer = e.target;
 
-    layer.setStyle({
+    e.target.setStyle({
       opacity: .5,
       weight: 1,
       color: '#2E64FE'
@@ -212,29 +210,36 @@ function generateLayers() {
 };
 
 
-/* Add an info box to the main map */
+// Add an info box to the main map
 function createInfo() {
+  // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
-    if ($(window).width() > 1200) {
+    if ($(window).width() > 1200) { // info box shouldn't hide on mobile unless the user clicks the close button
       $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
     }
   })
-  $infoTip.hide();
 
+  // Event handler to change display of tooltip for mobile or desktop
   $(window).resize(function() {
     $infoTip.hide();
     toggleMobile();
   });
 
+  // Only display the close button on mobile
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
+
+  $infoTip.hide(); // Don't display info tip until user mouses over or clicks on map
 };
 
+
+/* Depending on the size of the display, have tooltip follow the mouse or stick to the
+bottom of the screen. */
 function toggleMobile() {
   if ($(window).width() < 1200) {
     $closeButton.show();
-    $infoTip.css({left: '', top: ''}); // Fix css styles added by mousemove event handler
+    $infoTip.css({left: '', top: ''}); // Remove css styles added by mousemove event handler
     $infoTip.toggleClass('fixed-bottom', true);
     $infoTip.toggleClass('follow', false);
     $infoTip.show();
@@ -257,13 +262,14 @@ function initInput() {
   autocomplete.addListener('place_changed', onPlaceChanged)
 }
 
+// Pan map to the address selected by the user
 function onPlaceChanged() {
   var lat = autocomplete.getPlace().geometry.location.lat();
   var lng = autocomplete.getPlace().geometry.location.lng();
   map.setView(new L.LatLng(lat, lng), 15);
 }
 
-/* Finally, run main function to generate the map */
+// Finally, run main function to generate the map
 initInput();
 getPrecincts(addPrecincts);
 
