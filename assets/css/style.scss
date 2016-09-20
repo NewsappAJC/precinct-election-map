@@ -42,11 +42,19 @@ Begin map
   position: relative;
 }
 
-#map {
+#map, #loading {
   float: left;
   height: 800px;
   width: 800px;
 }
+
+#loading {
+  font-family: 'Boomer';
+  font-size: 3em;
+  text-align: center;
+  line-height: 800px;
+}
+
 .leaflet-interactive {
   z-index: 99999;
 }
@@ -57,6 +65,7 @@ Begin map
 
 /* Begin candidate table style */
 #info {
+  display: none;
   pointer-events: none;
   position: absolute;
   width: 300px;

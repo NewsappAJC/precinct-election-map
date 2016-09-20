@@ -7,17 +7,20 @@ import updateSummary from './summary';
 import makeFilters from './filters';
 
 // Set variables for this project
-var autocomplete;
-var selectedBucket = 'all';
-var features = [];
-var geojson;
-var interactiveLayer;
-var app;
-var $infoTip;
+var autocomplete,
+  selectedBucket = 'all',
+  features = [],
+  geojson,
+  interactiveLayer,
+  app,
+  $infoTip,
+  $loading = $('#loading'),
+  $map = $('#map');
 
 // Create map and get tiles from Carto
+$map.hide();
 var map = L.map('map');
-map.setView({ lat: 33.74, lng: -84.38}, 10)
+map.setView({ lat: 33.74, lng: -84.38}, 10);
 
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 650;
@@ -66,6 +69,8 @@ function createMap() {
   // Default to display all precincts without any filtering
   geojson.addTo(map);
   updateSummary('all');
+  $loading.hide();
+  $map.show();
 
   // Add event listeners to filter precincts by certain criteria.
   $('.filter, .filter-selected').each(function() {
@@ -195,7 +200,6 @@ function createInfo() {
 }
 
 function updateInfo(props) {
-  console.log('updating info box')
   try {
     $infoTip.html(`
       <h4 class="candidate-table-title">${props.CTYSOSID}</h4>
