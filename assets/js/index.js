@@ -6,19 +6,20 @@ import $ from 'jquery';
 import updateSummary from './summary';
 import makeFilters from './filters';
 
-// Set variables for this project
+// Set globals
 var autocomplete,
   selectedBucket = 'all',
   features = [],
   geojson,
   interactiveLayer,
   app,
-  $infoTip,
+  $infoTip = $('#info'),
   $loading = $('#loading'),
   $map = $('#map');
 
+$map.hide(); // Map is hidden until it's done loading
+
 // Create map and get tiles from Carto
-$map.hide();
 var map = L.map('map');
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
@@ -38,7 +39,7 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './2014_precincts_income_race.json', // can also be './atlanta-precincts.json'
+    url: './2014_precincts_income_race.json',
     success: function(data) {
       cb(data)
     },
@@ -205,7 +206,6 @@ function generateLayers() {
 
 /* Add an info box to the main map */
 function createInfo() {
-  $infoTip = $('#info');
   $('#map').bind('mousemove', function(e) {
     $infoTip.css({left: e.pageX - 150, top: e.pageY + 20})
   })

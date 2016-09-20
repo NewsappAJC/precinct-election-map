@@ -3,15 +3,16 @@ import $ from 'jquery';
 export default function(filter) {
   var $table = $('#results-summary-table');
   var $title = $('#results-summary-title');
+  var $participation = $('#participation');
 
   var map = [
-    ['all', 'Atlanta Results'],
-    ['white', 'at least 50% white population'],
-    ['black', 'at least 50% black population'],
-    ['hispanic', 'at least 50% Hispanic population'],
-    ['rich', 'an average income above $100,000'],
-    ['middle', 'an average income between $50,000 and $100,000'],
-    ['poor', 'an average income below $50,000']
+    ['all', 'Atlanta Results', 123, 123, '367,123'],
+    ['white', 'at least 50% white population', 123, 123, '231,412'],
+    ['black', 'at least 50% black population', 125, 126, '231,412'],
+    ['hispanic', 'at least 50% Hispanic population', 124, 128, '231,412'],
+    ['high', 'an average household income above $100,000', 120, 120, '231,412'],
+    ['middle', 'an average household income between $50,000 and $100,000', 123, 128, '231,412'],
+    ['low', 'an average household income below $50,000', 124, 128, '231,412']
   ];
 
   $title.empty();
@@ -55,6 +56,12 @@ export default function(filter) {
             </tr>
           </tbody>
         </table>
+      `)
+
+      $participation.empty();
+      $participation.append(`
+          <span>${el[4]} votes</span><br>
+          <span>${el[2]} of ${el[3]} precincts reported votes</span>
       `)
     };
   });

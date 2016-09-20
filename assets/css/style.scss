@@ -51,6 +51,7 @@ Begin map
 #loading {
   font-family: 'Boomer';
   font-size: 3em;
+  color: #CCCCCC;
   text-align: center;
   line-height: 800px;
 }
@@ -90,11 +91,19 @@ tbody {
 }
 
 tr.eln-row {
+  display: table-row;
+  font-family: 'Boomer';
+  font-size: .8em;
+  line-height: 30px;
+}
+
+tr.eln-row td {
   border-bottom: 1px solid #e2e2e2;
 }
 
 .eln-header {
-  font-size: .8em;
+  font-size: .7em;
+  font-family: 'Boomer-Light';
   text-align: left;
   text-transform: uppercase;
   padding-bottom: 4px;
@@ -119,6 +128,15 @@ tr.eln-row {
 h4.candidate-table-title {
   font-size: 1.3em;
   text-align: left;
+}
+
+#participation {
+  font-size: .7em;
+  font-family: 'Boomer';
+  color: grey;
+  span {
+    line-height: 20px;
+  }
 }
 
 /* End candidate table style */
@@ -150,7 +168,7 @@ span#timestamp {
 
 /* Begin address search */
 #search-bar {
-  margin: 20px 0px;
+  margin: 40px 0px;
 }
 
 label {
