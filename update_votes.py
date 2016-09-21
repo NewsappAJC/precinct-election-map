@@ -37,6 +37,7 @@ dems_by_income = df.groupby('income')['dem_v'].sum()
 reps_by_income = df.groupby('income')['rep_v'].sum()
 
 outd = {
+    'all': {},
     'black': {},
     'white': {},
     'hispanic': {},
@@ -49,6 +50,9 @@ for cat in outd:
     if cat in ['black', 'white', 'hispanic']:
         outd[cat]['dem_v'] = int(dems_by_race.ix[cat])
         outd[cat]['rep_v'] = int(reps_by_race.ix[cat])
+    elif cat == 'all':
+        outd[cat]['dem_v'] = int(df['dem_v'].sum())
+        outd[cat]['rep_v'] = int(df['rep_v'].sum())
     else:
         outd[cat]['dem_v'] = int(dems_by_income.ix[cat])
         outd[cat]['rep_v'] = int(reps_by_income.ix[cat])
