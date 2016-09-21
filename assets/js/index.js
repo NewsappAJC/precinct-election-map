@@ -138,7 +138,7 @@ function setColor(feature) {
       break;
     }
     case 'Democrat': {
-      style.fillColor = 'blue';
+      style.fillColor = '#2ECCFA';
       break;
     }
   };
@@ -168,6 +168,9 @@ function generateLayers() {
   * Begin helper functions 
   ************************/
   function highlightFeature(e) {
+    geojson.eachLayer(function (layer) {
+      layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
+    })
     var layer = e.target;
 
     layer.setStyle({
@@ -182,7 +185,9 @@ function generateLayers() {
 
   function zoomToFeature(e) {
     highlightFeature(e);
-    map.fitBounds(e.target.getBounds());
+    if ($(window).width() > 1200) { // it's distracting to zoom in on mobile
+      map.fitBounds(e.target.getBounds());
+    }
   };
 
   function resetStyle(e) {

@@ -35,6 +35,18 @@ $text-black: #121212;
 $gray-bg: #e7e7e7;
 
 /********
+Begin mixins
+********/
+
+@mixin centered {
+  left: 50%;
+  transform: translateX(-50%);
+}
+/********
+End mixins
+*********/
+
+/********
 Begin map
 *********/
 #jumbotron {
@@ -50,6 +62,9 @@ Begin map
   }
   height: 800px;
   width: 800px;
+  @media (max-width: 1200px) {
+    @include centered;
+  }
 }
 
 #loading {
@@ -71,7 +86,6 @@ Begin map
 /* Begin candidate summary table style */
 .info {
   display: none;
-  padding: 6px 8px;
   font-family: 'Boomer';
   font-size: .8em;
   background: white;
@@ -82,6 +96,7 @@ Begin map
 
 .follow {
   pointer-events: none;
+  padding: 6px 8px;
   position: absolute;
   width: 200px;
 }
@@ -95,12 +110,22 @@ Begin map
 }
 
 .fixed-bottom {
+  padding: 8px 0px;
   position: fixed;
   width: 100%;
   bottom: 0px;
   left: 0px;
   pointer-events: auto;
   z-index:99999;
+  #info-holder {
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-width: 800px;
+    background-color: white;
+    @include centered;
+  }
 }
 
 #results-summary-table {
