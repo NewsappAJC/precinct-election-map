@@ -88,8 +88,7 @@ function createMap() {
 
       // Loop through features in the geoJSON layer
       geojson.eachLayer(function (layer) {
-        var layerParty = layer.feature.properties.party,
-            layerRace = layer.feature.properties.income_rac,
+          var layerRace = layer.feature.properties.income_rac,
             layerIncome;
 
         var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
@@ -108,7 +107,7 @@ function createMap() {
         if (layerRace === selectedBucket ||
         layerIncome === selectedBucket ||
         selectedBucket === 'all') {
-          layer.setStyle(setColor(layerParty));
+          layer.setStyle(setColor(layer.feature));
         }
         else {
           layer.setStyle({fillOpacity: 0});
@@ -128,8 +127,11 @@ function createMap() {
 };
 
 // Return an object with appropriate styles given the party results of a given precinct
-function setColor(party) {
-  var style = {fillOpacity: .3};
+function setColor(feature) {
+  var style = {color: '#2E64FE', fillOpacity: .3, opacity: .5, weight: 1};
+
+  var party = feature.properties.rep_v > feature.properties.dem_v ? 'Republican' : 'Democrat';
+
   switch (party) {
     case 'Republican': {
       style.fillColor = 'red';
@@ -149,18 +151,7 @@ function generateLayers() {
   geojson = L.geoJson(features, {
       onEachFeature: onEachFeature,
       style: function(feature) { 
-        var style = {color: '#2E64FE', fillOpacity: .3, opacity: .5, weight: 1};
-        switch (feature.properties.party) {
-          case 'Republican': {
-            style.fillColor = 'red';
-            break;
-          }
-          case 'Democrat': {
-            style.fillColor = 'blue';
-            break;
-          }
-        };
-        return style;
+        return setColor(feature)
       }
   });
 
