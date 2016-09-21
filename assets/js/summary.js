@@ -5,6 +5,7 @@ import $ from 'jquery';
 import updateSummary from './table-generator';
 
 export default function(filter) {
+  /*
   var buckets = [
     {'all', 'Atlanta Results', 123, 123, '367,123'],
     {'white', 'at least 50% white population', 123, 123, '231,412'],
@@ -14,8 +15,8 @@ export default function(filter) {
     {'middle', 'an average household income between $50,000 and $100,000', 123, 128, '231,412'],
     ['low', 'an average household income below $50,000', 124, 128, '231,412']
   ];
-
-  $title.empty();
+  */
+  updateSummary('#results-summary-table', bucket);
 
   buckets.forEach((bucket) => {
     if (bucket[0] === filter) {
@@ -28,7 +29,6 @@ export default function(filter) {
         $title.append(`Results in areas with ${el[1]}.`);
       }
       */
-      updateSummary('#results-summary-table', bucket);
     };
   });
 };

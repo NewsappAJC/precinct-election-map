@@ -13,6 +13,7 @@ var autocomplete,
   features = [],
   geojson,
   interactiveLayer,
+  aggStats,
   $infoTip = $($('.info')[0]),
   $loading = $('#loading'),
   $map = $('#map'),
@@ -53,6 +54,23 @@ function getPrecincts(cb) {
   });
 };
 
+// Get aggregate data
+function getAggregatedData(cb) {
+  $.ajax({
+    dataType: 'json',
+    url: './aggregated_stats.json',
+    success: function(data) {
+      cb(data)
+    },
+    failure: function() {
+      console.log('failed to get precincts.');
+    }
+  });
+}
+
+getAggregatedData(function (data) {
+  aggStats = data;
+});
 
 // Append precincts from .json file to list of features so that Leaflet can render them.
 function addPrecincts(precincts) {
@@ -75,7 +93,7 @@ function createMap() {
 
   // Add the geoJSON data to the map, hide the loading screen, and update the summary table
   geojson.addTo(map); 
-  updateSummary('all');
+  updateInfo('#results-summary-table','all');
   $loading.hide();
   $map.show();
   map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
@@ -114,7 +132,7 @@ function createMap() {
       });
 
       // Update the summary table results for the given filter
-      updateSummary(selectedBucket);
+      updateInfo('#results-summary-table', aggStats[selectedBucket]);
 
       // Unset style of all filter options then style selected filter
       $('.filter-selected').attr('class', 'filter')
@@ -178,7 +196,7 @@ function generateLayers() {
       color: 'black'
     });
 
-    $('#info').append(`<h4 class="eln-title">Precinct ${props.PRECINCT_I} (${props.COUNTY_NAM})</h4>`)
+    $('#info').append(`<h4 class="eln-title">Precinct ${layer.feature.properties.PRECINCT_I} (${layer.feature.properties.COUNTY_NAM})</h4>`)
     updateInfo('#info-data', layer.feature.properties);
     $infoTip.show();
   };

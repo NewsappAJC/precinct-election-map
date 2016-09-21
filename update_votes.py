@@ -54,4 +54,4 @@ for cat in outd:
         outd[cat]['rep_v'] = int(reps_by_income.ix[cat])
 
 out_frame = pd.DataFrame(outd)
-out_frame.to_json('cooltimes.json')
+out_frame.to_json('assets/data/aggregated_stats.json')
