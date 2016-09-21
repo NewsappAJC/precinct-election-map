@@ -98,6 +98,35 @@ Begin map
   z-index: 999999;
 }
 
+#results-summary {
+  margin-bottom: 30px;
+}
+
+#results-summary-table {
+  font-family: 'Boomer';
+  font-size: .8em;
+  background: white;
+}
+
+.eln-table {
+  border-collapse: collapse;
+  width: 100%;
+  tbody {
+    display: table-row-group;
+  }
+  th {
+    border-bottom: 1px solid #e2e2e2;
+    text-align: left;
+  }
+  tr.eln-row {
+    display: table-row;
+    line-height: 30px;
+  }
+  td {
+    border-bottom: 1px solid #e2e2e2;
+  }
+}
+
 .follow {
   pointer-events: none;
   padding: 6px 8px;
@@ -129,45 +158,6 @@ Begin map
     max-width: 800px;
     background-color: white;
     @include centered;
-  }
-}
-
-#results-summary-table {
-  height: 180px;
-}
-
-.candidate-table, .tooltip-table{
-  font-family: 'Boomer';
-  width: 100%;
-  tbody {
-    display: table-row-group;
-    vertical-align: middle;
-  }
-  tr.eln-row {
-    display: table-row;
-    font-family: 'Boomer';
-  }
-  tr.eln-row td {
-    border-bottom: 1px solid #e2e2e2;
-  }
-  .eln-header {
-    font-family: 'Boomer-Light';
-    text-align: left;
-    text-transform: uppercase;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #e2e2e2;
-    font-size: .7em;
-    color: #999999;
-  }
-}
-
-.candidate-table {
-  tbody{ 
-    line-height: 1.8;
-  }
-  tr.eln-row {
-    font-size: .8em;
-    line-height: 30px;
   }
 }
 

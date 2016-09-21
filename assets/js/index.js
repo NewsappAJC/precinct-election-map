@@ -3,7 +3,6 @@ import * as L from 'leaflet';
 import $ from 'jquery';
 
 // Local modules
-import updateSummary from './summary';
 import makeFilters from './filters';
 import updateInfo from './table-generator';
 
@@ -93,6 +92,7 @@ function createMap() {
 
   // Add the geoJSON data to the map, hide the loading screen, and update the summary table
   geojson.addTo(map); 
+  updateTitle('all')
   updateInfo('#results-summary-table','all');
   $loading.hide();
   $map.show();
@@ -132,6 +132,7 @@ function createMap() {
       });
 
       // Update the summary table results for the given filter
+      updateTitle(selectedBucket)
       updateInfo('#results-summary-table', aggStats[selectedBucket]);
 
       // Unset style of all filter options then style selected filter
@@ -141,6 +142,23 @@ function createMap() {
   })
 
   createInfo(); // Create the info box that displays precinct information
+};
+
+function updateTitle(feature) {
+  var buckets = {
+    'white': 'at least 50% white population',
+    'black': 'at least 50% black population',
+    'hispanic': 'at least 50% Hispanic population',
+    'high': 'an average household income above $100,000',
+    'middle': 'an average household income between $50,000 and $100,000',
+    'low': 'an average household income below $50,000'
+  };
+  if (feature === 'all') {
+    $('#results-summary-title').html(`Atlanta results`)
+  }
+  else {
+    $('#results-summary-title').html(`Results in precincts with ${buckets[feature]}`)
+  }
 };
 
 // Return an object with appropriate styles given the party results of a given precinct
