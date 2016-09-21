@@ -5,7 +5,7 @@ import $ from 'jquery';
 // Local modules
 import updateSummary from './summary';
 import makeFilters from './filters';
-import updateInfo from './info';
+import updateInfo from './tooltip';
 
 // Globals
 var autocomplete,
@@ -60,6 +60,7 @@ function addPrecincts(precincts) {
   $(precincts).each(function(key, feature) {
     features.push(feature);
   });
+  console.log(features);
   generateLayers();
   createMap();
 }

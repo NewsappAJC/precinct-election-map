@@ -238,6 +238,12 @@ input {
   }
 }
 
+#filters {
+  @media (max-width: 1200px) {
+    margin-bottom: 20px;
+  }
+}
+
 .filter, .filter-selected{
   cursor: pointer;
   font-family: 'Boomer';
@@ -245,6 +251,9 @@ input {
   display: inline-block;
   text-align: center;
   width: 40%;
+  @media (max-width: 1200px) {
+    width: 100px;
+  }
   img {
     width: 100%;
     @media (max-width: 1200px) {
