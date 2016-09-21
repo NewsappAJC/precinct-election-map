@@ -5,7 +5,7 @@ import $ from 'jquery';
 // Local modules
 import updateSummary from './summary';
 import makeFilters from './filters';
-import updateInfo from './tooltip';
+import updateInfo from './table-generator';
 
 // Globals
 var autocomplete,
@@ -13,7 +13,6 @@ var autocomplete,
   features = [],
   geojson,
   interactiveLayer,
-  app,
   $infoTip = $($('.info')[0]),
   $loading = $('#loading'),
   $map = $('#map'),
@@ -179,7 +178,8 @@ function generateLayers() {
       color: 'black'
     });
 
-    updateInfo(layer.feature.properties);
+    $('#info').append(`<h4 class="eln-title">Precinct ${props.PRECINCT_I} (${props.COUNTY_NAM})</h4>`)
+    updateInfo('#info-data', layer.feature.properties);
     $infoTip.show();
   };
 

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export default function(props) {
+export default function(el, props) {
   try {
     var totalVotes = props.dem_v + props.rep_v;
 
@@ -29,9 +29,8 @@ export default function(props) {
       loser = getCandResults('dem', props.dem_v)
     }
 
-    $('#info-data').html(`
-      <h4 class="tooltip-title">Precinct ${props.PRECINCT_I} (${props.COUNTY_NAM})</h4>
-      <table class="tooltip-table">
+    $(el).html(`
+      <table class="eln-table">
         <thead class="eln-header">
           <tr>
             <th>Candidates</th>
