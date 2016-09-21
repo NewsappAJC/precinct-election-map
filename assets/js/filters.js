@@ -7,7 +7,7 @@ export default function() {
     ['black', 'Black'],
     ['hispanic', 'Hispanic'],
     ['high', 'Over $100k'],
-    ['middle', '$50k to $100k'],
+    ['mid', '$50k to $100k'],
     ['low', 'Under $50k']
   ];
 

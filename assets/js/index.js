@@ -93,7 +93,7 @@ function createMap() {
   // Add the geoJSON data to the map, hide the loading screen, and update the summary table
   geojson.addTo(map); 
   updateTitle('all')
-  updateInfo('#results-summary-table','all');
+  updateInfo('#results-summary-table', aggStats['all']);
   $loading.hide();
   $map.show();
   map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
@@ -114,7 +114,7 @@ function createMap() {
           layerIncome = 'low';
         }
         else if (income < 100000) {
-          layerIncome = 'middle';
+          layerIncome = 'mid';
         }
         else if (income > 100000) {
           layerIncome = 'high'
@@ -150,7 +150,7 @@ function updateTitle(feature) {
     'black': 'at least 50% black population',
     'hispanic': 'at least 50% Hispanic population',
     'high': 'an average household income above $100,000',
-    'middle': 'an average household income between $50,000 and $100,000',
+    'mid': 'an average household income between $50,000 and $100,000',
     'low': 'an average household income below $50,000'
   };
   if (feature === 'all') {
