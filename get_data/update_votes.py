@@ -30,9 +30,9 @@ df.to_csv('data_w_votes.csv')
 # END HELPER FUNCTIONS
 
 # Calculate aggregated stats for summary table
-
-race = df.groupby('race')[['rep_v', 'dem_v']].sum().transpose() # Transpose so that you can join frames on indices
+race = df.groupby('race')[['rep_v', 'dem_v']].sum().transpose() # Transpose so that you can join frames on vote category
 income = df.groupby('income')[['rep_v', 'dem_v']].sum().transpose()
 merged = race.merge(income, left_index=True, right_index=True)
+merged['all'] = merged.apply(lambda x: x['white'] + x['black'] + x['hispanic'] + x['high'] + x['mid'] + x['low'], axis=1)
 
 merged.to_json('../assets/data/aggregated_stats.json')
