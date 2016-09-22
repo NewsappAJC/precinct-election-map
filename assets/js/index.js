@@ -16,7 +16,8 @@ var autocomplete,
   $infoTip = $('#info'),
   $loading = $('#loading'),
   $map = $('#map'),
-  $closeButton = $('#close-button');
+  $closeButton = $('#close-button'),
+  $selectBox = $('#filters-selector-holder');
 
 $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
@@ -105,48 +106,55 @@ function createMap() {
   // Add event listeners to filter precincts by the given criteria when clicked
   $('.filter, .filter-selected').each(function() {
     $(this).on('click', function() {
-      selectedBucket = this.dataset.filter; // Get the filter from the data-filter attribute
-
-      // Loop through features in the geoJSON layer
-      geojson.eachLayer(function (layer) {
-          var layerRace = layer.feature.properties.income_rac,
-            layerIncome;
-
-        var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
-
-        if (income < 50000) {
-          layerIncome = 'low';
-        }
-        else if (income < 100000) {
-          layerIncome = 'mid';
-        }
-        else if (income > 100000) {
-          layerIncome = 'high'
-        }
-
-        // Check if each precinct meets the filter criteria, and change its fill color accordingly
-        if (layerRace === selectedBucket ||
-        layerIncome === selectedBucket ||
-        selectedBucket === 'all') {
-          layer.setStyle(setColor(layer.feature));
-        }
-        else {
-          layer.setStyle({fillOpacity: 0});
-        };
-      });
-
-      // Update the summary table results for the given filter
-      updateTitle(selectedBucket);
-      updateInfo('#results-summary-table', aggStats[selectedBucket]);
-
-      // Unset style of all filter options then style selected filter
-      $('.filter-selected').attr('class', 'filter')
-      $(this).attr('class', 'filter-selected')
-    })
+      updateFilter(this.dataset.filter);
+    });
+  })
+  $('#filters-selector').change(function() {
+    updateFilter($(this).val());
   })
 
   createInfo(); // Create the info box that displays precinct information
 }; 
+
+function updateFilter(filter) {
+  selectedBucket = filter; // Get the filter from the data-filter attribute
+
+  // Loop through features in the geoJSON layer
+  geojson.eachLayer(function (layer) {
+      var layerRace = layer.feature.properties.income_rac,
+        layerIncome;
+
+    var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
+
+    if (income < 50000) {
+      layerIncome = 'low';
+    }
+    else if (income < 100000) {
+      layerIncome = 'mid';
+    }
+    else if (income > 100000) {
+      layerIncome = 'high'
+    }
+
+    // Check if each precinct meets the filter criteria, and change its fill color accordingly
+    if (layerRace === selectedBucket ||
+    layerIncome === selectedBucket ||
+    selectedBucket === 'all') {
+      layer.setStyle(setColor(layer.feature));
+    }
+    else {
+      layer.setStyle({fillOpacity: 0});
+    };
+  });
+
+  // Update the summary table results for the given filter
+  updateTitle(selectedBucket);
+  updateInfo('#results-summary-table', aggStats[selectedBucket]);
+
+  // Unset style of all filter options then style selected filter
+  $('.filter-selected').attr('class', 'filter')
+  $(this).attr('class', 'filter-selected')
+}
 
 // Set the title of summary table
 function updateTitle(feature) {
@@ -276,13 +284,19 @@ function createInfo() {
 bottom of the screen. */
 function toggleMobile() {
   if ($(window).width() < 1200) {
+    $('#filters').hide(); // Instead of showing filter options as boxes, display as select box
+    $selectBox.show();
     $closeButton.show();
+
+    // Configure infotip
     $infoTip.css({left: '', top: ''}); // Remove css styles added by mousemove event handler
     $infoTip.toggleClass('fixed-bottom', true);
     $infoTip.toggleClass('follow', false);
     $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
   }
   else {
+    $('#filters').show(); 
+    $selectBox.hide();
     $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);

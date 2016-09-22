@@ -12,14 +12,19 @@ export default function() {
   ];
 
   for (var i = 0; i < buckets.length; i++) {
-    $('#filters').append(
-      `<a class="filter" data-filter=${buckets[i][0]}>
+    // Append to selector that appears on desktop
+    $('#filters').append(`
+      <a class="filter" data-filter=${buckets[i][0]}>
         <img src="./img/map.png"/>
         <span class="filter-title">
           ${buckets[i][1]}
         </span>
       </a>
-      `
-    )
+    `)
+
+    // Append to selector that displays on mobile.
+    $('#filters-selector').append(`
+        <option value="${buckets[i][0]}">${buckets[i][1]}</option>
+    `)
   }
 }

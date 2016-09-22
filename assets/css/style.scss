@@ -56,15 +56,20 @@ Begin map
   position: relative;
 }
 
-#map {
+#map-box {
+  position: relative;
+  width: 800px;
   @media (min-width: 1200px) {
     float: left;
   }
-  height: 800px;
-  width: 800px;
   @media (max-width: 1200px) {
     @include centered;
   }
+}
+
+#map {
+  height: 800px;
+  width: 100%;
 }
 
 #loading {
@@ -93,7 +98,6 @@ Begin map
   font-family: 'Boomer';
   font-size: .8em;
   background: white;
-  box-shadow: 5px 5px 5px rgba(0,0,0,.8);
   border-radius: 5px;
   z-index: 999999;
 }
@@ -132,6 +136,7 @@ Begin map
 }
 
 .follow {
+  box-shadow: 5px 5px 5px rgba(0,0,0,.8);
   pointer-events: none;
   padding: 6px 8px;
   position: absolute;
@@ -150,7 +155,6 @@ Begin map
 }
 
 .fixed-bottom {
-  padding: 8px 8px;
   position: fixed;
   width: 100%;
   bottom: 0px;
@@ -158,6 +162,7 @@ Begin map
   pointer-events: auto;
   z-index:99999;
   #info-holder {
+    box-sizing: border-box;
     padding: 10px;
     position: absolute;
     bottom: 0;
@@ -165,6 +170,7 @@ Begin map
     max-width: 800px;
     background-color: white;
     @include centered;
+    box-shadow: 0px -2px 5px rgba(0,0,0,0.5);
   }
   tr {
     line-height: 1.5;
@@ -273,6 +279,17 @@ input {
   @media (min-width: 1200px) {
     float:left; 
     width: 300px;
+  }
+}
+
+#filters-selector-holder {
+  position: relative;
+  width: 400px;
+  margin-bottom: 20px;
+  text-align: center;
+  @include centered;
+  label {
+    font-size: .8em;
   }
 }
 
