@@ -67,6 +67,9 @@ function getAggregatedData(cb) {
   });
 }
 
+getAggregatedData(function (data) {
+  aggStats = data;
+});
 
 // Append precincts from .json file to list of features so that Leaflet can render them.
 function addPrecincts(precincts) {
@@ -89,15 +92,8 @@ function createMap() {
 
   // Add the geoJSON data to the map, hide the loading screen, and update the summary table
   geojson.addTo(map); 
-
-  // Get aggregate data for summary table
-  getAggregatedData(function (data) {
-    aggStats = data;
-    console.log(aggStats)
-    updateTitle('all')
-    updateInfo('#results-summary-table', aggStats['all']);
-  });
-
+  updateTitle('all')
+  updateInfo('#results-summary-table', aggStats['all']);
   $loading.hide();
   $map.show();
   map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
@@ -124,7 +120,7 @@ function createMap() {
           layerIncome = 'high'
         }
 
-        // Check if each precinct meets the filter criteria, and change its fill color accordingly
+        // Check if each precinct meets the filter criteria, and color its fill accordingly
         if (layerRace === selectedBucket ||
         layerIncome === selectedBucket ||
         selectedBucket === 'all') {
@@ -146,17 +142,16 @@ function createMap() {
   })
 
   createInfo(); // Create the info box that displays precinct information
-}; 
+};
 
-// Set the title of summary table
 function updateTitle(feature) {
   var buckets = {
     'white': 'at least 50% white population',
     'black': 'at least 50% black population',
     'hispanic': 'at least 50% Hispanic population',
-    'high': 'a mean household income above $100,000',
-    'mid': 'a mean household income between $50,000 and $100,000',
-    'low': 'a mean household income below $50,000'
+    'high': 'an average household income above $100,000',
+    'mid': 'an average household income between $50,000 and $100,000',
+    'low': 'an average household income below $50,000'
   };
   if (feature === 'all') {
     $('#results-summary-title').html(`Atlanta results`)
@@ -226,7 +221,7 @@ function generateLayers() {
 
   function zoomToFeature(e) {
     highlightFeature(e);
-    if ($(window).width() > 1200) { // it's distracting to zoom on mobile
+    if ($(window).width() > 1200) { // it's distracting to zoom in on mobile
       map.fitBounds(e.target.getBounds());
     }
   };

@@ -70,13 +70,13 @@ Begin map
 #loading {
   position: absolute;
   width: 100%;
+  height: 100%;
   background-color: white;
   padding-top: 20px;
   font-family: 'Boomer';
-  font-size: 3em;
+  font-size: 2em;
   color: #CCCCCC;
   text-align: center;
-  line-height: 800px;
 }
 
 .leaflet-interactive {
@@ -88,7 +88,7 @@ Begin map
 }
 
 /* Begin candidate summary table style */
-.info {
+#info {
   display: none;
   font-family: 'Boomer';
   font-size: .8em;
@@ -106,22 +106,25 @@ Begin map
   font-family: 'Boomer';
   font-size: .8em;
   background: white;
+  tr {
+    line-height: 30px;
+  }
 }
 
 .eln-table {
-  table-layout: fixed;
   border-collapse: collapse;
   width: 100%;
   tbody {
     display: table-row-group;
   }
   th {
+    font-family: 'Boomer-Light';
+    color: #999999;
     border-bottom: 1px solid #e2e2e2;
     text-align: left;
   }
   tr.eln-row {
     display: table-row;
-    line-height: 30px;
   }
   td {
     border-bottom: 1px solid #e2e2e2;
@@ -133,6 +136,9 @@ Begin map
   padding: 6px 8px;
   position: absolute;
   width: 200px;
+  tr {
+    line-height: 1.5;
+  }
 }
 
 #close-button {
@@ -144,7 +150,7 @@ Begin map
 }
 
 .fixed-bottom {
-  padding: 8px 0px;
+  padding: 8px 8px;
   position: fixed;
   width: 100%;
   bottom: 0px;
@@ -160,6 +166,17 @@ Begin map
     background-color: white;
     @include centered;
   }
+  tr {
+    line-height: 1.5;
+  }
+}
+
+#metadata {
+  height: 30px;
+}
+
+#info-title, #close-button {
+  position: absolute;
 }
 
 .gop-party-tag, .dem-party-tag {
