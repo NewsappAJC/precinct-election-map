@@ -19,10 +19,10 @@ var autocomplete,
   $closeButton = $('#close-button');
 
 $map.hide(); // Map is hidden until it's done loading
-toggleMobile(); // Check size of display and show precinct information accordingly
+toggleMobile(); // Check size of display and display precinct information accordingly
 
 // Create Leaflet map and get tiles from Carto
-var map = L.map('map');
+var map = L.map('map', {minZoom: 10});
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
 // Use panes to "sandwich" GeoJSON features between map tiles and road labels
@@ -258,7 +258,7 @@ function createInfo() {
     toggleMobile();
   });
 
-  // Only display the close button on mobile
+  // Hide info tip when close button is clicked
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
@@ -275,7 +275,7 @@ function toggleMobile() {
     $infoTip.css({left: '', top: ''}); // Remove css styles added by mousemove event handler
     $infoTip.toggleClass('fixed-bottom', true);
     $infoTip.toggleClass('follow', false);
-    $infoTip.show();
+    $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
   }
   else {
     $closeButton.hide();

@@ -2,7 +2,7 @@ import random
 import json
 import pandas as pd
 
-df = pd.read_csv('income_race_precincts.csv')
+df = pd.read_csv('assets/data/income_race_precincts.csv')
 
 # HELPER FUNCTIONS
 
