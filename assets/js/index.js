@@ -107,6 +107,8 @@ function createMap() {
   $('.filter, .filter-selected').each(function() {
     $(this).on('click', function() {
       updateFilter(this.dataset.filter);
+      $('.filter-selected').attr('class', 'filter')
+      $(this).attr('class', 'filter-selected')
     });
   })
   $('#filters-selector').change(function() {
@@ -152,8 +154,6 @@ function updateFilter(filter) {
   updateInfo('#results-summary-table', aggStats[selectedBucket]);
 
   // Unset style of all filter options then style selected filter
-  $('.filter-selected').attr('class', 'filter')
-  $(this).attr('class', 'filter-selected')
 }
 
 // Set the title of summary table
