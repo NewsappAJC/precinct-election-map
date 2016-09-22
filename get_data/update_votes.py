@@ -1,8 +1,7 @@
 import random
-import json
 import pandas as pd
 
-df = pd.read_csv('assets/data/income_race_precincts.csv')
+df = pd.read_csv('../assets/data/income_race_precincts.csv')
 
 # HELPER FUNCTIONS
 
@@ -23,39 +22,17 @@ def get_income(row):
         return 'high'
 
 df['rep_v'] = df.apply(get_votes, axis=1)
-df['dem_v'] = df.apply(lambda x: ((random.random() * 500) + 1000) - x['rep_v'], axis=1)
+df['dem_v'] = df.apply(lambda x: int((random.random() * 500) + 1000) - x['rep_v'], axis=1)
 df['income'] = df.apply(get_income, axis=1)
+
+df.to_csv('data_w_votes.csv')
 
 # END HELPER FUNCTIONS
 
 # Calculate aggregated stats for summary table
 
-dems_by_race = df.groupby('race')['dem_v'].sum()
-reps_by_race = df.groupby('race')['rep_v'].sum()
+race = df.groupby('race')[['rep_v', 'dem_v']].sum().transpose() # Transpose so that you can join frames on indices
+income = df.groupby('income')[['rep_v', 'dem_v']].sum().transpose()
+merged = race.merge(income, left_index=True, right_index=True)
 
-dems_by_income = df.groupby('income')['dem_v'].sum()
-reps_by_income = df.groupby('income')['rep_v'].sum()
-
-outd = {
-    'all': {},
-    'black': {},
-    'white': {},
-    'hispanic': {},
-    'high': {},
-    'mid': {},
-    'low': {},
-}
-
-for cat in outd:
-    if cat in ['black', 'white', 'hispanic']:
-        outd[cat]['dem_v'] = int(dems_by_race.ix[cat])
-        outd[cat]['rep_v'] = int(reps_by_race.ix[cat])
-    elif cat == 'all':
-        outd[cat]['dem_v'] = int(df['dem_v'].sum())
-        outd[cat]['rep_v'] = int(df['rep_v'].sum())
-    else:
-        outd[cat]['dem_v'] = int(dems_by_income.ix[cat])
-        outd[cat]['rep_v'] = int(reps_by_income.ix[cat])
-
-out_frame = pd.DataFrame(outd)
-out_frame.to_json('assets/data/aggregated_stats.json')
+merged.to_json('../assets/data/aggregated_stats.json')
