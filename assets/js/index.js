@@ -206,7 +206,7 @@ function generateLayers() {
   // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
     layer.on({
-      click: zoomToFeature,
+      mouseup: zoomToFeature,
       mouseover: highlightFeature,
       mouseout: resetStyle
     })
@@ -261,7 +261,12 @@ function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
     if ($(window).width() > 1200) { // info box shouldn't hide on mobile unless the user clicks the close button
-      $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
+      if (e.pageY < ($(window).height() - 120)) {
+        $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
+      }
+      else {
+        $infoTip.css({left: e.pageX - 100, top: e.pageY - 120})
+      }
     }
   })
 

@@ -3,7 +3,7 @@ import pandas as pd
 
 df = pd.read_csv('../assets/data/income_race_precincts.csv')
 
-# HELPER FUNCTIONS
+# BEGIN HELPER FUNCTIONS
 
 # Random vote data for testing DO NOT USE IN PRODUCTION OBVIOUSLY.
 def get_votes(row):
@@ -21,18 +21,18 @@ def get_income(row):
     else:
         return 'high'
 
+# END HELPER FUNCTIONS
+
+# Write a csv of non-aggregated data for use in map
 df['rep_v'] = df.apply(get_votes, axis=1)
 df['dem_v'] = df.apply(lambda x: int((random.random() * 500) + 1000) - x['rep_v'], axis=1)
 df['income'] = df.apply(get_income, axis=1)
-
 df.to_csv('data_w_votes.csv')
-
-# END HELPER FUNCTIONS
 
 # Calculate aggregated stats for summary table
 race = df.groupby('race')[['rep_v', 'dem_v']].sum().transpose() # Transpose so that you can join frames on vote category
 income = df.groupby('income')[['rep_v', 'dem_v']].sum().transpose()
 merged = race.merge(income, left_index=True, right_index=True)
-merged['all'] = merged.apply(lambda x: x['white'] + x['black'] + x['hispanic'] + x['high'] + x['mid'] + x['low'], axis=1)
+merged['all'] = merged.sum(axis=1)
 
 merged.to_json('../assets/data/aggregated_stats.json')
