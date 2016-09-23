@@ -58,6 +58,7 @@ Begin map
 *********/
 #jumbotron {
   max-width: 1100px;
+  height: 100%;
   left: 50%;
   transform: translateX(-50%);
   position: relative;
@@ -100,6 +101,7 @@ Begin map
   font-size: 2em;
   color: #CCCCCC;
   text-align: center;
+  z-index: 9999;
 }
 
 .leaflet-interactive {

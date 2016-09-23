@@ -5,7 +5,7 @@
   "main": "assets/index.js",
   "scripts": {
     "serve-dev": "rimraf ./dist/dev && gulp serve",
-    "serve-prod": "rimraf ./dist/prod && python filter.py && gulp serve --production",
+    "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && python filter.py && gulp build --production",
     "deploy-staging": "gulp deploy --staging",
     "deploy-production": "gulp deploy --production"
@@ -32,6 +32,7 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-awspublish": "^3.3.0",
     "gulp-cssnano": "^2.1.2",
+    "gulp-jsonminify": "^1.0.0",
     "gulp-livereload": "^3.8.1",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",

@@ -2,6 +2,7 @@
 
 main.js
 dist/
+misc/
 
 *.map
 

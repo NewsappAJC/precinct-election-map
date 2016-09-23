@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 // Local modules
 import makeFilters from './filters';
-import updateInfo from './table-generator';
+import updateTable from './table-generator';
 
 // Globals
 var autocomplete,
@@ -44,7 +44,7 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './2014_precincts_income_race.json',
+    url: './2014_precincts_income_race_simple.min.json',
     success: function(data) {
       cb(data)
     },
@@ -96,7 +96,7 @@ function createMap() {
     aggStats = data;
     console.log(aggStats)
     updateTitle('all')
-    updateInfo('#results-summary-table', aggStats['all']);
+    updateTable('#results-summary-table', aggStats['all']);
   });
 
   $loading.hide();
@@ -116,6 +116,7 @@ function createMap() {
   })
 
   createInfo(); // Create the info box that displays precinct information
+  $infoTip.hide(); // Infotip is hidden until one of the precincts is clicked
 }; 
 
 function updateFilter(filter) {
@@ -151,7 +152,7 @@ function updateFilter(filter) {
 
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
-  updateInfo('#results-summary-table', aggStats[selectedBucket]);
+  updateTable('#results-summary-table', aggStats[selectedBucket]);
 
   // Unset style of all filter options then style selected filter
 }
@@ -206,7 +207,7 @@ function generateLayers() {
   // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
     layer.on({
-      mouseup: zoomToFeature,
+      click: zoomToFeature,
       mouseover: highlightFeature,
       mouseout: resetStyle
     })
@@ -228,7 +229,7 @@ function generateLayers() {
     });
 
     $('#info-title').html(`<span class="eln-title">Precinct ${layer.feature.properties.PRECINCT_I} (${layer.feature.properties.COUNTY_NAM})</span>`)
-    updateInfo('#info-data', layer.feature.properties);
+    updateTable('#info-data', layer.feature.properties);
     $infoTip.show();
   };
 
@@ -274,6 +275,9 @@ function createInfo() {
   $(window).resize(function() {
     $infoTip.hide();
     toggleMobile();
+    if ($(window).width() < 1200) {
+      $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
+    }
   });
 
   // Hide info tip when close button is clicked
@@ -297,7 +301,6 @@ function toggleMobile() {
     $infoTip.css({left: '', top: ''}); // Remove css styles added by mousemove event handler
     $infoTip.toggleClass('fixed-bottom', true);
     $infoTip.toggleClass('follow', false);
-    $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
   }
   else {
     $('#filters').show(); 
