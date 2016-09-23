@@ -259,6 +259,11 @@ h1#main-title {
   @media (max-width:400px) {
     font-size: 1.5em;
   }
+  img {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+  }
 }
 
 span#timestamp {
