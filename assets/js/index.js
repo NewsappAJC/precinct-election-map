@@ -23,7 +23,7 @@ $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
 
 // Create Leaflet map and get tiles from Carto
-var map = L.map('map', {minZoom: 10});
+var map = L.map('map', {minZoom: 10, scrollWheelZoom: false});
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
 // Use panes to "sandwich" GeoJSON features between map tiles and road labels
