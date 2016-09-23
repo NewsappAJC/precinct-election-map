@@ -49,8 +49,10 @@ End mixins
 /********
 Begin map
 *********/
-body {
+html, body {
   box-sizing: border-box;
+  height: 100%;
+  overflow: auto; // SO that fixed item actually stays fixed at the bottom of the screen
 }
 
 #jumbotron {
@@ -78,6 +80,12 @@ body {
 #map {
   height: 800px;
   width: 100%;
+  @media (max-width: 1200px) {
+    height: 500px;
+  }
+  @media (max-width: 400px) {
+    height: 400px;
+  }
 }
 
 #loading {
@@ -120,6 +128,9 @@ body {
   background: white;
   tr {
     line-height: 30px;
+    @media (max-width: 400px) {
+      line-height: 1.5;
+    }
   }
 }
 
@@ -170,6 +181,7 @@ body {
   pointer-events: auto;
   z-index:99999;
   #info-holder {
+    position: absolute;
     box-sizing: border-box;
     padding: 10px;
     bottom: 0;
@@ -227,10 +239,9 @@ h4.tooltip-title{
 /* Begin title */
 
 div#title-holder {
-  margin: 20px;
   text-align: center;
   position: relative;
-  width: 600px;
+  max-width: 600px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -239,12 +250,18 @@ h1#main-title {
   line-height: 1;
   font-family: 'Publico';
   font-size: 2.4em;
+  @media (max-width:400px) {
+    font-size: 1.5em;
+  }
 }
 
 span#timestamp {
   font-family: 'Boomer';
   font-size: .9em;
   text-transform: uppercase;
+  @media (max-width:400px) {
+    font-size: .7em;
+  }
 }
 
 /* End title */
@@ -252,10 +269,16 @@ span#timestamp {
 /* Begin address search */
 #search-bar {
   margin-bottom: 40px;
+  @media (max-width: 400px) {
+    margin-bottom: 15px;
+  }
 }
 
 label {
   font-family: 'Boomer';
+  @media (max-width: 400px) {
+    font-size: .8em;
+  }
 }
 
 #address-input {
@@ -367,4 +390,7 @@ input {
 #results-summary-title {
   font-size: 14px;
   font-family: 'Boomer';
+  @media (max-width: 400px) {
+    margin-bottom: 8px;
+  }
 }
