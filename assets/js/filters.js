@@ -15,7 +15,7 @@ export default function() {
     // Append to selector that appears on desktop
     $('#filters').append(`
       <a class="filter" data-filter=${buckets[i][0]}>
-        <img src="./img/map.png"/>
+        <img src="./img/all.png"/>
         <span class="filter-title">
           ${buckets[i][1]}
         </span>
