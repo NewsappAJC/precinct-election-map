@@ -36,3 +36,4 @@ merged = race.merge(income, left_index=True, right_index=True)
 merged['all'] = merged.sum(axis=1)
 
 merged.to_json('../assets/data/aggregated_stats.json')
+

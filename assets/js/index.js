@@ -6,24 +6,26 @@ import $ from 'jquery';
 import makeFilters from './filters';
 import updateTable from './table-generator';
 
-// Globals
+// DOM refs
 var autocomplete,
-  selectedBucket = 'all',
-  features = [],
-  geojson,
-  interactiveLayer,
-  aggStats,
-  $infoTip = $('#info'),
-  $loading = $('#loading'),
-  $map = $('#map'),
-  $closeButton = $('#close-button'),
-  $selectBox = $('#filters-selector-holder');
+    $infoTip = $('#info'),
+    $loading = $('#loading'),
+    $map = $('#map'),
+    $closeButton = $('#close-button'),
+    $selectBox = $('#filters-selector-holder');
+
+// State
+var selectedBucket = 'all',
+    features = [],
+    geojson,
+    interactiveLayer,
+    aggStats;
 
 $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
 
 // Create Leaflet map and get tiles from Carto
-var map = L.map('map', {minZoom: 10, scrollWheelZoom: false});
+var map = L.map('map', {minZoom: 8, scrollWheelZoom: false});
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
 // Use panes to "sandwich" GeoJSON features between map tiles and road labels
