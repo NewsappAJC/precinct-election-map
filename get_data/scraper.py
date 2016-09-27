@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Parameters
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/62848/174629/en/md_data.html?cid=30310&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/42277/113204/en/md_data.html?cid=5000&'
 DELAY = 120 # Number of milliseconds to wait before running the script again
 OUTPUT = 'data.csv' # File to write to
 
@@ -38,7 +38,17 @@ def get_precincts():
     for i in range(1, num_counties):
         county = driver.find_elements_by_css_selector('table.vts-data > tbody > tr')[i]
         links = county.find_elements_by_tag_name('a')
-        county_name = links[0].get_attribute('id')
+
+        try: 
+            county_name = links[0].get_attribute('id')
+        except IndexError:
+            continue
+
+        atl_counties = ['FULTON', 'DEKALB', 'COBB', 'CLAYTON', 'GWINNETT']
+
+        if county_name not in atl_counties:
+            continue
+
         links[1].click() # Consult README for information about why we need to navigate like this.
 
         # Wait until the new page loads

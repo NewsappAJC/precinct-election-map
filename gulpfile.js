@@ -72,7 +72,7 @@ gulp.task('sass', function(){
 });
 
 gulp.task('build-assets', function() {
-  var html = gulp.src(SRC + 'index.html')
+  var html = gulp.src(SRC + '*.html')
   .pipe(gulp.dest(ENV));
 
   var fonts = gulp.src(SRC + 'css/fonts/**/*.otf')
