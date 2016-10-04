@@ -330,12 +330,10 @@ input {
   }
 }
 
-#filters-selector-holder {
-  position: relative;
-  width: 400px;
-  margin-bottom: 20px;
+#filters-selector-holder, #counties-selector-holder {
+  display: inline-block;
+  margin: 0px 0px 20px 10px;
   text-align: center;
-  @include centered;
   label {
     font-size: .8em;
   }

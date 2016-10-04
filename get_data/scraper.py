@@ -2,6 +2,7 @@
 import datetime
 import time
 import csv
+import re
 
 # Third-party library imports
 from selenium import webdriver
@@ -11,9 +12,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Parameters
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/42277/113204/en/md_data.html?cid=5000&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/54042/149045/en/md_data.html?cid=6000&'
 DELAY = 120 # Number of milliseconds to wait before running the script again
-OUTPUT = 'data.csv' # File to write to
+OUTPUT = '/Users/jcox/Dev/election/get_data/data.csv' # File to write to
 
 # Helper functions
 def clean(string):
@@ -23,19 +24,21 @@ def clean(string):
 # Scraper #
 ###########
 
-# Create webdriver and navigate to the URL of the contest
-driver = webdriver.PhantomJS()
-driver.get(CONTEST_URL)
-assert 'Election' in driver.title # Make sure we have the right page
-
-# Get number of counties
-num_counties = len(driver.find_elements_by_css_selector('table.vts-data > tbody > tr')) - 1
-
 # Loop through counties, open detail view in a new window, and write a csv for each
 def get_precincts():
+    # Create webdriver and navigate to the URL of the contest
+    # Create a new webdriver on every loop because it's less expensive than
+    # running multiple webdrivers at the same time
+    driver = webdriver.PhantomJS()
+    driver.get(CONTEST_URL)
+    assert 'Election' in driver.title # Make sure we have the right page
+
+    # Get number of counties
+    num_counties = len(driver.find_elements_by_css_selector('table.vts-data > tbody > tr')) - 1
     data = [] # This array will hold all the data for our precinct results
 
     for i in range(1, num_counties):
+        # Get number of counties
         county = driver.find_elements_by_css_selector('table.vts-data > tbody > tr')[i]
         links = county.find_elements_by_tag_name('a')
 
@@ -43,12 +46,11 @@ def get_precincts():
             county_name = links[0].get_attribute('id')
         except IndexError:
             continue
-
-        atl_counties = ['FULTON', 'DEKALB', 'COBB', 'CLAYTON', 'GWINNETT']
-
-        if county_name not in atl_counties:
+        
+        atl_counties = ['GWINNETT', 'FULTON', 'COBB', 'CLAYTON', 'DEKALB']
+        if county_name.upper() not in atl_counties:
             continue
-
+        
         links[1].click() # Consult README for information about why we need to navigate like this.
 
         # Wait until the new page loads
@@ -67,22 +69,28 @@ def get_precincts():
 
         for row in rows[1:len(rows)-1]:
             try:
-                precinct_name = row.find_elements_by_tag_name('a')[0].get_attribute('name')
+                precinct_name = row.find_elements_by_tag_name('a')[0].get_attribute('name').upper()
+                # Deal with Gwinnett precincts having number appended before
+                #if county_name.upper() == 'GWINNETT':
+                    #precinct_name = re.sub('\d{3} ', '', precinct_name)
                 candidate_1 = row.find_elements_by_tag_name('td')[2].text
                 candidate_2 = row.find_elements_by_tag_name('td')[3].text
+                candidate_3 = row.find_elements_by_tag_name('td')[4].text
 
-                total = int(clean(row.find_elements_by_tag_name('td')[4].text))
-                assert int(clean(candidate_1)) + int(clean(candidate_2)) == total # check the math
+                total = int(clean(row.find_elements_by_tag_name('td')[5].text))
+                assert int(clean(candidate_1)) + int(clean(candidate_2)) + int(clean(candidate_3)) == total  # check the math
 
                 # If the test passes, append the data
-                data.append([precinct_name, county_name, candidate_1, candidate_2])
+                data.append([precinct_name.upper(), county_name, candidate_1, candidate_2])
 
                 print 'Adding precinct {}'.format(precinct_name)
             except IndexError:
                 print 'Skipping empty row'
                 pass
 
-        driver.get(CONTEST_URL) #Return to the main page
+        driver.get(CONTEST_URL)
+
+    driver.close()
 
     with open(OUTPUT, 'w') as f:
         print 'Writing to file {}'.format(OUTPUT)

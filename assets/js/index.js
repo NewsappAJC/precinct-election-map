@@ -12,10 +12,12 @@ var autocomplete,
     $loading = $('#loading'),
     $map = $('#map'),
     $closeButton = $('#close-button'),
-    $selectBox = $('#filters-selector-holder');
+    $filtersSelect = $('#filters-selector-holder'),
+    $countiesSelect = $('#counties-selector-holder');
 
 // State
 var selectedBucket = 'all',
+    selectedCounty = 'all',
     features = [],
     geojson,
     interactiveLayer,
@@ -116,18 +118,28 @@ function createMap() {
   $('#filters-selector').change(function() {
     updateFilter($(this).val());
   })
+  $('#counties-selector').change(function() {
+    updateFilter($(this).val());
+  })
 
   createInfo(); // Create the info box that displays precinct information
   $infoTip.hide(); // Infotip is hidden until one of the precincts is clicked
 }; 
 
 function updateFilter(filter) {
-  selectedBucket = filter; // Get the filter from the data-filter attribute
+  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb']
+  if (counties.indexOf(filter) === -1) {
+    selectedBucket = filter; // Get the filter from the data-filter attribute
+  }
+  else {
+    selectedCounty = filter;
+  }
 
   // Loop through features in the geoJSON layer
   geojson.eachLayer(function (layer) {
       var layerRace = layer.feature.properties.income_rac,
-        layerIncome;
+          layerCounty = layer.feature.properties.COUNTY_NAM,
+          layerIncome;
 
     var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
 
@@ -142,10 +154,15 @@ function updateFilter(filter) {
     }
 
     // Check if each precinct meets the filter criteria, and change its fill color accordingly
-    if (layerRace === selectedBucket ||
-    layerIncome === selectedBucket ||
-    selectedBucket === 'all') {
-      layer.setStyle(setColor(layer.feature));
+    if (layerCounty === selectedCounty.toUpperCase() || selectedCounty.toUpperCase() === 'ALL COUNTIES') {
+      if (layerRace === selectedBucket ||
+      layerIncome === selectedBucket ||
+      selectedBucket === 'all') {
+        layer.setStyle(setColor(layer.feature));
+      }
+      else {
+        layer.setStyle({fillOpacity: 0});
+      };
     }
     else {
       layer.setStyle({fillOpacity: 0});
@@ -296,7 +313,7 @@ bottom of the screen. */
 function toggleMobile() {
   if ($(window).width() < 1200) {
     $('#filters').hide(); // Instead of showing filter options as boxes, display as select box
-    $selectBox.show();
+    $filtersSelect.show();
     $closeButton.show();
 
     // Configure infotip
@@ -306,7 +323,7 @@ function toggleMobile() {
   }
   else {
     $('#filters').show(); 
-    $selectBox.hide();
+    $filtersSelect.hide();
     $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);

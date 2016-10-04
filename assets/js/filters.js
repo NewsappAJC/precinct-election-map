@@ -11,6 +11,22 @@ export default function() {
     ['low', 'Under $50k']
   ];
 
+  var counties = [
+    'All counties',
+    'Fulton',
+    'DeKalb',
+    'Clayton',
+    'Cobb',
+    'Gwinnett',
+  ]
+
+  for (var i = 0; i < counties.length; i++) {
+    // Append to counties selector
+    $('#counties-selector').append(`
+        <option value="${counties[i]}">${counties[i]}</option>
+    `)
+  }
+
   for (var i = 0; i < buckets.length; i++) {
     // Append to selector that appears on desktop
     $('#filters').append(`
@@ -22,9 +38,11 @@ export default function() {
       </a>
     `)
 
+
     // Append to selector that displays on mobile.
     $('#filters-selector').append(`
         <option value="${buckets[i][0]}">${buckets[i][1]}</option>
     `)
   }
+
 }
