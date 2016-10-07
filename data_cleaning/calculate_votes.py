@@ -1,5 +1,6 @@
 # Standard lib imports
 import os
+import re
 from glob import glob
 
 # Third-party imports
@@ -13,6 +14,15 @@ def get_income(row):
         return 'mid'
     else:
         return 'high'
+
+# Cleaning when formatting of SoS precincts is different from 
+# reapportionment office's
+def sos_clean(row):
+    subd = re.sub(r'^\d{3} (\w+)', '\g<1>', row['Precinct'])
+    return subd.upper()
+
+def reapp_clean(row):
+    return re.sub(r' \(\w+\)$', '', row['Precinct Description'])
 # End helper functions
 
 #-----------------------------------------------------#
@@ -35,9 +45,7 @@ def merge_votes():
         # We're only interested in the total votes for each candidate
         df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
 
-        # Data cleaning because counties like to have different names
-        if 'gwinnett' in f:
-            df['Precincts'] = df.apply(lambda x: x['Precinct'][4:], axis=1)
+        df['Precinct'] = df.apply(sos_clean, axis=1)
 
         # Rename some of the columns. This assumes that every csv from the
         # Secretary of State lists the candidates in the same order, double-check this.
@@ -46,7 +54,6 @@ def merge_votes():
             'Total Votes.1': 'dem_votes',
             'Registered Voters':'registered_v',
             'Total': 'total'})
-        print df.columns.values
 
         # Filter out precincts with zero votes
         df = df[df.apply(lambda x: x.rep_votes > 0 and 
@@ -62,31 +69,28 @@ def merge_votes():
 
     # Concat the list of dataframes into a single dataframe
     df1 = pd.concat(list_)
-    print len(df1)
     #assert(len(df1) == 914) # There are 914 precincts in metro Atlanta
-    county_codes = pd.read_csv('atlanta_precinct_codes.csv')
-    w_codes = df1.merge(county_codes, left_on='Precinct', right_on='Precinct Description', how='left', indicator=True)
-    w_codes.to_csv('tmp.csv')
-    print len(w_codes)
-    return
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('precincts_names_codes_final.csv', index_col=False)
+    df2 = pd.read_csv('precincts_names_codes_ok.csv', index_col=False)
+    df2['Precinct Description'] = df2.apply(reapp_clean, axis=1)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
-    merged = df2.merge(w_codes,
+    merged = df2.merge(df1,
         left_on='Precinct Description',
-        right_on='County Precinct',
+        right_on='Precinct',
         how='left',
         indicator=True)
+    merged.to_csv('all_w_ind.csv')
 
     # If any precincts were left out, write them to the unmerged_precincts .csv
     unmerged = merged[merged._merge != 'both']
     if len(unmerged) > 0:
         unmerged.to_csv('unmerged_precincts.csv', index=False)
     else:
-        print 'All precincts merged successfully!'
+        print 'All precincts merged successfully'
+    unmerged.to_csv('unmerged.csv')
 
     # Filter merged dataset down to only precincts with matching names
     merged = merged[merged._merge == 'both']

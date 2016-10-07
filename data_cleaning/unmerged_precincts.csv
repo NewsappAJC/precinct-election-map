@@ -1,389 +1,55 @@
 DISTRICT,income,race,Precinct Description,Precinct,registered_v,rep_votes,dem_votes,total,rep_p,dem_p,_merge
-1352,66640.9990353,black,ROCKBRIDGE A,,,,,,,,left_only
-13575,68494.6886219,black,ROCKBRIDGE C,,,,,,,,left_only
 121CH04B,41282.0,white,CH04B,,,,,,,,left_only
-135111,76509.2838063,,DULUTH H,,,,,,,,left_only
 089HH,59598.6970728,black,NARVIE J HARRIS ELEM,,,,,,,,left_only
 089MG,69707.7390984,white,MEDLOCK,,,,,,,,left_only
 121CP083,41166.0,black,CP083,,,,,,,,left_only
 121CP08A,57248.9999496,white,CP08A,,,,,,,,left_only
 121UC01D,48657.0,black,UC01D,,,,,,,,left_only
 121SC17B,48657.0,black,SC17B,,,,,,,,left_only
-135147,90842.5664644,,BAYCREEK I,,,,,,,,left_only
-13580,84393.7784348,,BAYCREEK C,,,,,,,,left_only
-13590,57021.6103245,,LAWRENCEVILLE I,,,,,,,,left_only
-13585,88378.1611122,white,LAWRENCEVILLE H,,,,,,,,left_only
-135132,87845.014055,white,LAWRENCEVILLE K,,,,,,,,left_only
-13560,62617.0986675,,LAWRENCEVILLE D,,,,,,,,left_only
-13542,86150.1992045,white,LAWRENCEVILLE C,,,,,,,,left_only
-1359,80975.999975,white,PUCKETTS A,,,,,,,,left_only
-135135,90506.7657347,white,PUCKETTS C,,,,,,,,left_only
-1353,88376.2428555,white,DACULA,,,,,,,,left_only
-135152,92688.0017271,white,ROCKYCREEK C,,,,,,,,left_only
-135137,80511.0777688,white,ROCKYCREEK B,,,,,,,,left_only
-135154,80791.9673805,white,PUCKETTS D,,,,,,,,left_only
-1358,110889.981861,white,DUNCANS A,,,,,,,,left_only
-13513,111087.0,white,DUNCANS C,,,,,,,,left_only
-135108,80886.0366707,,BAYCREEK E,,,,,,,,left_only
-135145,76761.3788658,white,BAYCREEK G,,,,,,,,left_only
-135146,82443.0556252,white,BAYCREEK H,,,,,,,,left_only
-13591,94098.1579451,white,BAYCREEK D,,,,,,,,left_only
-135133,82440.026504,white,HARBINS B,,,,,,,,left_only
-13528,103858.05682,white,ROCKYCREEK A,,,,,,,,left_only
-135129,111273.950701,white,DUNCANS B,,,,,,,,left_only
-13539,111722.999983,white,DUNCANS D,,,,,,,,left_only
-135104,74483.9951314,black,ROCKBRIDGE F,,,,,,,,left_only
-13576,74483.9999396,black,ROCKBRIDGE D,,,,,,,,left_only
-13552,86326.5441964,white,BERKSHIRE G,,,,,,,,left_only
-1351,77447.9999908,white,HARBINS A,,,,,,,,left_only
-135151,77448.0000003,white,HARBINS C,,,,,,,,left_only
 067WL01,136873.844336,white,WILLEO 01,,,,,,,,left_only
 121CP07D,35016.0,black,CP07D,,,,,,,,left_only
-089DI,159717.823872,white,DUNWOODY LIBRARY (DUN),,,,,,,,left_only
-089AD,157989.300633,white,AUSTIN (DUN),,,,,,,,left_only
-089MQ,146753.47041,white,MOUNT VERNON EAST (DUN),,,,,,,,left_only
-067VG01,88765.7888437,white,VININGS 01,,,,,,,,left_only
-067CA01,67115.7864348,,CHATTAHOOCHEE 01,,,,,,,,left_only
-067TM01,62734.6678864,,TERRELL MILL 01,,,,,,,,left_only
-067SO02,109556.046759,white,SOPE CREEK 02,,,,,,,,left_only
-067SO03,166386.08086,white,SOPE CREEK 03,,,,,,,,left_only
-135121,112622.830828,white,PINCKNEYVILLE X,,,,,,,,left_only
-13540,88833.7062525,,PINCKNEYVILLE H,,,,,,,,left_only
-13599,63661.8072709,,PINCKNEYVILLE T,,,,,,,,left_only
-067RW01,135308.349366,white,ROSWELL 01,,,,,,,,left_only
-135155,120739.198901,white,SUWANEE G,,,,,,,,left_only
-135140,145658.999772,white,SUWANEE H,,,,,,,,left_only
-13517,59083.7728671,,MARTINS A,,,,,,,,left_only
-13577,67035.1992435,,GOODWINS C,,,,,,,,left_only
-13597,83664.9144076,,GOODWINS E,,,,,,,,left_only
-067LM02,132393.217757,white,LOST MOUNTAIN 02,,,,,,,,left_only
-067FR01,140268.115179,white,FORD 01,,,,,,,,left_only
-067DU01,122343.99999,white,DURHAM 01,,,,,,,,left_only
-067KP03,123383.605978,white,KEMP 03,,,,,,,,left_only
-067FY01,121066.425676,white,FREY 01,,,,,,,,left_only
-067LM04,130492.169301,white,LOST MOUNTAIN 04,,,,,,,,left_only
-067MS01,105760.970971,white,MARS HILL 01,,,,,,,,left_only
-067LW01,99747.7968572,white,LEWIS 01,,,,,,,,left_only
-135131,145658.999952,white,SUWANEE E,,,,,,,,left_only
-1354,100037.072778,white,SUWANEE A,,,,,,,,left_only
-13598,86616.2120716,white,GOODWINS F,,,,,,,,left_only
-135142,108954.871969,,SUWANEE F,,,,,,,,left_only
-135100,108992.821252,,SUWANEE B,,,,,,,,left_only
-13530,70953.6404458,,CATES C,,,,,,,,left_only
-13570,102252.99995,white,GOODWINS B,,,,,,,,left_only
-13526,82901.170437,,HOG MOUNTAIN A,,,,,,,,left_only
-13531,89986.5605277,white,HOG MOUNTAIN D,,,,,,,,left_only
-135136,80519.2148583,white,HOG MOUNTAIN C,,,,,,,,left_only
-13567,80968.0378222,white,PUCKETTS E,,,,,,,,left_only
-13571,80776.9390566,,LAWRENCEVILLE F,,,,,,,,left_only
-135144,70796.5579162,,LAWRENCEVILLE M,,,,,,,,left_only
-13527,86588.316059,white,HOG MOUNTAIN B,,,,,,,,left_only
-067FP01,130850.90241,white,FULLERS PARK 01,,,,,,,,left_only
-067SM01,125454.990659,white,SEWELL MILL 01,,,,,,,,left_only
-067MD01,126857.326326,white,MURDOCK 01,,,,,,,,left_only
+089MQ,146753.47041,white,MOUNT VERNON EAST,,,,,,,,left_only
 067MT04,209538.999635,white,MT BETHEL 04,,,,,,,,left_only
-067EA01,122972.150886,white,EASTSIDE 01,,,,,,,,left_only
-067DO01,135135.423006,white,DODGEN 01,,,,,,,,left_only
-067CR01,126045.486549,white,CHESTNUT RIDGE 01,,,,,,,,left_only
-067RW02,153556.991168,white,ROSWELL 02,,,,,,,,left_only
-067WG02,84696.1926927,white,WADE GREEN 02,,,,,,,,left_only
-067BG02,101215.728602,white,BIG SHANTY 02,,,,,,,,left_only
-067PT01,111668.999885,white,PITNER 01,,,,,,,,left_only
-067CK01,57427.9083144,white,CHALKER 01,,,,,,,,left_only
-067PR01,87389.9386063,white,PALMER 01,,,,,,,,left_only
-067BF03,77375.5927994,white,BELLS FERRY 03,,,,,,,,left_only
 067MT01,157721.753009,white,MT BETHEL 01,,,,,,,,left_only
-067TR01,157506.254459,white,TIMBER RIDGE 01,,,,,,,,left_only
 121SS29B,103129.0,,SS29B,,,,,,,,left_only
 12103P2,21209.0,black,03P2,,,,,,,,left_only
-13555,64396.6603751,white,SUGAR HILL D,,,,,,,,left_only
-135102,79498.6926708,white,PUCKETTS B,,,,,,,,left_only
-13524,73604.6428598,,SUGAR HILL A,,,,,,,,left_only
-135141,111178.852139,white,SUGAR HILL G,,,,,,,,left_only
-13525,80193.2937559,white,SUGAR HILL B,,,,,,,,left_only
-13589,88062.5945048,white,SUGAR HILL E,,,,,,,,left_only
-13554,83876.5297412,white,SUGAR HILL C,,,,,,,,left_only
-135130,111176.408953,white,SUWANEE D,,,,,,,,left_only
-067DC01,132366.422976,white,DICKERSON 01,,,,,,,,left_only
-067SA01,126620.496246,white,SANDY PLAINS 01,,,,,,,,left_only
-067PP01,133844.556198,white,POPE 01,,,,,,,,left_only
-067MB01,151583.999728,white,MABRY 01,,,,,,,,left_only
-067DV01,107699.0,white,DAVIS 01,,,,,,,,left_only
-067GM01,106741.00026,white,GARRISON MILL 01,,,,,,,,left_only
-067PO01,138681.999949,white,POST OAK 01,,,,,,,,left_only
-067HT01,145838.999948,white,HIGHTOWER 01,,,,,,,,left_only
 067SF01,137689.69657,white,SHALLOWFORD FALLS 01,,,,,,,,left_only
-089CE,73394.4072516,,CHAMBLEE (CHA),,,,,,,,left_only
-089HF,65928.9603339,,HUNTLEY HILLS ELEM (CHA),,,,,,,,left_only
-089PB,59632.0001897,,PEACHTREE MIDDLE (DUN),,,,,,,,left_only
-089DG,145869.000002,white,DUNWOODY HIGH (DUN),,,,,,,,left_only
-089CH,72004.6906385,white,CHESNUT ELEM (DUN),,,,,,,,left_only
-089TG,102101.255157,white,TILLY MILL ROAD (DUN),,,,,,,,left_only
+089CE,73394.4072516,,CHAMBLEE,,,,,,,,left_only
+089DG,145869.000002,white,DUNWOODY HIGH,,,,,,,,left_only
 067MT03,168311.623111,white,MT BETHEL 03,,,,,,,,left_only
-067PE01,54717.0484505,black,PEBBLEBROOK 01,,,,,,,,left_only
-067MA02,59046.8462027,,MABLETON 02,,,,,,,,left_only
-067BT02,40853.856121,black,BRYANT 02,,,,,,,,left_only
-067RS01,46848.0001011,black,RIVERSIDE 01,,,,,,,,left_only
-067AU1A,59962.8220394,black,AUSTELL 1A,,,,,,,,left_only
 121SC08C,48657.023764,black,SC08C,,,,,,,,left_only
-067CL01,60280.8508902,black,CLARKDALE 01,,,,,,,,left_only
-067PS2A,66352.2386892,black,POWDER SPRINGS 2A,,,,,,,,left_only
-067CO01,64283.2503091,black,COOPER 01,,,,,,,,left_only
-067OR02,89559.9998885,,OREGON 02,,,,,,,,left_only
-067AC1B,56038.6551555,white,ACWORTH 1B,,,,,,,,left_only
-067MC01,70161.0019773,,MACLAND 01,,,,,,,,left_only
-067OR05,115053.218289,white,OREGON 05,,,,,,,,left_only
-067KP02,99899.129528,white,KEMP 02,,,,,,,,left_only
-067OR04,67348.9999932,,OREGON 04,,,,,,,,left_only
-067DL01,116142.006679,white,DOWELL 01,,,,,,,,left_only
-067CH03,101431.856003,white,CHEATHAM HILL 03,,,,,,,,left_only
-067MA01,76526.1134595,,MABLETON 01,,,,,,,,left_only
-067SW02,48164.3079317,black,SWEETWATER 02,,,,,,,,left_only
-067BR02,88901.4144031,white,BIRNEY 02,,,,,,,,left_only
-067BR01,81757.9999983,,BIRNEY 01,,,,,,,,left_only
-067MA03,90712.6836194,white,MABLETON 03,,,,,,,,left_only
-067MA04,85874.5923571,white,MABLETON 04,,,,,,,,left_only
-067AC1A,86606.9200046,white,ACWORTH 1A,,,,,,,,left_only
-067ME01,80636.2928891,,MCEACHERN 01,,,,,,,,left_only
-067LM01,115676.017844,white,LOST MOUNTAIN 01,,,,,,,,left_only
-067OR01,113406.000007,white,OREGON 01,,,,,,,,left_only
 067VA01,133633.008538,white,VAUGHAN 01,,,,,,,,left_only
-067PS1A,72507.5992392,,POWDER SPRINGS 1A,,,,,,,,left_only
-067PS3A,69734.9063381,,POWDER SPRINGS 3A,,,,,,,,left_only
-067LM03,127437.776917,white,LOST MOUNTAIN 03,,,,,,,,left_only
-067SW01,71456.3040366,,SWEETWATER 01,,,,,,,,left_only
-067CL02,67228.7038238,black,CLARKDALE 02,,,,,,,,left_only
-067MR3A,59452.946863,,MARIETTA 3A,,,,,,,,left_only
-067HR01,129495.146669,white,HARRISON 01,,,,,,,,left_only
-067KP01,115967.16253,white,KEMP 01,,,,,,,,left_only
-067ML01,98471.0045237,white,MCCLURE 01,,,,,,,,left_only
-067NC01,74359.4702,white,NORTH COBB 01,,,,,,,,left_only
-067SN7B,114849.058097,,SMYRNA 7B,,,,,,,,left_only
 067HL01,80364.0067912,,HARMONY-LELAND 01,,,,,,,,left_only
-067LI01,133845.983744,,LINDLEY 01,,,,,,,,left_only
 121UC01E,48657.1903879,black,UC01E,,,,,,,,left_only
-067BT01,48001.3799581,black,BRYANT 01,,,,,,,,left_only
 12110E,33518.5280698,black,10E,,,,,,,,left_only
-067OR03,56990.6482891,,OREGON 03,,,,,,,,left_only
-067MR2A,89297.6799139,white,MARIETTA 2A,,,,,,,,left_only
-067NP01,78399.9406555,,NORTON PARK 01,,,,,,,,left_only
-067FO01,59273.0004728,,FAIR OAKS 01,,,,,,,,left_only
 067LA01,135333.297273,white,LASSITER 01,,,,,,,,left_only
-067KL01,90600.0000324,white,KELL 01,,,,,,,,left_only
 067RM01,107844.870771,white,ROCKY MOUNT 01,,,,,,,,left_only
-067EA02,103993.958473,white,EASTSIDE 02,,,,,,,,left_only
-067SO01,128431.999861,white,SOPE CREEK 01,,,,,,,,left_only
-067FO02,52712.4392107,,FAIR OAKS 02,,,,,,,,left_only
-067FO04,44912.2795331,,FAIR OAKS 04,,,,,,,,left_only
-067MR2B,65711.1799342,,MARIETTA 2B,,,,,,,,left_only
-067BF02,88512.9901919,white,BELLS FERRY 02,,,,,,,,left_only
-067BW01,92280.8493667,white,BLACKWELL 01,,,,,,,,left_only
-067GT01,86430.0564448,white,GRITTERS 01,,,,,,,,left_only
-067MK01,102494.999956,white,MCCLESKEY 01,,,,,,,,left_only
-067NS01,98730.8242133,white,NICHOLSON 01,,,,,,,,left_only
-067AD01,96407.00754,white,ADDISON 01,,,,,,,,left_only
-067SI01,123586.000049,white,SIMPSON 01,,,,,,,,left_only
-067MR6A,58686.2957434,white,MARIETTA 6A,,,,,,,,left_only
-067MR5B,71131.401242,white,MARIETTA 5B,,,,,,,,left_only
-067HY01,93193.9643763,white,HAYES 01,,,,,,,,left_only
-067PM02,86939.8596807,white,PINE MOUNTAIN 02,,,,,,,,left_only
-067CH02,96504.704698,white,CHEATHAM HILL 02,,,,,,,,left_only
-067PF01,72146.5837328,white,POWERS FERRY 01,,,,,,,,left_only
-067VG04,126661.805272,white,VININGS 04,,,,,,,,left_only
-067MR7A,45574.9659184,,MARIETTA 7A,,,,,,,,left_only
-067FO05,40611.7386728,,FAIR OAKS 05,,,,,,,,left_only
-067MR1A,44243.5740626,,MARIETTA 1A,,,,,,,,left_only
-067DI01,48433.5654379,,DOBBINS 01,,,,,,,,left_only
-067SN5A,49751.0936112,,SMYRNA 5A,,,,,,,,left_only
-067SN3A,57525.2561464,,SMYRNA 3A,,,,,,,,left_only
-067MR4C,74968.78785,white,MARIETTA 4C,,,,,,,,left_only
-067KE3A,75715.0304655,white,KENNESAW 3A,,,,,,,,left_only
-067MR4A,83951.0,white,MARIETTA 4A,,,,,,,,left_only
-067MR5A,54417.3046791,,MARIETTA 5A,,,,,,,,left_only
-067SN7A,99052.1272221,white,SMYRNA 7A,,,,,,,,left_only
-067SN4A,88558.9035795,white,SMYRNA 4A,,,,,,,,left_only
-067EP01,64825.2446372,white,EAST PIEDMONT 01,,,,,,,,left_only
-067KE1A,77015.5050269,white,KENNESAW 1A,,,,,,,,left_only
-067BG01,69130.7263802,white,BIG SHANTY 01,,,,,,,,left_only
-067MR4B,65071.6983488,white,MARIETTA 4B,,,,,,,,left_only
-067EL01,68561.6172113,white,ELIZABETH 01,,,,,,,,left_only
-067PM01,114203.499666,white,PINE MOUNTAIN 01,,,,,,,,left_only
-067KE2A,85698.9271015,white,KENNESAW 2A,,,,,,,,left_only
-067MS02,98446.0335185,white,MARS HILL 02,,,,,,,,left_only
-067AC1C,79031.1637163,white,ACWORTH 1C,,,,,,,,left_only
-067KE4A,77266.2969222,white,KENNESAW 4A,,,,,,,,left_only
-067KE5A,79632.8809973,white,KENNESAW 5A,,,,,,,,left_only
-067BK01,83133.409111,white,BAKER 01,,,,,,,,left_only
-067OK01,114410.028123,white,OAKDALE 01,,,,,,,,left_only
-067NJ01,96528.8662411,white,NICKAJACK 01,,,,,,,,left_only
-067SN6A,117261.09756,white,SMYRNA 6A,,,,,,,,left_only
-067VG03,101153.096721,white,VININGS 03,,,,,,,,left_only
-067VG02,85128.5831797,,VININGS 02,,,,,,,,left_only
-067SN2A,63168.5304485,,SMYRNA 2A,,,,,,,,left_only
-067SN1A,62805.5286894,,SMYRNA 1A,,,,,,,,left_only
-067MR6B,84439.8843064,white,MARIETTA 6B,,,,,,,,left_only
-067EL02,71124.8854385,white,ELIZABETH 02,,,,,,,,left_only
-067EL04,69450.4283272,white,ELIZABETH 04,,,,,,,,left_only
-067SM03,77698.3457055,white,SEWELL MILL 03,,,,,,,,left_only
-067EL03,100849.673996,white,ELIZABETH 03,,,,,,,,left_only
-067EL05,107569.000056,white,ELIZABETH 05,,,,,,,,left_only
 089KE,58064.2778009,black,KNOLLWOOD,,,,,,,,left_only
 089WA,39815.870019,black,WADSWORTH,,,,,,,,left_only
-13566,43949.9557506,hispanic,PINCKNEYVILLE O,,,,,,,,left_only
-13538,48601.4434474,hispanic,PINCKNEYVILLE F,,,,,,,,left_only
-13559,46957.0349528,,PINCKNEYVILLE N,,,,,,,,left_only
-089BF,58317.6675457,,BROCKETT ELEM (TUC),,,,,,,,left_only
-13584,80120.3323567,,LAWRENCEVILLE G,,,,,,,,left_only
-135150,33750.9787657,,DULUTH K,,,,,,,,left_only
-13548,72921.5412114,,DULUTH B,,,,,,,,left_only
-13596,110492.900219,,DULUTH G,,,,,,,,left_only
-13572,44527.0956843,,MARTINS E,,,,,,,,left_only
-13595,80415.67377,,DULUTH F,,,,,,,,left_only
-135138,104633.557229,,DULUTH I,,,,,,,,left_only
-1357,98014.0090971,white,DULUTH A,,,,,,,,left_only
 089SS,60566.2389816,black,SNAPFINGER ROAD S,,,,,,,,left_only
 089MI,47983.0366455,black,MILLER GROVE,,,,,,,,left_only
-13564,68808.0899946,black,GARNERS D,,,,,,,,left_only
 089CT,27600.0000297,black,COVINGTON HWY,,,,,,,,left_only
-089CK,37306.7694379,black,CLARKSTON (CLA),,,,,,,,left_only
-13510,93438.5673772,white,CATES A,,,,,,,,left_only
-13581,70051.9971414,,CATES L,,,,,,,,left_only
-135156,80793.2614533,,BAYCREEK J,,,,,,,,left_only
-13541,78720.2706164,,BAYCREEK B,,,,,,,,left_only
-135134,76728.0000797,white,BAYCREEK F,,,,,,,,left_only
-13594,101025.320875,white,CATES N,,,,,,,,left_only
-1355,89086.6851566,white,BAYCREEK A,,,,,,,,left_only
-13586,48606.0125066,,MARTINS F,,,,,,,,left_only
-13534,58238.2312173,,BERKSHIRE F,,,,,,,,left_only
-135119,82742.4891836,white,BERKSHIRE O,,,,,,,,left_only
-13519,59659.7987336,,MARTINS C,,,,,,,,left_only
-13543,52116.1756184,,MARTINS D,,,,,,,,left_only
-135116,62145.012094,,MARTINS I,,,,,,,,left_only
-135117,47118.6057567,,MARTINS J,,,,,,,,left_only
-13588,56859.2083175,black,ROCKBRIDGE E,,,,,,,,left_only
-089LD,48247.0,black,LITHONIA (LIT),,,,,,,,left_only
 12101I,34378.0001593,black,01I,,,,,,,,left_only
 12105C,34376.6748439,black,05C,,,,,,,,left_only
-089PE,42070.0496019,black,PINE LAKE (PIN),,,,,,,,left_only
 089RE,41197.1690337,black,ROCKBRIDGE,,,,,,,,left_only
 089MA,61031.4152713,black,MILLER-ELDRIDGE L MILLER ELEM,,,,,,,,left_only
-13545,73877.0920981,black,GARNERS B,,,,,,,,left_only
-13532,97661.8156498,white,BERKSHIRE D,,,,,,,,left_only
-13511,48747.0001917,,BERKSHIRE A,,,,,,,,left_only
-135120,60881.664558,,BERKSHIRE P,,,,,,,,left_only
-135109,98089.3071449,white,BERKSHIRE M,,,,,,,,left_only
-13574,45760.9254793,,PINCKNEYVILLE Q,,,,,,,,left_only
-135103,51231.4140089,,BERKSHIRE L,,,,,,,,left_only
-135118,82412.7626273,white,GARNERS F,,,,,,,,left_only
-135112,77794.2471374,white,BERKSHIRE N,,,,,,,,left_only
-13533,91737.9999169,white,BERKSHIRE E,,,,,,,,left_only
-13592,101415.695334,white,BERKSHIRE J,,,,,,,,left_only
-13549,80846.954552,white,GARNERS C,,,,,,,,left_only
-13514,106134.001048,white,GARNERS A,,,,,,,,left_only
-089JA,36435.5899204,white,JOHNSON ESTATES (ATL),,,,,,,,left_only
 089SI,44447.773362,black,STN MTN MIDDLE,,,,,,,,left_only
 089SH,117152.875737,white,SMOKE RISE,,,,,,,,left_only
-13512,60552.4691547,,BERKSHIRE B,,,,,,,,left_only
-135148,73174.953133,,BERKSHIRE Q,,,,,,,,left_only
-089SP,43995.228424,black,STONE MTN CHAMPION (STO),,,,,,,,left_only
-089SQ,64377.0594466,black,STONE MTN LIBRARY  (STO),,,,,,,,left_only
-13557,68527.5590905,,DULUTH D,,,,,,,,left_only
-13582,68022.5747984,,DULUTH E,,,,,,,,left_only
-13556,60812.2880176,,DULUTH C,,,,,,,,left_only
-13565,58383.6657037,,BERKSHIRE H,,,,,,,,left_only
-135123,43085.6810829,hispanic,PINCKNEYVILLE Y,,,,,,,,left_only
-13523,44776.1697722,,PINCKNEYVILLE D,,,,,,,,left_only
-13558,49756.4892071,,PINCKNEYVILLE K,,,,,,,,left_only
-13550,61858.2203188,,PINCKNEYVILLE I,,,,,,,,left_only
-089WL,126049.575239,white,WINTERS CHAPEL (DUN),,,,,,,,left_only
-135101,62044.1526814,,PINCKNEYVILLE U,,,,,,,,left_only
-089IA,62406.8975829,black,IDLEWOOD ELEM (TUC),,,,,,,,left_only
-089BH,70612.1762036,,BROCKETT (TUC),,,,,,,,left_only
-089WJ,91628.9954277,,WOODWARD (BHAVN),,,,,,,,left_only
-089CO,103435.932886,,CROSS KEYS HIGH (BHAVN),,,,,,,,left_only
-089BE,83551.484499,hispanic,BRIARWOOD (BHAVN),,,,,,,,left_only
-089BI,123167.521961,white,BROOKHAVEN (BHAVN),,,,,,,,left_only
-089SE,120886.597542,white,SILVER LAKE (BHAVN),,,,,,,,left_only
-089SF,101731.994626,,SKYLAND (BHAVN),,,,,,,,left_only
-089AB,121469.258963,white,ASHFORD PARK ELEM (BHAVN),,,,,,,,left_only
-089DC,54242.2244947,hispanic,DRESDEN ELEM (CHA),,,,,,,,left_only
+089SP,43995.228424,black,STONE MTN CHAMPION,,,,,,,,left_only
+089SQ,64377.0594466,black,STONE MTN LIBRARY ,,,,,,,,left_only
+089WJ,91628.9954277,,WOODWARD,,,,,,,,left_only
 089CL,57071.1882567,black,CLIFTON,,,,,,,,left_only
-089EA,79382.0158026,black,EAST LAKE (ATL),,,,,,,,left_only
+089EA,79382.0158026,black,EAST LAKE,,,,,,,,left_only
 089MD,60027.4694929,black,MCNAIR,,,,,,,,left_only
-089OK,106164.804212,white,OAKHURST (DEC),,,,,,,,left_only
-089RN,106721.992146,white,RENFROE MIDDLE (DEC),,,,,,,,left_only
-089PG,91336.453884,white,PONCE DE LEON (DEC),,,,,,,,left_only
-089CV,94575.0664381,white,CLAIREMONT EAST (DEC),,,,,,,,left_only
-089WF,107682.555416,white,WINNONA PARK ELEM (DEC),,,,,,,,left_only
-089GA,109095.808889,white,GLENNWOOD (DEC),,,,,,,,left_only
-089CI,109860.295873,white,CLAIREMONT WEST (DEC),,,,,,,,left_only
-089AE,74514.5410651,white,AVONDALE (AVO),,,,,,,,left_only
 089MO,55244.8169723,black,MIDWAY,,,,,,,,left_only
 089PA,45137.9976276,black,PEACHCREST,,,,,,,,left_only
 089SR,44471.7333448,black,SNAPFINGER ROAD N,,,,,,,,left_only
 089BL,67348.9990567,black,BOULDERCREST ROAD,,,,,,,,left_only
 12101C2,35120.0000431,black,01C2,,,,,,,,left_only
-089CN,56069.8578966,white,COAN MIDDLE (ATL),,,,,,,,left_only
-089EE,64047.6932682,white,EPWORTH (ATL),,,,,,,,left_only
-089LE,59997.6991367,white,LIN-MARY LIN ELEM (ATL),,,,,,,,left_only
-089BB,52449.3895367,white,BOULEVARD (ATL),,,,,,,,left_only
 089ML,53920.7683813,black,MEADOWVIEW,,,,,,,,left_only
-089BR,56858.983108,white,BURGESS ELEM (ATL),,,,,,,,left_only
-089MT,55994.556887,white,METROPOLITAN (ATL),,,,,,,,left_only
 089TA,49803.0111423,black,TERRY MILL,,,,,,,,left_only
-089KB,131053.188751,white,KINGSLEY ELEM (DUN),,,,,,,,left_only
-089DA,51380.957949,,DORAVILLE NORTH (DOR),,,,,,,,left_only
-089NF,68242.5858185,,NORTH PEACHTREE (DUN),,,,,,,,left_only
-13537,49915.3815158,,PINCKNEYVILLE E,,,,,,,,left_only
 089PF,42765.322967,,PLEASANTDALE ROAD,,,,,,,,left_only
-13573,89159.9742188,white,PINCKNEYVILLE P,,,,,,,,left_only
-135126,157289.26475,white,PINCKNEYVILLE A1,,,,,,,,left_only
-13522,112593.361519,white,PINCKNEYVILLE C,,,,,,,,left_only
-135125,157519.000127,white,PINCKNEYVILLE Z,,,,,,,,left_only
-13562,158449.136342,white,PINCKNEYVILLE L,,,,,,,,left_only
-13563,174588.43018,white,PINCKNEYVILLE M,,,,,,,,left_only
-13521,48705.2491376,hispanic,PINCKNEYVILLE B,,,,,,,,left_only
-13551,41192.3195348,hispanic,PINCKNEYVILLE J,,,,,,,,left_only
-135113,58325.9909451,,PINCKNEYVILLE V,,,,,,,,left_only
-135114,68796.7918856,,PINCKNEYVILLE W,,,,,,,,left_only
 13520,48121.3441719,hispanic,PINKCNEYVILLE A,,,,,,,,left_only
-13587,73037.8726623,,PINCKNEYVILLE S,,,,,,,,left_only
-089DB,50535.0285842,,DORAVILLE SOUTH (DOR),,,,,,,,left_only
-089AG,138754.283642,white,ASHFORD DUNWOODY RD (BHAVN),,,,,,,,left_only
-089AH,94373.329923,white,ASHFORD PARKSIDE (BHAVN),,,,,,,,left_only
-089MU,59718.1137412,white,MONTGOMERY ELEM  (BHAVN),,,,,,,,left_only
-089KG,64576.1341072,white,KITTREDGE ELEM (BHAVN),,,,,,,,left_only
-089GD,93518.2565336,white,GEORGETOWN SQ (DUN),,,,,,,,left_only
-089DF,103704.870622,,DUNWOODY (DUN),,,,,,,,left_only
-089MS,135705.256782,white,MOUNT VERNON WEST (DUN),,,,,,,,left_only
-135122,66881.53564,black,ROCKBRIDGE G,,,,,,,,left_only
-13529,105833.146071,white,CATES B,,,,,,,,left_only
-13579,105832.992696,white,CATES K,,,,,,,,left_only
-135139,60154.2597737,,MARTINS K,,,,,,,,left_only
-135115,62549.6379779,,MARTINS H,,,,,,,,left_only
-13568,104667.072613,white,CATES I,,,,,,,,left_only
-13593,115555.99355,white,CATES M,,,,,,,,left_only
-135127,60407.0102112,,LAWRENCEVILLE J,,,,,,,,left_only
-13518,59237.7297579,,MARTINS B,,,,,,,,left_only
-13569,103561.424641,white,CATES J,,,,,,,,left_only
-13536,101285.282677,white,CATES E,,,,,,,,left_only
-135107,105700.685053,white,CATES O,,,,,,,,left_only
-13535,95189.7064185,white,CATES D,,,,,,,,left_only
-13544,69315.1544263,black,ROCKBRIDGE B,,,,,,,,left_only
-13553,55325.4170542,black,CATES H,,,,,,,,left_only
-13546,112113.957655,white,CATES F,,,,,,,,left_only
-13547,112113.999945,white,CATES G,,,,,,,,left_only
-135143,79124.9828859,,LAWRENCEVILLE L,,,,,,,,left_only
-13561,53880.4268808,,LAWRENCEVILLE E,,,,,,,,left_only
-135153,65770.3293267,,LAWRENCEVILLE N,,,,,,,,left_only
-13516,84147.2609054,,LAWRENCEVILLE B,,,,,,,,left_only
-13578,80066.6393881,white,BAYCREEK K,,,,,,,,left_only
-13515,54894.2737124,,LAWRENCEVILLE A,,,,,,,,left_only
-135110,62952.278405,,MARTINS G,,,,,,,,left_only
-135124,70959.3286338,,GOODWINS G,,,,,,,,left_only
-135149,93855.9999817,white,GOODWINS I,,,,,,,,left_only
-1356,82916.7351706,white,GOODWINS A,,,,,,,,left_only
-135128,72928.3511667,white,GOODWINS H,,,,,,,,left_only
-13583,83704.7140178,white,GOODWINS D,,,,,,,,left_only
-135106,104351.906772,,SUWANEE C,,,,,,,,left_only
-135105,111801.874104,white,SUGAR HILL F,,,,,,,,left_only
+089MU,59718.1137412,white,MONTGOMERY ELEM ,,,,,,,,left_only
+089GD,93518.2565336,white,GEORGETOWN SQ,,,,,,,,left_only
+089MS,135705.256782,white,MOUNT VERNON WEST,,,,,,,,left_only
