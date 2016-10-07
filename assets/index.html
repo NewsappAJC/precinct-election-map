@@ -15,22 +15,11 @@
       <div id="title-holder">
         <h1 id="main-title">
           <img src="img/ajc-logo.png"/>
-          How Every Atlanta Neighborhood Voted in the General Election</h1>
+          How Every Precinct in Atlanta Voted in the General Election</h1>
         <span id="timestamp">Updated November 11, 2016</span>
       </div>
       <div id="loading">Loading</div>
       <div id="left">
-        <div id="results-summary">
-          <h3 id="results-summary-title"></h3>
-          <div id="results-summary-table">
-          </div>
-          <div id="participation"></div>
-        </div>
-
-        <div id="search-bar">
-          <label for="address-input">Find your address</label>
-          <input placeholder="Enter address" id="address-input"/>
-        </div>
 
         <div id="counties-selector-holder">
           <label for="counties">Filter by county</label>
@@ -40,16 +29,29 @@
           <label for="filters">Filter by race or income</label>
           <select name="filters" id="filters-selector"></select>
         </div>
+
+        <div id="search-bar">
+          <label for="address-input">Find your address</label>
+          <input placeholder="Enter address" id="address-input"/>
+        </div>
+
         <div id="filters"></div>
       </div>
       <div id="map-box">
+        <div id="results-summary-title"></div>
+        <div id="results-summary"></div>
         <div id="map"></div>
       </div>
     </div>
     <div id="info">
       <div id="info-holder">
         <div id="metadata">
-          <div id="info-title"></div>
+          <div id="info-title">
+            <h3 id="results-summary-title"></h3>
+            <div id="results-summary-table">
+            </div>
+            <div id="participation"></div>
+          </div>
           <div id="close-button">Close [x]</div>
         </div>
         <div id="info-data"></div>

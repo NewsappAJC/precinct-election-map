@@ -13,7 +13,8 @@ var autocomplete,
     $map = $('#map'),
     $closeButton = $('#close-button'),
     $filtersSelect = $('#filters-selector-holder'),
-    $countiesSelect = $('#counties-selector-holder');
+    $countiesSelect = $('#counties-selector-holder'),
+    $resultsSummary = $('#results-summary');
 
 // State
 var selectedBucket = 'all',
@@ -100,7 +101,7 @@ function createMap() {
     aggStats = data;
     console.log(aggStats)
     updateTitle('all')
-    updateTable('#results-summary-table', aggStats['all']);
+    updateTable($resultsSummary, aggStats['all']);
   });
 
   $loading.hide();
@@ -127,7 +128,7 @@ function createMap() {
 }; 
 
 function updateFilter(filter) {
-  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb']
+  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties']
   if (counties.indexOf(filter) === -1) {
     selectedBucket = filter; // Get the filter from the data-filter attribute
   }
@@ -171,7 +172,7 @@ function updateFilter(filter) {
 
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
-  updateTable('#results-summary-table', aggStats[selectedBucket]);
+  updateTable($resultsSummary, aggStats[selectedBucket]);
 
   // Unset style of all filter options then style selected filter
 }
@@ -247,7 +248,7 @@ function generateLayers() {
       color: 'black'
     });
 
-    $('#info-title').html(`<span class="eln-title">Precinct ${layer.feature.properties.PRECINCT_I} (${layer.feature.properties.COUNTY_NAM})</span>`)
+    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} (${layer.feature.properties.COUNTY_NAM})</span>`)
     updateTable('#info-data', layer.feature.properties);
     $infoTip.show();
   };

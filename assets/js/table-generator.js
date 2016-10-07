@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 export default function(el, props) {
+  console.log('updating tables')
   try {
     var totalVotes = props.dem_v + props.rep_v;
 
