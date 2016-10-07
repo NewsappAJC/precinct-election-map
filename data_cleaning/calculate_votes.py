@@ -19,7 +19,8 @@ def get_income(row):
 # merge_votes() concatenates all the precinct election 
 # results .csv files from the Secretary of State
 # and merges with the .csvs of demographic data for
-# each precinct.
+# each precinct. It also calculates aggregate statistics
+# based on this data
 #-----------------------------------------------------#
 def merge_votes():
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +34,10 @@ def merge_votes():
         df = pd.read_csv(f, index_col=False, header=2)
         # We're only interested in the total votes for each candidate
         df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
+
+        # Data cleaning because counties like to have different names
+        if 'gwinnett' in f:
+            df['Precincts'] = df.apply(lambda x: x['Precinct'][4:], axis=1)
 
         # Rename some of the columns. This assumes that every csv from the
         # Secretary of State lists the candidates in the same order, double-check this.
@@ -52,22 +57,27 @@ def merge_votes():
         df['rep_p'] = df.apply(lambda x: x['rep_votes']/x['total'], axis=1)
         df['dem_p'] = df.apply(lambda x: x['dem_votes']/x['total'], axis=1)
 
-
         # write the result to the list
         list_.append(df)
 
     # Concat the list of dataframes into a single dataframe
     df1 = pd.concat(list_)
+    print len(df1)
     #assert(len(df1) == 914) # There are 914 precincts in metro Atlanta
+    county_codes = pd.read_csv('atlanta_precinct_codes.csv')
+    w_codes = df1.merge(county_codes, left_on='Precinct', right_on='Precinct Description', how='left', indicator=True)
+    w_codes.to_csv('tmp.csv')
+    print len(w_codes)
+    return
 
     # Import the .csv with the precinct demographic data
     df2 = pd.read_csv('precincts_names_codes_final.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
-    merged = df2.merge(df1,
+    merged = df2.merge(w_codes,
         left_on='Precinct Description',
-        right_on='Precinct',
+        right_on='County Precinct',
         how='left',
         indicator=True)
 
