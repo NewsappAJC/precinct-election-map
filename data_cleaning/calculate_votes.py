@@ -20,25 +20,13 @@ def get_income(row):
 # reapportionment office's
 def sos_clean(row):
     subd1 = re.sub(r'^\d{3} (\w+)', r'\g<1>', row['Precinct'])
-    return subd1.upper()
-#    subd2 = re.sub(r'ROAD$', r'RD', subd1)
-#    subd3 = re.sub(r'KNOLLWOOD ELEM', r'KNOLLWOOD', subd2)
-#    subd4 = re.sub(r'MT\.', r'MOUNT', subd3)
-#    subd5 = re.sub(r'MOUNT BETHEL', r'MT BETHEL', subd4)
-#    subd6 = re.sub(r'STONE MOUNTAIN', r'STONE MTN', subd5)
-#    subd7 = re.sub(r'VAUGHAN 01', r'VAUGHN 01', subd6)
-#    subd8 = re.sub(r'TERRY MILL ELEM', r'TERRY MILL', subd7)
-#    subd9 = re.sub(r'PEACHCREST ELEM', r'PEACHCREST', subd8)
-#    subd10 = re.sub(r'EAST LAKE ELEM', r'EAST LAKE', subd9)
-#    subd11 = re.sub(r'LASSSITER', r'LASSITER', subd10)
-#    subd12 = re.sub(r'GEORGETOWN SQUARE', r'GEORGETOWN SQ', subd11)
-#    subd13 = re.sub(r'MEDLOCK ELEM', r'MEDLOCK', subd12)
-#    subd14 = re.sub(r'HWY LIBRARY$', r'HWY', subd13)
-#    subd15 = re.sub(r'', subd14)
-#    return subd.upper().strip()
+    subd2 = re.sub(r'RD$', r'ROAD', subd1)
+    subd3 = re.sub(r'NORTH$', r'N', subd2)
+    subd4 = re.sub(r'SOUTH$', r'S', subd3)
+    return subd4.upper().strip()[:20] # Precinct names in the map cut off after 20 characters
 
 def reapp_clean(row):
-    subd1 = re.sub(r' \(\w+\)$', '', row['PRECINCT_N'])
+    subd1 = re.sub(r' \((\w+)?\)?$', '', row['PRECINCT_N'])
     return subd1.strip()
 # End helper functions
 
@@ -62,8 +50,6 @@ def merge_votes():
         # We're only interested in the total votes for each candidate
         df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
 
-        #df['Precinct'] = df.apply(sos_clean, axis=1)
-
         # Rename some of the columns. This assumes that every csv from the
         # Secretary of State lists the candidates in the same order, double-check this.
         df = df.rename(columns={
@@ -84,15 +70,15 @@ def merge_votes():
         # Get the county name from the csv to limit fuzzy matching later
         df['county'] = os.path.split(f)[1][:-4].upper()
 
+        # Use regex to clean up results
         df['Precinct'] = df.apply(sos_clean, axis=1)
 
-        # write the result to the list
+        # Append the cleaned dataframe to our list of precincts
         list_.append(df)
 
     # Concat the list of dataframes into a single dataframe
     df1 = pd.concat(list_)
     df1.to_csv('income_race_votes_concat.csv', index=False)
-    #assert(len(df1) == 914) # There are 914 precincts in metro Atlanta
 
     # Import the .csv with the precinct demographic data
     df2 = pd.read_csv('atl_precincts_income_race.csv', index_col=False)
@@ -109,6 +95,7 @@ def merge_votes():
 
     # If any precincts were left out, write them to the unmerged_precincts .csv
     unmerged_left = merged[merged._merge == 'left_only']
+    print 'Unmerged: ', len(unmerged_left)
     unmerged_right = merged[merged._merge == 'right_only']
 
     #if len(unmerged) > 0:
@@ -124,7 +111,7 @@ def merge_votes():
     # Bin by income
     merged['income_bin'] = merged.apply(get_income, axis=1)
 
-    # Manually join this .csv to the map with QGIS
+    # Write to a csv. I will have to manually join this .csv to the map with QGIS
     merged.to_csv('income_race_votes.csv')
 
     # Calculate aggregated stats for summary table
