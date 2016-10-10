@@ -1,5 +1,6 @@
 # Standard lib imports
 import os
+import difflib # Useful for fuzzy matching
 import re
 from glob import glob
 
@@ -8,9 +9,9 @@ import pandas as pd
 
 # Begin helper functions
 def get_income(row):
-    if row['income'] < 50000:
+    if row['avg_income'] < 50000:
         return 'low'
-    elif row['income'] < 100000:
+    elif row['avg_income'] < 100000:
         return 'mid'
     else:
         return 'high'
@@ -18,11 +19,27 @@ def get_income(row):
 # Cleaning when formatting of SoS precincts is different from 
 # reapportionment office's
 def sos_clean(row):
-    subd = re.sub(r'^\d{3} (\w+)', '\g<1>', row['Precinct'])
-    return subd.upper()
+    subd1 = re.sub(r'^\d{3} (\w+)', r'\g<1>', row['Precinct'])
+    return subd1.upper()
+#    subd2 = re.sub(r'ROAD$', r'RD', subd1)
+#    subd3 = re.sub(r'KNOLLWOOD ELEM', r'KNOLLWOOD', subd2)
+#    subd4 = re.sub(r'MT\.', r'MOUNT', subd3)
+#    subd5 = re.sub(r'MOUNT BETHEL', r'MT BETHEL', subd4)
+#    subd6 = re.sub(r'STONE MOUNTAIN', r'STONE MTN', subd5)
+#    subd7 = re.sub(r'VAUGHAN 01', r'VAUGHN 01', subd6)
+#    subd8 = re.sub(r'TERRY MILL ELEM', r'TERRY MILL', subd7)
+#    subd9 = re.sub(r'PEACHCREST ELEM', r'PEACHCREST', subd8)
+#    subd10 = re.sub(r'EAST LAKE ELEM', r'EAST LAKE', subd9)
+#    subd11 = re.sub(r'LASSSITER', r'LASSITER', subd10)
+#    subd12 = re.sub(r'GEORGETOWN SQUARE', r'GEORGETOWN SQ', subd11)
+#    subd13 = re.sub(r'MEDLOCK ELEM', r'MEDLOCK', subd12)
+#    subd14 = re.sub(r'HWY LIBRARY$', r'HWY', subd13)
+#    subd15 = re.sub(r'', subd14)
+#    return subd.upper().strip()
 
 def reapp_clean(row):
-    return re.sub(r' \(\w+\)$', '', row['Precinct Description'])
+    subd1 = re.sub(r' \(\w+\)$', '', row['PRECINCT_N'])
+    return subd1.strip()
 # End helper functions
 
 #-----------------------------------------------------#
@@ -45,7 +62,7 @@ def merge_votes():
         # We're only interested in the total votes for each candidate
         df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
 
-        df['Precinct'] = df.apply(sos_clean, axis=1)
+        #df['Precinct'] = df.apply(sos_clean, axis=1)
 
         # Rename some of the columns. This assumes that every csv from the
         # Secretary of State lists the candidates in the same order, double-check this.
@@ -64,33 +81,42 @@ def merge_votes():
         df['rep_p'] = df.apply(lambda x: x['rep_votes']/x['total'], axis=1)
         df['dem_p'] = df.apply(lambda x: x['dem_votes']/x['total'], axis=1)
 
+        # Get the county name from the csv to limit fuzzy matching later
+        df['county'] = os.path.split(f)[1][:-4].upper()
+
+        df['Precinct'] = df.apply(sos_clean, axis=1)
+
         # write the result to the list
         list_.append(df)
 
     # Concat the list of dataframes into a single dataframe
     df1 = pd.concat(list_)
+    df1.to_csv('income_race_votes_concat.csv', index=False)
     #assert(len(df1) == 914) # There are 914 precincts in metro Atlanta
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('precincts_names_codes_ok.csv', index_col=False)
-    df2['Precinct Description'] = df2.apply(reapp_clean, axis=1)
+    df2 = pd.read_csv('atl_precincts_income_race.csv', index_col=False)
+    df2['Precinct'] = df2.apply(reapp_clean, axis=1)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
     merged = df2.merge(df1,
-        left_on='Precinct Description',
+        left_on='Precinct',
         right_on='Precinct',
-        how='left',
+        how='outer',
         indicator=True)
     merged.to_csv('all_w_ind.csv')
 
     # If any precincts were left out, write them to the unmerged_precincts .csv
-    unmerged = merged[merged._merge != 'both']
-    if len(unmerged) > 0:
-        unmerged.to_csv('unmerged_precincts.csv', index=False)
-    else:
-        print 'All precincts merged successfully'
-    unmerged.to_csv('unmerged.csv')
+    unmerged_left = merged[merged._merge == 'left_only']
+    unmerged_right = merged[merged._merge == 'right_only']
+
+    #if len(unmerged) > 0:
+    #    unmerged.to_csv('unmerged_precincts.csv', index=False)
+    #else:
+    #    print 'All precincts merged successfully'
+    unmerged_left.to_csv('unmerged_left.csv')
+    unmerged_right.to_csv('unmerged_right.csv')
 
     # Filter merged dataset down to only precincts with matching names
     merged = merged[merged._merge == 'both']
