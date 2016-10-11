@@ -15,19 +15,6 @@ def get_income(row):
         return 'mid'
     else:
         return 'high'
-
-# Cleaning when formatting of SoS precincts is different from 
-# reapportionment office's
-def sos_clean(row):
-    subd1 = re.sub(r'^\d{3} (\w+)', r'\g<1>', row['Precinct'])
-    subd2 = re.sub(r'RD$', r'ROAD', subd1)
-    subd3 = re.sub(r'NORTH$', r'N', subd2)
-    subd4 = re.sub(r'SOUTH$', r'S', subd3)
-    return subd4.upper().strip()[:20] # Precinct names in the map cut off after 20 characters
-
-def reapp_clean(row):
-    subd1 = re.sub(r' \((\w+)?\)?$', '', row['PRECINCT_N'])
-    return subd1.strip()
 # End helper functions
 
 #-----------------------------------------------------#
@@ -70,9 +57,6 @@ def merge_votes():
         # Get the county name from the csv to limit fuzzy matching later
         df['county'] = os.path.split(f)[1][:-4].upper()
 
-        # Use regex to clean up results
-        df['Precinct'] = df.apply(sos_clean, axis=1)
-
         # Append the cleaned dataframe to our list of precincts
         list_.append(df)
 
@@ -81,13 +65,12 @@ def merge_votes():
     df1.to_csv('income_race_votes_concat.csv', index=False)
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('atl_precincts_income_race.csv', index_col=False)
-    df2['Precinct'] = df2.apply(reapp_clean, axis=1)
+    df2 = pd.read_csv('atl_precincts_income_race_matched.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
     merged = df2.merge(df1,
-        left_on='Precinct',
+        left_on='ajc_precinct',
         right_on='Precinct',
         how='outer',
         indicator=True)
