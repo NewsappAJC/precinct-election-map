@@ -66,7 +66,9 @@ Begin map
 
 #map-box {
   box-sizing: border-box;
+  border-left: 1px solid #e2e2e2;
   position: relative;
+  padding-left: 20px;
   width: 800px;
   @media (min-width: 1200px) {
     float: left;
@@ -113,15 +115,6 @@ Begin map
 }
 
 /* Begin candidate summary table style */
-#info {
-  display: none;
-  font-family: 'Boomer';
-  font-size: .8em;
-  background: white;
-  border-radius: 5px;
-  z-index: 999999;
-}
-
 #results-summary {
   top: 0;
   right: 0;
@@ -132,6 +125,30 @@ Begin map
   opacity: .9;
   border-radius: 10px;
 }
+
+#results-summary-title, .section-title {
+  font-size: 2em;
+  font-family: 'Boomer';
+  @media (max-width: 400px) {
+    margin-bottom: 8px;
+    font-size: 1.5em;
+  }
+}
+
+.eln-summary-table {
+  tr {
+    font-family: 'Publico';
+  }
+}
+#info {
+  display: none;
+  font-family: 'Boomer';
+  font-size: .8em;
+  background: white;
+  border-radius: 5px;
+  z-index: 999999;
+}
+
 
 #results-summary-table {
   font-family: 'Boomer';
@@ -145,11 +162,13 @@ Begin map
   }
 }
 
-.eln-table {
-  border-collapse: collapse;
+.eln-summary-table {
   width: 100%;
   tbody {
     display: table-row-group;
+  }
+  tr {
+    display: table-row;
   }
   th {
     font-family: 'Boomer-Light';
@@ -157,10 +176,8 @@ Begin map
     border-bottom: 1px solid #e2e2e2;
     text-align: left;
   }
-  tr.eln-row {
-    display: table-row;
-  }
   td {
+    padding: 3px;
     border-bottom: 1px solid #e2e2e2;
   }
 }
@@ -253,8 +270,11 @@ div#title-holder {
   margin-bottom: 20px;
   text-align: left;
   position: relative;
+  width: 100%;
   max-width: 800px;
-  @include centered;
+  @media (max-width:1200px) {
+    @include centered;
+  }
 }
 
 h1#main-title {
@@ -300,21 +320,17 @@ label {
 
 #address-input {
   font-family: 'Boomer';
+  font-size: .8em;
   box-shadow: inset 2px 3px 3px rgba(0,0,0,0.1);
   outline: none;
   width: 100%;
-  padding-right: 10px;
-  font-size: 14px;
+  padding: 2px;
   line-height: 15px;
   border-radius: 3px;
   border: 1px #e2e2e2 solid;
   box-sizing: border-box;
 }
 
-input {
-  padding: 8px;
-  font-size: .9em;
-}
 /* End address search */
 
 /* Begin filter options */
@@ -322,7 +338,6 @@ input {
 #left {
   position: relative;
   box-sizing: border-box;
-  padding-right: 20px;
   width: 100%;
   max-width: 800px;
   @media (min-width: 1200px) {
@@ -336,9 +351,26 @@ input {
   }
 }
 
-#filters-selector-holder, #counties-selector-holder {
-  display: inline-block;
-  margin: 0px 10px 15px 0px;
+.filter-table-head {
+  text-align: left;
+  font-family: Boomer;
+  color: #999999;
+}
+
+#filter-table {
+  margin-bottom: 20px;
+  td {
+    padding: 5px;
+  }
+  th {
+    padding: 5px;
+  }
+}
+
+#filter-select, #county-select {
+  font-size: 1em;
+  line-height: 15px;
+  width: 100%;
   text-align: center;
   label {
     font-size: 1em;
@@ -400,13 +432,4 @@ input {
 }
 /* End filter options */
 
-/* Begin results summary */
 
-#results-summary-title {
-  font-size: 2em;
-  font-family: 'Boomer';
-  @media (max-width: 400px) {
-    margin-bottom: 8px;
-    font-size: 1.5em;
-  }
-}

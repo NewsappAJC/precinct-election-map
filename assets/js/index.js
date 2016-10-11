@@ -12,13 +12,13 @@ var autocomplete,
     $loading = $('#loading'),
     $map = $('#map'),
     $closeButton = $('#close-button'),
-    $filtersSelect = $('#filters-selector-holder'),
+    $filterSelect = $('#row-filter-select'),
     $countiesSelect = $('#counties-selector-holder'),
     $resultsSummary = $('#results-summary');
 
 // State
 var selectedBucket = 'all',
-    selectedCounty = 'all',
+    selectedCounty = 'all counties',
     features = [],
     geojson,
     interactiveLayer,
@@ -116,10 +116,10 @@ function createMap() {
       $(this).attr('class', 'filter-selected')
     });
   })
-  $('#filters-selector').change(function() {
+  $('#filter-select').change(function() {
     updateFilter($(this).val());
   })
-  $('#counties-selector').change(function() {
+  $('#county-select').change(function() {
     updateFilter($(this).val());
   })
 
@@ -128,6 +128,7 @@ function createMap() {
 }; 
 
 function updateFilter(filter) {
+  console.log(filter)
   var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties']
   if (counties.indexOf(filter) === -1) {
     selectedBucket = filter; // Get the filter from the data-filter attribute
@@ -187,11 +188,16 @@ function updateTitle(feature) {
     'mid': 'a mean household income between $50,000 and $100,000',
     'low': 'a mean household income below $50,000'
   };
+
+  var titleCounty = selectedCounty.toUpperCase() != 'ALL COUNTIES' ? selectedCounty : 'Atlanta';
+
   if (feature === 'all') {
-    $('#results-summary-title').html(`Atlanta results`)
+    $('#results-summary-title').html(titleCounty + ' results')
   }
   else {
-    $('#results-summary-title').html(`Results in precincts with ${buckets[feature]}`)
+    $('#results-summary-title').html(`Results in precincts with ${buckets[feature] + 
+    (titleCounty != 'Atlanta'? ' (' + titleCounty + ')' : '')
+    }`)
   }
 };
 
@@ -314,7 +320,7 @@ bottom of the screen. */
 function toggleMobile() {
   if ($(window).width() < 1200) {
     $('#filters').hide(); // Instead of showing filter options as boxes, display as select box
-    $filtersSelect.show();
+    $filterSelect.show();
     $closeButton.show();
 
     // Configure infotip
@@ -324,7 +330,7 @@ function toggleMobile() {
   }
   else {
     $('#filters').show(); 
-    $filtersSelect.hide();
+    $filterSelect.hide();
     $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);

@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export default function() {
   var buckets = [
-    ['all', 'All precincts'],
+    ['all', 'All'],
     ['white', 'White'],
     ['black', 'Black'],
     ['hispanic', 'Hispanic'],
@@ -22,7 +22,7 @@ export default function() {
 
   for (var i = 0; i < counties.length; i++) {
     // Append to counties selector
-    $('#counties-selector').append(`
+    $('#county-select').append(`
         <option value="${counties[i]}">${counties[i]}</option>
     `)
   }
@@ -40,7 +40,7 @@ export default function() {
 
 
     // Append to selector that displays on mobile.
-    $('#filters-selector').append(`
+    $('#filter-select').append(`
         <option value="${buckets[i][0]}">${buckets[i][1]}</option>
     `)
   }

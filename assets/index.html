@@ -16,26 +16,41 @@
         <h1 id="main-title">
           <img src="img/ajc-logo.png"/>
           How Every Precinct in Atlanta Voted in the General Election</h1>
-        <span id="timestamp">Updated November 11, 2016</span>
       </div>
       <div id="loading">Loading</div>
       <div id="left">
 
-        <div id="counties-selector-holder">
-          <label for="counties">Filter by county</label>
-          <select name="counties" id="counties-selector"></select>
-        </div>
-        <div id="filters-selector-holder">
-          <label for="filters">Filter by race or income</label>
-          <select name="filters" id="filters-selector"></select>
-        </div>
+      <div class="section-title">Filters</div>
+      <table id="filter-table">
+        <tbody>
+          <tr id="row-county-select">
+            <td>
+              <label for="counties">County</label>
+            </td>
+            <td>
+              <select name="counties" id="county-select"></select>
+            </td>
+          </tr>
+          <tr id="row-filter-select">
+            <td>
+              <label for="filters">Race/income</label>
+            </td>
+            <td>
+              <select name="filters" id="filter-select"></select>
+            </td>
+          </tr>
+          <tr id="row-search-bar">
+            <td>
+              <label for="address-input">Address</label>
+            </td>
+            <td>
+              <input placeholder="Enter address" id="address-input"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <div id="search-bar">
-          <label for="address-input">Find your address</label>
-          <input placeholder="Enter address" id="address-input"/>
-        </div>
-
-        <div id="filters"></div>
+      <div id="filters"></div>
       </div>
       <div id="map-box">
         <div id="results-summary-title"></div>

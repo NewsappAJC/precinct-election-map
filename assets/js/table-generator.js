@@ -7,7 +7,7 @@ export default function(el, props) {
 
     function getCandResults(party, numVotes) { 
       return `
-          <tr class="eln-row">
+          <tr class="eln-summary-row">
             <td>
               <div class="${party}-party-tag"></div>
               <span class="candidate-name">${party === 'dem' ? 'Clinton' : 'Trump'}</span>
@@ -31,8 +31,8 @@ export default function(el, props) {
     }
 
     $(el).html(`
-      <table class="eln-table">
-        <thead class="eln-header">
+      <table class="eln-summary-table">
+        <thead class="eln-summary-header">
           <tr>
             <th>Candidates</th>
             <th>Votes</th>
