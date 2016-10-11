@@ -49,7 +49,8 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
-    url: './2014_precincts_income_race_simple.min.json',
+    //url: './2014_precincts_income_race_simple.min.json',
+    url: './2012_precincts_income_race.json',
     success: function(data) {
       cb(data)
     },
@@ -281,7 +282,6 @@ function generateLayers() {
   * End helper functions 
   ***********************/
 };
-
 
 // Add an info box to the main map
 function createInfo() {
