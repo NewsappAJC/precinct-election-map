@@ -62,15 +62,15 @@ def merge_votes():
 
     # Concat the list of dataframes into a single dataframe
     df1 = pd.concat(list_)
-    df1.to_csv('income_race_votes_concat.csv', index=False)
+    df1.to_csv('votes_concat.csv', index=False)
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('atl_precincts_income_race_matched.csv', index_col=False)
+    df2 = pd.read_csv('2012_atl_precincts_income_race.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
     merged = df2.merge(df1,
-        left_on='ajc_precinct',
+        left_on='PRECINCT_N',
         right_on='Precinct',
         how='outer',
         indicator=True)

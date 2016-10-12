@@ -1,16 +1,22 @@
 import $ from 'jquery';
 
-export default function(el, props) {
+// Constants
+var candidates = {
+  2012: {rep: 'Romney', dem: 'Obama'},
+  2016: {rep: 'Trump', dem: 'Clinton'}
+}
+
+export default function(el, props, year) {
   console.log('updating tables')
   try {
-    var totalVotes = props.dem_v + props.rep_v;
+    var totalVotes = props.dem_votes + props.rep_votes;
 
     function getCandResults(party, numVotes) { 
       return `
           <tr class="eln-summary-row">
             <td>
               <div class="${party}-party-tag"></div>
-              <span class="candidate-name">${party === 'dem' ? 'Clinton' : 'Trump'}</span>
+              <span class="candidate-name">${party === 'dem' ? candidates[year]['dem']: candidates[year]['rep']}</span>
             </td>
             <td>${numVotes}</td>
             <td>${parseInt((numVotes / totalVotes) * 100)}%</td> 
@@ -21,13 +27,13 @@ export default function(el, props) {
     var winner;
     var loser;
 
-    if (props.dem_v > props.rep_v) {
-      winner = getCandResults('dem', props.dem_v)
-      loser = getCandResults('gop', props.rep_v)
+    if (props.dem_votes > props.rep_v) {
+      winner = getCandResults('dem', props.dem_votes)
+      loser = getCandResults('gop', props.rep_votes)
     }
     else {
-      winner = getCandResults('gop', props.rep_v)
-      loser = getCandResults('dem', props.dem_v)
+      winner = getCandResults('gop', props.rep_votes)
+      loser = getCandResults('dem', props.dem_votes)
     }
 
     $(el).html(`

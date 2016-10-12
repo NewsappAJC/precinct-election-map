@@ -81,7 +81,6 @@ def merge_votes():
         right_on='Precinct',
         how='outer',
         indicator=True)
-
     # Write unmerged precincts to a list so we can check them
     unmerged_right = merged[merged._merge == 'right_only']
     print 'Unmerged: ', len(unmerged_right)
@@ -89,63 +88,69 @@ def merge_votes():
 
     # Filter merged dataset down to only precincts that merged successfully
     merged = merged[merged._merge == 'both']
+    merged.to_csv('betterfucknmatchyo.csv')
 
     # Bin by income
     merged['income_bin'] = merged.apply(get_income, axis=1)
 
-    # Calculate aggregated stats for summary table.
+    # Calculate aggregated stats for summary table. Has to be nested so that user can 
+    # drill down and get data by demographic group, by county, or by demographic group
+    # within a county.
     race = merged.groupby(['county', 'race'])['rep_votes', 'dem_votes'].sum().unstack()
     income = merged.groupby(['county','income_bin'])['rep_votes', 'dem_votes'].sum().unstack()
 
     reps = race.rep_votes.merge(income.rep_votes, left_index=True, right_index=True)
-    reps['party'] = 'GOP'
+    reps['party'] = 'rep_votes'
     repsf = reps.reset_index()
 
     dems = race.dem_votes.merge(income.dem_votes, left_index=True, right_index=True)
-    dems['party'] = 'DEM'
+    dems['party'] = 'dem_votes'
+    # The county is set as the index by default after the groupby, don't leave it that way
     demsf = dems.reset_index()
 
-
     c = pd.concat([repsf, demsf])
-    print c
 
     # Using a defaultdict to supply default values when a key doesn't exist
+    # The code below creates a nested defaultdict
+    # http://stackoverflow.com/questions/19189274/defaultdict-of-defaultdict-nested
     data = defaultdict(lambda: defaultdict(dict))
-    # Nested defaultdict http://stackoverflow.com/questions/19189274/defaultdict-of-defaultdict-nested
-    pop_data = defaultdict(lambda: defaultdict(dict))
 
-    # This will hold the stats for each demographic group
-    rep_total = 0
-    dem_total = 0
+    fields = ['black', 
+              'white',
+              'hispanic',
+              'high',
+              'mid',
+              'low']
 
     # Create a nested JSON object
     for i, row in c.iterrows():
         county = row['county']
         party = row['party']
-        data[party][county]['all'] = 0
-
-        fields = ['black', 
-                  'white',
-                  'hispanic',
-                  'high',
-                  'mid',
-                  'low']
+        data[county]['all'][party] = 0
 
         for field in fields:
+            # Check if val is null for precincts missing a certain group
+            # (eg some precincts have no Hispanics)
             if pd.isnull(row[field]):
                 continue
-            pop_data['party'][field] = row[field]
-            data[party][county][field] = row[field]
-            data[party][county]['all'] += row[field] # A summary statistic for each subgroup in the county
+            data[county][field][party] = row[field]
+            data[county]['all'][party] += row[field]
+            # It's impossible to use default dict for the below, because the factory can't
+            # generate both dicts and ints by default
+            try: 
+                data['ALL'][field][party]+= row[field]
+            except KeyError:
+                data['ALL'][field][party] = 0
 
-    # Lastly, calculate summary stats for counties
-    gop_totals = [value['all'] for key, value in data['GOP'].iteritems()]
-    dem_totals = [value['all'] for key, value in data['DEM'].iteritems()]
-    data['GOP']['ALL'] = sum(gop_totals)
-    data['DEM']['ALL'] = sum(dem_totals)
+    # Lastly, calculate summary stats for counties. Don't loop through ALL because it
+    # repeats data. Sorry about the long list comprehension.
+    #gop_totals = [value['GOP'] for key, value in data['ALL'].iteritems()]
+    #dem_totals = [value['DEM'] for key, value in data['ALL'].iteritems()]
+    data['ALL']['all']['rep_votes'] = merged['rep_votes'].sum()
+    data['ALL']['all']['dem_votes'] = merged['dem_votes'].sum()
 
-    with open('test.json', 'w') as f:
-        f.write(json.dumps(data))
+    with open(FPATH, 'w') as f:
+        f.write(json.dumps(data, indent=4))
 
     return
 

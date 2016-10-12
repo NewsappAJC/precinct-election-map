@@ -18,11 +18,12 @@ var autocomplete,
 
 // State
 var selectedBucket = 'all',
-    selectedCounty = 'all counties',
+    selectedCounty = 'all',
     features = [],
     geojson,
     interactiveLayer,
-    aggStats;
+    aggStats,
+    year = 2012; //TODO change this for 2016!!
 
 $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
@@ -64,7 +65,7 @@ function getPrecincts(cb) {
 function getAggregatedData(cb) {
   $.ajax({
     dataType: 'json',
-    url: './aggregated_stats.json',
+    url: './2012_agg_stats.json',
     success: function(data) {
       cb(data)
     },
@@ -102,7 +103,7 @@ function createMap() {
     aggStats = data;
     console.log(aggStats)
     updateTitle('all')
-    updateTable($resultsSummary, aggStats['all']);
+    updateTable($resultsSummary, aggStats['ALL']['all'], year);
   });
 
   $loading.hide();
@@ -130,7 +131,9 @@ function createMap() {
 
 function updateFilter(filter) {
   console.log(filter)
-  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties']
+  // County filters and demographic filters are both set by this function, 
+  // so we need to check if the given filter is a county or not
+  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All']
   if (counties.indexOf(filter) === -1) {
     selectedBucket = filter; // Get the filter from the data-filter attribute
   }
@@ -157,7 +160,7 @@ function updateFilter(filter) {
     }
 
     // Check if each precinct meets the filter criteria, and change its fill color accordingly
-    if (layerCounty === selectedCounty.toUpperCase() || selectedCounty.toUpperCase() === 'ALL COUNTIES') {
+    if (layerCounty === selectedCounty.toUpperCase() || selectedCounty.toUpperCase() === 'ALL') {
       if (layerRace === selectedBucket ||
       layerIncome === selectedBucket ||
       selectedBucket === 'all') {
@@ -174,7 +177,7 @@ function updateFilter(filter) {
 
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
-  updateTable($resultsSummary, aggStats[selectedBucket]);
+  updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
 
   // Unset style of all filter options then style selected filter
 }
@@ -190,7 +193,7 @@ function updateTitle(feature) {
     'low': 'a mean household income below $50,000'
   };
 
-  var titleCounty = selectedCounty.toUpperCase() != 'ALL COUNTIES' ? selectedCounty : 'Atlanta';
+  var titleCounty = selectedCounty.toUpperCase() != 'ALL' ? selectedCounty : 'Atlanta';
 
   if (feature === 'all') {
     $('#results-summary-title').html(titleCounty + ' results')
