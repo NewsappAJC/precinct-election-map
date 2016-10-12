@@ -50,7 +50,7 @@ function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
     //url: './2014_precincts_income_race_simple.min.json',
-    url: './2012_precincts_income_race.json',
+    url: './2012_precincts_income_race_votes.json',
     success: function(data) {
       cb(data)
     },
@@ -140,11 +140,11 @@ function updateFilter(filter) {
 
   // Loop through features in the geoJSON layer
   geojson.eachLayer(function (layer) {
-      var layerRace = layer.feature.properties.income_rac,
+      var layerRace = layer.feature.properties['2012_pre_2'],
           layerCounty = layer.feature.properties.COUNTY_NAM,
           layerIncome;
 
-    var income = layer.feature.properties.income_r_1; // Assign income to high middle or low bucket
+    var income = layer.feature.properties['2012_pre_1']; // Assign income to high middle or low bucket
 
     if (income < 50000) {
       layerIncome = 'low';
@@ -206,7 +206,7 @@ function updateTitle(feature) {
 function setColor(feature) {
   var style = {color: '#2E64FE', fillOpacity: .3, opacity: .5, weight: 1};
 
-  var party = feature.properties.rep_v > feature.properties.dem_v ? 'Republican' : 'Democrat';
+  var party = feature.properties.rep_votes > feature.properties.dem_votes ? 'Republican' : 'Democrat';
 
   switch (party) {
     case 'Republican': {
