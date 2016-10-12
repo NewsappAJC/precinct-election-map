@@ -432,4 +432,16 @@ label {
 }
 /* End filter options */
 
-
+/***************************
+/* BEGIN YEAR SELECT
+/***************************/
+#unselected-year {
+  color: #e2e2e2;
+  cursor: pointer;
+}
+#unselected-year:hover {
+  color: $text-black;
+}
+/***************************
+/* END YEAR SELECT
+/***************************/
