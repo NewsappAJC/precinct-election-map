@@ -96,7 +96,7 @@ Begin map
 #loading {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 800px;
   background-color: white;
   padding-top: 100px;
   font-family: 'Boomer';
@@ -433,9 +433,14 @@ label {
 /* End filter options */
 
 /* BEGIN RANKING TABLE */
+.rank-table-holder {
+  margin-top: 50px;
+  background-color: #FAFAFA;
+  padding-top: 20px;
+}
+
 .top-precincts {
   position: relative;
-  margin-top: 50px;
   clear: both;
   height: 400px;
   max-width: 600px;
@@ -458,12 +463,12 @@ label {
   th {
     font-family: 'Boomer-Light';
     color: #999999;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid #999999;
   }
   td {
     font-family: 'Boomer-Light';
     padding: 3px;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid #999999;
   }
   td.rank {
     width: 10%;
