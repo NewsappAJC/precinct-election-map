@@ -12,7 +12,7 @@ var autocomplete,
     $loading = $('#loading'),
     $map = $('#map'),
     $closeButton = $('#close-button'),
-    $filterSelect = $('#row-filter-select'),
+    $filterSelect = $('#filter-select'),
     $countiesSelect = $('#counties-selector-holder'),
     $resultsSummary = $('#results-summary');
 
@@ -110,19 +110,33 @@ function createMap() {
   $map.show();
   map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
 
-  // Add event listeners to filter precincts by the given criteria when clicked
-  $('.filter, .filter-selected').each(function() {
-    $(this).on('click', function() {
-      updateFilter(this.dataset.filter);
+  function setMiniMapStyle(el) {
       $('.filter-selected').attr('class', 'filter')
-      $(this).attr('class', 'filter-selected')
+      $(el).attr('class', 'filter-selected')
+  };
+
+  // Add event listeners to filter precincts by the given criteria when clicked
+  $('.filter, .filter-selected, #filter-select').each(function() {
+    $(this).on('change click', function() {
+      if (!this.attributes.id) {
+        value = this.dataset.filter
+        setMiniMapStyle(this);
+        updateFilter(value);
+        $filterSelect.val(value);
+      }
+      else {
+        var value = $(this).val();
+        var filterEl = $(`a[data-filter=${value}]`);
+        setMiniMapStyle(filterEl)
+        updateFilter(value);
+      }
+      map.setView({ lat: 33.74, lng: -84.38}, 10);
     });
-  })
-  $('#filter-select').change(function() {
-    updateFilter($(this).val());
-  })
+  });
+
   $('#county-select').change(function() {
     updateFilter($(this).val());
+    map.setView({ lat: 33.74, lng: -84.38}, 10);
   })
 
   createInfo(); // Create the info box that displays precinct information
@@ -130,7 +144,6 @@ function createMap() {
 }; 
 
 function updateFilter(filter) {
-  console.log(filter)
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
   var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All']
@@ -149,6 +162,7 @@ function updateFilter(filter) {
 
     var income = layer.feature.properties['2012_pre_1']; // Assign income to high middle or low bucket
 
+    // TODO bin this in the data so I don't have to do it here
     if (income < 50000) {
       layerIncome = 'low';
     }
@@ -259,7 +273,7 @@ function generateLayers() {
     });
 
     $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} (${layer.feature.properties.COUNTY_NAM})</span>`)
-    updateTable('#info-data', layer.feature.properties);
+    updateTable('#info-data', layer.feature.properties, year);
     $infoTip.show();
   };
 

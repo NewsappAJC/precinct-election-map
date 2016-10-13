@@ -7,7 +7,6 @@ var candidates = {
 }
 
 export default function(el, props, year) {
-  console.log('updating tables')
   try {
     var totalVotes = props.dem_votes + props.rep_votes;
 
@@ -27,7 +26,7 @@ export default function(el, props, year) {
     var winner;
     var loser;
 
-    if (props.dem_votes > props.rep_v) {
+    if (props.dem_votes > props.rep_votes) {
       winner = getCandResults('dem', props.dem_votes)
       loser = getCandResults('gop', props.rep_votes)
     }
