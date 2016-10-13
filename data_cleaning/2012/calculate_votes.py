@@ -13,7 +13,7 @@ BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
 FPATH = join(BASE_DIR, 'assets', 'data', '2012_agg_stats.json')
 
 # Begin helper functions
-def get_income(row):
+def bin_income(row):
     if row['avg_income'] < 50000:
         return 'low'
     elif row['avg_income'] < 100000:
@@ -91,11 +91,9 @@ def merge_votes():
     merged.to_csv('betterfucknmatchyo.csv')
 
     # Bin by income
-    merged['income_bin'] = merged.apply(get_income, axis=1)
+    merged['income_bin'] = merged.apply(bin_income, axis=1)
 
-    # Calculate aggregated stats for summary table. Has to be nested so that user can 
-    # drill down and get data by demographic group, by county, or by demographic group
-    # within a county.
+    # Calculate aggregated stats for summary table
     race = merged.groupby(['county', 'race'])['rep_votes', 'dem_votes'].sum().unstack()
     income = merged.groupby(['county','income_bin'])['rep_votes', 'dem_votes'].sum().unstack()
 
@@ -105,7 +103,6 @@ def merge_votes():
 
     dems = race.dem_votes.merge(income.dem_votes, left_index=True, right_index=True)
     dems['party'] = 'dem_votes'
-    # The county is set as the index by default after the groupby, don't leave it that way
     demsf = dems.reset_index()
 
     c = pd.concat([repsf, demsf])
@@ -138,14 +135,11 @@ def merge_votes():
             # It's impossible to use default dict for the below, because the factory can't
             # generate both dicts and ints by default
             try: 
-                data['ALL'][field][party]+= row[field]
+                data['ALL'][field][party] += row[field]
             except KeyError:
                 data['ALL'][field][party] = 0
 
-    # Lastly, calculate summary stats for counties. Don't loop through ALL because it
-    # repeats data. Sorry about the long list comprehension.
-    #gop_totals = [value['GOP'] for key, value in data['ALL'].iteritems()]
-    #dem_totals = [value['DEM'] for key, value in data['ALL'].iteritems()]
+    # Lastly, calculate summary stats for counties
     data['ALL']['all']['rep_votes'] = merged['rep_votes'].sum()
     data['ALL']['all']['dem_votes'] = merged['dem_votes'].sum()
 
