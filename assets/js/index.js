@@ -11,7 +11,9 @@ var autocomplete,
     $infoTip = $('#info'),
     $loading = $('#loading'),
     $map = $('#map'),
+    $rankingTable = $('#rank-table-body'),
     $closeButton = $('#close-button'),
+    $filterSelectRow = $('#row-filter-select'),
     $filterSelect = $('#filter-select'),
     $countiesSelect = $('#counties-selector-holder'),
     $resultsSummary = $('#results-summary');
@@ -19,6 +21,8 @@ var autocomplete,
 // State
 var selectedBucket = 'all',
     selectedCounty = 'all',
+    activePrecincts = [],
+    sortedPrecincts,
     features = [],
     geojson,
     interactiveLayer,
@@ -29,7 +33,7 @@ $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
 
 // Create Leaflet map and get tiles from Carto
-var map = L.map('map', {minZoom: 8, scrollWheelZoom: false});
+var map = L.map('map', {minZoom: 9, scrollWheelZoom: false});
 map.setView({ lat: 33.74, lng: -84.38}, 10);
 
 // Use panes to "sandwich" GeoJSON features between map tiles and road labels
@@ -51,7 +55,7 @@ function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
     //url: './2014_precincts_income_race_simple.min.json',
-    url: './2012_precincts_income_race_votes.json',
+    url: './2012_precincts_stats_votes_filtered.json',
     success: function(data) {
       cb(data)
     },
@@ -76,11 +80,9 @@ function getAggregatedData(cb) {
 }
 
 
-// Append precincts from .json file to list of features so that Leaflet can render them.
-function addPrecincts(precincts) {
-  $(precincts).each(function(key, feature) {
-    features.push(feature);
-  });
+// push precincts from .json file to list of features so that Leaflet can render them.
+function addPrecincts(layer) {
+  features = layer;
   console.log(features);
   generateLayers();
   createMap();
@@ -117,20 +119,23 @@ function createMap() {
 
   // Add event listeners to filter precincts by the given criteria when clicked
   $('.filter, .filter-selected, #filter-select').each(function() {
-    $(this).on('change click', function() {
+    $(this).on('change click', function(e) {
       if (!this.attributes.id) {
         value = this.dataset.filter
         setMiniMapStyle(this);
         updateFilter(value);
         $filterSelect.val(value);
+        map.setView({ lat: 33.74, lng: -84.38}, 10);
       }
       else {
         var value = $(this).val();
         var filterEl = $(`a[data-filter=${value}]`);
         setMiniMapStyle(filterEl)
         updateFilter(value);
-      }
-      map.setView({ lat: 33.74, lng: -84.38}, 10);
+        if (e.type === 'change') {
+          map.setView({ lat: 33.74, lng: -84.38}, 10);
+        };
+      };
     });
   });
 
@@ -154,6 +159,9 @@ function updateFilter(filter) {
     selectedCounty = filter;
   }
 
+  // Empty the activePrecincts array so that we can fill in only the 
+  // precincts that meet the current precinct criteria
+  activePrecincts = [];
   // Loop through features in the geoJSON layer
   geojson.eachLayer(function (layer) {
       var layerRace = layer.feature.properties['2012_pre_2'],
@@ -179,6 +187,7 @@ function updateFilter(filter) {
       layerIncome === selectedBucket ||
       selectedBucket === 'all') {
         layer.setStyle(setColor(layer.feature));
+        activePrecincts.push(layer);
       }
       else {
         layer.setStyle({fillOpacity: 0});
@@ -192,6 +201,7 @@ function updateFilter(filter) {
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
   updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
+  updateRankings();
 
   // Unset style of all filter options then style selected filter
 }
@@ -217,6 +227,71 @@ function updateTitle(feature) {
     (titleCounty != 'Atlanta'? ' (' + titleCounty + ')' : '')
     }`)
   }
+};
+
+
+function updateRankings() {
+  if (activePrecincts.length >= 10) {
+    sortedPrecincts = _.sortBy(activePrecincts, function(p) {
+      return p.feature.properties.rep_p
+    });
+  };
+  
+  var parties = {topRep: [], topDem: []};
+  console.log(sortedPrecincts)
+
+  _.each(parties, function(value, key, obj) {
+    for (var i = 0; i < 5; i++) {
+      if (key === 'topDem') {
+        obj[key].push(sortedPrecincts[i]);
+      }
+      else {
+        obj[key].push(sortedPrecincts[sortedPrecincts.length - (i + 1)]);
+      }
+    };
+  });
+
+  createRankDiv(parties);
+  return
+};
+
+function createRankDiv(parties) {
+  $rankingTable.html('');
+  for (var i = 0; i < 5; i++) {
+    var repPrecinct = parties.topRep[i].feature
+    var demPrecinct = parties.topDem[i].feature
+
+    var demVotes = parseInt(demPrecinct.properties.dem_p*100);
+    var repVotes = parseInt(repPrecinct.properties.rep_p*100);
+
+    $rankingTable.append(`
+      <tr>
+        <td class="rank">${i+1}</td>
+        <td class="proportion">
+          <div>
+            ${demPrecinct.properties.PRECINCT_N} 
+            <strong>
+              - ${demVotes}%
+            </strong>
+          </div>
+          <div class="rank-sub-county">
+            ${demPrecinct.properties.COUNTY_NAM}
+          </div>
+        </td>
+        <td class="proportion">
+          <div>
+            ${repPrecinct.properties.PRECINCT_N} 
+            <strong>
+              - ${repVotes}%
+            </strong>
+          </div>
+          <div class="rank-sub-county">
+            ${repPrecinct.properties.COUNTY_NAM}
+          </div>
+        </td>
+      </tr>
+    `);
+  };
 };
 
 // Return an object with appropriate styles given the party results of a given precinct
@@ -337,7 +412,7 @@ bottom of the screen. */
 function toggleMobile() {
   if ($(window).width() < 1200) {
     $('#filters').hide(); // Instead of showing filter options as boxes, display as select box
-    $filterSelect.show();
+    $filterSelectRow.show();
     $closeButton.show();
 
     // Configure infotip
@@ -347,7 +422,7 @@ function toggleMobile() {
   }
   else {
     $('#filters').show(); 
-    $filterSelect.hide();
+    $filterSelectRow.hide();
     $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);

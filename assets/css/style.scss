@@ -432,4 +432,46 @@ label {
 }
 /* End filter options */
 
+/* BEGIN RANKING TABLE */
+.top-precincts {
+  position: relative;
+  margin-top: 150px;
+  height: 400px;
+  max-width: 600px;
+  text-align: left;
+  @include centered;
+  div.top-precincts-title {
+    font-family: 'Boomer';
+    font-size: 1.3em;
+  }
+}
 
+#rank-table {
+  width: 100%;
+  tbody {
+    display: table-row-group;
+  }
+  tr {
+    display: table-row;
+  }
+  th {
+    font-family: 'Boomer-Light';
+    color: #999999;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  td {
+    font-family: 'Boomer-Light';
+    padding: 3px;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  td.rank {
+    width: 10%;
+  }
+  td.proportion {
+    width: 45%;
+  }
+  .rank-sub-county {
+    color: #999999;
+    font-size: .7em;
+  }
+}
