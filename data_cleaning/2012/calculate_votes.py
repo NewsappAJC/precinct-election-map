@@ -24,26 +24,26 @@ def bin_income(row):
 
 #-----------------------------------------------------#
 # merge_votes() concatenates all the precinct election 
-# results .csv files from the Secretary of State
-# and merges with the .csvs of demographic data for
-# each precinct. It also calculates aggregate statistics
-# based on this data
+# results .csv files from the Secretary of State. It then cleans 
+# the precinct names and merges with the .csvs of demographic data for
+# each precinct. It then calculates aggregate statistics
+# based on this data.
 #-----------------------------------------------------#
 def merge_votes():
     current_dir = dirname(abspath(__file__))
 
     # Get a list of all the .csv files in the precinct_results dir
+    # Each .csv must have the county name as its filename
     precinct_results = glob(join(current_dir, 'precinct_results', '*.csv'))
     list_ = []
 
-    # Create a single dataframe by concatenating all the .csv files
     for f in precinct_results:
+        # Load the csv and filter down to the relevant columns
         df = pd.read_csv(f, index_col=False, header=2)
-        # We're only interested in the total votes for each candidate
         df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
 
-        # Rename some of the columns. This assumes that every csv from the
-        # Secretary of State lists the candidates in the same order, double-check this.
+        # Rename some of the columns. To date the SoS has always placed the
+        # Republican candidate first. Check this when downloading 2016 data.
         df = df.rename(columns={
             'Total Votes': 'rep_votes',
             'Total Votes.1': 'dem_votes',
@@ -55,19 +55,22 @@ def merge_votes():
             x.dem_votes > 0 and 
             x.total > 0, axis=1)] 
 
-        # Calculate proportion of total votes that each candidate got
+        # Add a column with proportion of total votes for each candidate
         df['rep_p'] = df.apply(lambda x: float(x['rep_votes'])/float(x['total']), axis=1)
         df['dem_p'] = df.apply(lambda x: float(x['dem_votes'])/float(x['total']), axis=1)
 
+        # Convert precinct to uppercase
         df['Precinct'] = df.apply(lambda x: x['Precinct'].upper(), axis=1)
 
-        # Get the county name from the csv to limit fuzzy matching later
+        # Get the county name from the csv filename
         df['county'] = split(f)[1][:-4].upper()
 
-        # Append the cleaned dataframe to our list of precincts
+        # Append the cleaned dataframe to our list of all counties
         list_.append(df)
 
-    # Concat the list of dataframes into a single dataframe
+    # CALCULATE AGGREGATE STATISTICS
+
+    # Concat the list of dataframes
     df1 = pd.concat(list_)
     df1.to_csv('votes_concat.csv', index=False)
 
@@ -88,7 +91,6 @@ def merge_votes():
 
     # Filter merged dataset down to only precincts that merged successfully
     merged = merged[merged._merge == 'both']
-    merged.to_csv('betterfucknmatchyo.csv')
 
     # Bin by income
     merged['income_bin'] = merged.apply(bin_income, axis=1)
@@ -107,9 +109,7 @@ def merge_votes():
 
     c = pd.concat([repsf, demsf])
 
-    # Using a defaultdict to supply default values when a key doesn't exist
-    # The code below creates a nested defaultdict
-    # http://stackoverflow.com/questions/19189274/defaultdict-of-defaultdict-nested
+    # Create a nested defaultdict
     data = defaultdict(lambda: defaultdict(dict))
 
     fields = ['black', 

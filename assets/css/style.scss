@@ -42,20 +42,42 @@ Begin mixins
   left: 50%;
   transform: translateX(-50%);
 }
+
+@mixin table {
+  float: left;
+  max-width: 350px;
+  margin: 10px;
+  display: inline-block;
+  th {
+    font-family: 'Boomer-Light';
+    color: #999999;
+  }
+  td {
+    font-family: 'Boomer-Light';
+    padding: 3px;
+  }
+  td.rank {
+    width: 10%;
+  }
+  td.proportion {
+    width: 45%;
+  }
+}
+
 /********
 End mixins
 *********/
 
+/******************
+BEGIN PAGE STYLES
+*******************/
 html, body {
   margin: 0;
   box-sizing: border-box;
   height: 100%;
-  overflow: auto; // SO that fixed item actually stays fixed at the bottom of the screen
+  overflow: auto;
 }
 
-/********
-Begin map
-*********/
 #jumbotron {
   max-width: 1100px;
   overflow: hidden;
@@ -65,6 +87,25 @@ Begin map
   position: relative;
 }
 
+#loading {
+  position: absolute;
+  width: 100%;
+  height: 800px;
+  background-color: white;
+  padding-top: 100px;
+  font-family: 'Boomer';
+  font-size: 2em;
+  color: #CCCCCC;
+  text-align: center;
+  z-index: 9999;
+}
+/******************
+END PAGE STYLES
+*******************/
+
+/******************
+BEGIN MAP STYLES
+*******************/
 #map-box {
   box-sizing: border-box;
   border-left: 1px solid #e2e2e2;
@@ -93,28 +134,23 @@ Begin map
   }
 }
 
-#loading {
-  position: absolute;
-  width: 100%;
-  height: 800px;
-  background-color: white;
-  padding-top: 100px;
-  font-family: 'Boomer';
-  font-size: 2em;
-  color: #CCCCCC;
-  text-align: center;
-  z-index: 9999;
-}
-
 .leaflet-interactive {
   z-index: 99999;
 }
 
-.main-map {
-  border-left: 1px solid black;
+#data-source {
+  font-family: 'Boomer';
+  font-size: .7em;
+  font-color: #999999;
 }
 
-/* Begin candidate summary table style */
+/******************
+END MAP STYLES
+*******************/
+
+/************************
+BEGIN SUMMARY TABLE STYLE
+*************************/
 #results-summary {
   top: 0;
   right: 0;
@@ -124,6 +160,19 @@ Begin map
   background: white;
   opacity: .9;
   border-radius: 10px;
+}
+
+.eln-summary-table {
+  @include table;
+  font-family: 'Boomer';
+  font-size: .8em;
+  background: white;
+  tr {
+    line-height: 30px;
+    @media (max-width: 400px) {
+      line-height: 1.5;
+    }
+  }
 }
 
 #results-summary-title, .section-title {
@@ -140,6 +189,7 @@ Begin map
     font-family: 'Publico';
   }
 }
+
 #info {
   display: none;
   font-family: 'Boomer';
@@ -147,39 +197,6 @@ Begin map
   background: white;
   border-radius: 5px;
   z-index: 999999;
-}
-
-
-#results-summary-table {
-  font-family: 'Boomer';
-  font-size: .8em;
-  background: white;
-  tr {
-    line-height: 30px;
-    @media (max-width: 400px) {
-      line-height: 1.5;
-    }
-  }
-}
-
-.eln-summary-table {
-  width: 100%;
-  tbody {
-    display: table-row-group;
-  }
-  tr {
-    display: table-row;
-  }
-  th {
-    font-family: 'Boomer-Light';
-    color: #999999;
-    border-bottom: 1px solid #e2e2e2;
-    text-align: left;
-  }
-  td {
-    padding: 3px;
-    border-bottom: 1px solid #e2e2e2;
-  }
 }
 
 .follow {
@@ -224,10 +241,6 @@ Begin map
   }
 }
 
-#metadata {
-  height: 30px;
-}
-
 #info-title, #close-button {
   position: absolute;
 }
@@ -262,10 +275,13 @@ h4.tooltip-title{
   line-height: 20px;
 }
 
-/* End candidate table style */
+/**********************
+END SUMMARY TABLE STYLES
+***********************/
 
-/* Begin title */
-
+/**********************
+BEGIN MAIN TITLE STYLES
+***********************/
 div#title-holder {
   margin-bottom: 20px;
   text-align: left;
@@ -301,9 +317,13 @@ span#timestamp {
   }
 }
 
-/* End title */
+/**********************
+END MAIN TITLE STYLES
+***********************/
 
-/* Begin address search */
+/***************************
+BEGIN ADDRESS SEARCH STYLES
+****************************/
 #search-bar {
   margin-bottom: 40px;
   @media (max-width: 400px) {
@@ -330,11 +350,13 @@ label {
   border: 1px #e2e2e2 solid;
   box-sizing: border-box;
 }
+/***************************
+BEGIN ADDRESS SEARCH STYLES
+****************************/
 
-/* End address search */
-
-/* Begin filter options */
-
+/***************************
+BEGIN FILTER OPTION STYLES
+****************************/
 #left {
   position: relative;
   box-sizing: border-box;
@@ -430,9 +452,13 @@ label {
     opacity: 1;
   }
 }
-/* End filter options */
+/***************************
+END FILTER OPTION STYLES
+****************************/
 
-/* BEGIN RANKING TABLE */
+/***************************
+BEGIN RANKING TABLE
+****************************/
 .rank-table-holder {
   margin-top: 50px;
   background-color: #FAFAFA;
@@ -455,26 +481,7 @@ label {
 }
 
 #rank-table-dem, #rank-table-rep {
-  float: left;
-  max-width: 350px;
-  margin: 10px;
-  display: inline-block;
-  th {
-    font-family: 'Boomer-Light';
-    color: #999999;
-    border-bottom: 1px solid #999999;
-  }
-  td {
-    font-family: 'Boomer-Light';
-    padding: 3px;
-    border-bottom: 1px solid #999999;
-  }
-  td.rank {
-    width: 10%;
-  }
-  td.proportion {
-    width: 45%;
-  }
+  @include table;
   .rank-sub-county {
     color: #999999;
     font-size: .7em;
@@ -500,3 +507,18 @@ label {
   color: #999999;
   font-size: .7em;
 }
+/**************************
+/* END RANKING TABLE STYLES
+/**************************/
+
+/*********************
+/* BEGIN BYLINE STYLES
+/********************/
+.byline {
+  clear: both;
+  padding: 20px 5px 100px 5px;
+  font-family: 'Boomer';
+}
+/********************
+/* END BYLINE STYLES
+/********************/
