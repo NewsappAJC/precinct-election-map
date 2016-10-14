@@ -12,7 +12,7 @@ export default function() {
   ];
 
   var counties = [
-    'All',
+    'All counties',
     'Fulton',
     'DeKalb',
     'Clayton',

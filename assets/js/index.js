@@ -20,7 +20,7 @@ var autocomplete,
 
 // State
 var selectedBucket = 'all',
-    selectedCounty = 'all',
+    selectedCounty = 'all counties',
     activePrecincts = [],
     features = [],
     geojson,
@@ -104,7 +104,7 @@ function createMap() {
     aggStats = data;
     console.log(aggStats)
     updateTitle('all')
-    updateTable($resultsSummary, aggStats['ALL']['all'], year);
+    updateTable($resultsSummary, aggStats['ALL COUNTIES']['all'], year);
     updateFilter('all')
   });
 
@@ -141,7 +141,8 @@ function createMap() {
   });
 
   $('#county-select').change(function() {
-    updateFilter($(this).val());
+    var value = $(this).val();
+    updateFilter(value);
     map.setView({ lat: 33.74, lng: -84.38}, 10);
   })
 
@@ -152,7 +153,7 @@ function createMap() {
 function updateFilter(filter) {
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
-  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All']
+  var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties', 'all counties']
   if (counties.indexOf(filter) === -1) {
     selectedBucket = filter; // Get the filter from the data-filter attribute
   }
@@ -183,7 +184,7 @@ function updateFilter(filter) {
     }
 
     // Check if each precinct meets the filter criteria, and change its fill color accordingly
-    if (layerCounty === selectedCounty.toUpperCase() || selectedCounty.toUpperCase() === 'ALL') {
+    if (layerCounty === selectedCounty.toUpperCase() || selectedCounty.toUpperCase() === 'ALL COUNTIES') {
       if (layerRace === selectedBucket ||
       layerIncome === selectedBucket ||
       selectedBucket === 'all') {
@@ -202,7 +203,7 @@ function updateFilter(filter) {
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
   updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
-  updateRankings(activePrecincts);
+  updateRankings(activePrecincts, selectedCounty, selectedBucket);
 
   // Unset style of all filter options then style selected filter
 }
@@ -225,7 +226,7 @@ function updateTitle(feature) {
   }
   else {
     $('#results-summary-title').html(`Results in precincts with ${buckets[feature] + 
-    (titleCounty != 'Atlanta'? ' (' + titleCounty + ')' : '')
+    (titleCounty != 'Atlanta'? ' (' + titleCounty + ' County)' : '')
     }`)
   }
 };

@@ -135,13 +135,13 @@ def merge_votes():
             # It's impossible to use default dict for the below, because the factory can't
             # generate both dicts and ints by default
             try: 
-                data['ALL'][field][party] += row[field]
+                data['ALL COUNTIES'][field][party] += row[field]
             except KeyError:
-                data['ALL'][field][party] = 0
+                data['ALL COUNTIES'][field][party] = 0
 
     # Lastly, calculate summary stats for counties
-    data['ALL']['all']['rep_votes'] = merged['rep_votes'].sum()
-    data['ALL']['all']['dem_votes'] = merged['dem_votes'].sum()
+    data['ALL COUNTIES']['all']['rep_votes'] = merged['rep_votes'].sum()
+    data['ALL COUNTIES']['all']['dem_votes'] = merged['dem_votes'].sum()
 
     with open(FPATH, 'w') as f:
         f.write(json.dumps(data, indent=4))

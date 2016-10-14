@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="./css/vendor/leaflet.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8&libraries=places"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   </head>
   <body>
     <!-- Main app -->
@@ -77,19 +76,39 @@
 
     <div class="rank-table-holder">
       <div class="top-precincts">
-        <div class="top-precincts-title">Top Precincts for Each Candidate</div>
-        <table id="rank-table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Clinton</th>
-              <th>Trump</th>
-          </thead>
-          <tbody id='rank-table-body'>
-          </tbody>
-        </table>
+        <div id="top-precincts-title">Top Precincts for Each Candidate</div>
+
+        <div id="rank-table-rep">
+          <div class="table-title rep-title">Donald Trump</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Precinct</th>
+                <th>Percent</th>
+              </tr>
+            </thead>
+            <tbody id='rank-table-rep-body'></tbody>
+          </table>
+        </div>
+
+        <div id="rank-table-dem">
+          <div class="table-title dem-title">Hillary Clinton</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Precinct</th>
+                <th>Percent</th>
+              </tr>
+            </thead>
+            <tbody id='rank-table-dem-body'></tbody>
+          </table>
+        </div>
+
       </div>
     </div>
+
     <div class="byline">
       Demographic data collected from the 2014 American Community Survey.<br>
       Precinct maps collected from the Reapportionment Office.<br>
@@ -97,6 +116,7 @@
       By Jonathan Cox
     </div>
 
+    <!-- Load the script -->
     <script src="./main.js" type="text/javascript"></script>
   </body>
 </html>
