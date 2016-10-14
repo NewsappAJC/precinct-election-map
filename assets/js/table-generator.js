@@ -6,7 +6,14 @@ var candidates = {
   2016: {rep: 'Trump', dem: 'Clinton'}
 }
 
+
+
 export default function(el, props, year) {
+  /* Helper function */
+  function wCommas(string_) {
+      return string_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   try {
     var totalVotes = props.dem_votes + props.rep_votes;
 
@@ -17,7 +24,7 @@ export default function(el, props, year) {
               <div class="${party}-party-tag"></div>
               <span class="candidate-name">${party === 'dem' ? candidates[year]['dem']: candidates[year]['rep']}</span>
             </td>
-            <td>${numVotes}</td>
+            <td>${wCommas(numVotes)}</td>
             <td>${parseInt((numVotes / totalVotes) * 100)}%</td> 
           </tr>
       `

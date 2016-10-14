@@ -287,7 +287,7 @@ END SUMMARY TABLE STYLES
 BEGIN MAIN TITLE STYLES
 ***********************/
 div#title-holder {
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   text-align: left;
   position: relative;
   width: 100%;
@@ -298,7 +298,6 @@ div#title-holder {
 }
 
 h1#main-title {
-  margin-bottom: 5px;
   line-height: 1;
   font-family: 'Publico';
   font-size: 2.4em;
@@ -310,6 +309,10 @@ h1#main-title {
     height: 30px;
     width: 30px;
   }
+}
+
+.dateline {
+  color: #999999;
 }
 
 span#timestamp {
@@ -459,8 +462,8 @@ BEGIN RANKING TABLE
 .top-precincts {
   position: relative;
   clear: both;
-  height: 400px;
-  max-width: 740px;
+  padding: 20px;
+  max-width: 800px;
   text-align: left;
   @include centered;
   div#top-precincts-title {
