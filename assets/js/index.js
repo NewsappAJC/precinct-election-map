@@ -91,7 +91,6 @@ function addPrecincts(layer) {
 /* Generate a map and a list of filter options */
 function createMap() {
   // Render filters for demographic data like race and income
-  makeFilters();
 
   // Default to display all precincts without any filtering
   $('.filter[data-filter="all"]').attr('class', 'filter-selected');
@@ -102,7 +101,7 @@ function createMap() {
   // Get aggregate data for summary table
   getAggregatedData(function (data) {
     aggStats = data;
-    console.log(aggStats)
+    makeFilters(aggStats);
     updateTitle('all')
     updateTable($resultsSummary, aggStats['ALL COUNTIES']['all'], year);
     updateFilter('all')

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export default function() {
+export default function(aggStats) {
   var buckets = [
     ['all', 'All'],
     ['white', 'White'],
@@ -30,13 +30,17 @@ export default function() {
   for (var i = 0; i < buckets.length; i++) {
     // Append to selector that appears on desktop
     $('#filters').append(`
-      <a class="filter" data-filter=${buckets[i][0]}>
-        <img src="./img/all.png"/>
-        <span class="filter-title">
-          ${buckets[i][1]}
-        </span>
-      </a>
+      <div class="filter-bar" data-filter=${buckets[i][0]}>
+        <div id="foreground-bar-${i}" class="foreground-bar">
+          <span class="filter-title">
+            ${buckets[i][1]}
+          </span>
+        </div>
+      </div>
     `)
+    var demVotes = aggStats['ALL COUNTIES'][buckets[i][0]]['dem_votes'];
+    var repVotes = aggStats['ALL COUNTIES'][buckets[i][0]]['rep_votes'];
+    $('#foreground-bar-' + i).css('width', parseInt(100 * demVotes / (demVotes + repVotes)) + '%')
 
 
     // Append to selector that displays on mobile.

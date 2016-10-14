@@ -399,22 +399,17 @@ BEGIN FILTER OPTION STYLES
   }
 }
 
-.filter, .filter-selected{
+.filter-bar, .filter-selected{
+  opacity: .8;
   cursor: pointer;
   font-family: 'Boomer';
-  padding: 5px;
-  display: inline-block;
-  text-align: center;
-  width: 40%;
-  @media (max-width: 1200px) {
-    width: 100px;
-  }
-  img {
-    width: 100%;
-    @media (max-width: 1200px) {
-      display: none;
-    }
-  }
+  font-size: 1.2em;
+  text-align: left;
+  width: 80%;
+  height: 30px;
+  background-color: #F5A9A9;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .filter-title {
@@ -428,13 +423,8 @@ BEGIN FILTER OPTION STYLES
   opacity: .5;
 }
 
-.filter:hover, .filter:focus{
-  img {
-    opacity: .7;
-  }
-  span.filter-title {
-    background-color: #E2E2E2;
-  }
+.filter-bar:hover {
+  opacity: 1;
 }
 
 .filter-selected {
@@ -518,3 +508,9 @@ BEGIN RANKING TABLE
 /********************
 /* END BYLINE STYLES
 /********************/
+
+.foreground-bar {
+  height: 30px;
+  border-radius: 5px;
+  background-color: #A9E2F3;
+}
