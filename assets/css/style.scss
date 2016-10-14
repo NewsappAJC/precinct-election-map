@@ -163,15 +163,20 @@ BEGIN SUMMARY TABLE STYLE
 }
 
 .eln-summary-table {
-  @include table;
   font-family: 'Boomer';
-  font-size: .8em;
+  border-collapse: collapse;
+  font-size: 1em;
   background: white;
+  width: 100%;
   tr {
+    border-bottom: 1px solid #e2e2e2;
     line-height: 30px;
     @media (max-width: 400px) {
       line-height: 1.5;
     }
+  }
+  td {
+    border-bottom: 1px solid #e2e2e2;
   }
 }
 
@@ -181,12 +186,6 @@ BEGIN SUMMARY TABLE STYLE
   @media (max-width: 400px) {
     margin-bottom: 8px;
     font-size: 1.5em;
-  }
-}
-
-.eln-summary-table {
-  tr {
-    font-family: 'Publico';
   }
 }
 
@@ -338,18 +337,6 @@ label {
   }
 }
 
-#address-input {
-  font-family: 'Boomer';
-  font-size: .8em;
-  box-shadow: inset 2px 3px 3px rgba(0,0,0,0.1);
-  outline: none;
-  width: 100%;
-  padding: 2px;
-  line-height: 15px;
-  border-radius: 3px;
-  border: 1px #e2e2e2 solid;
-  box-sizing: border-box;
-}
 /***************************
 BEGIN ADDRESS SEARCH STYLES
 ****************************/
@@ -392,7 +379,6 @@ BEGIN FILTER OPTION STYLES
 #filter-select, #county-select {
   font-size: 1em;
   line-height: 15px;
-  width: 100%;
   text-align: center;
   label {
     font-size: 1em;

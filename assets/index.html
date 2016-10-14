@@ -6,6 +6,7 @@
     <title>How Every Atlanta Neighborhood Voted</title>
     <link rel="Shortcut Icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./css/vendor/leaflet.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/vendor/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvnItP2gpOElUCZzMccS5TySlDNgpeZb8&libraries=places"></script>
   </head>
@@ -28,7 +29,7 @@
               <label for="counties">County</label>
             </td>
             <td>
-              <select name="counties" id="county-select"></select>
+              <select name="counties" class="form-control" id="county-select"></select>
             </td>
           </tr>
           <tr id="row-filter-select">
@@ -36,7 +37,7 @@
               <label for="filters">Race/income</label>
             </td>
             <td>
-              <select name="filters" id="filter-select"></select>
+              <select name="filters" class="form-control" id="filter-select"></select>
             </td>
           </tr>
           <tr id="row-search-bar">
@@ -44,7 +45,7 @@
               <label for="address-input">Address</label>
             </td>
             <td>
-              <input placeholder="Enter address" id="address-input"/>
+              <input placeholder="Enter address" class="form-control" id="address-input"/>
             </td>
           </tr>
         </tbody>
