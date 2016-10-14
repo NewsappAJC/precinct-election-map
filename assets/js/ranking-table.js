@@ -8,7 +8,8 @@ var $rankTableDem = $('#rank-table-dem-body'),
     $title = $('#top-precincts-title');
 
 // State
-var sortedPrecincts;
+var sortedPrecinctsRep,
+    sortedPrecinctsDem;
 
 // Constants
 var filters = {
@@ -21,10 +22,8 @@ var filters = {
 };
 
 
-// Use only active precincts in table.
 export default function(activePrecincts, county, filter) {
-  console.log(county)
-  // Set the title
+  // Set the subhed
   var f = filters[filter];
   var titleText;
 
@@ -48,20 +47,24 @@ export default function(activePrecincts, county, filter) {
      </span>
   `)
   if (activePrecincts.length >= 10) {
-    sortedPrecincts = _.sortBy(activePrecincts, function(p) {
+    sortedPrecinctsRep = _.sortBy(activePrecincts, function(p) {
       return p.feature.properties.rep_p;
-    });
+    }).reverse();
+    sortedPrecinctsDem = _.sortBy(activePrecincts, function(p) {
+      return p.feature.properties.dem_p;
+    }).reverse();
   };
   
+  // Populate the table
   var parties = {topRep: [], topDem: []};
 
   _.each(parties, function(value, key, obj) {
     for (var i = 0; i < 5; i++) {
       if (key === 'topDem') {
-        obj[key].push(sortedPrecincts[i]);
+        obj[key].push(sortedPrecinctsDem[i]);
       }
       else {
-        obj[key].push(sortedPrecincts[sortedPrecincts.length - (i + 1)]);
+        obj[key].push(sortedPrecinctsRep[i]);
       }
     };
   });
@@ -75,7 +78,14 @@ function createRankDiv(parties) {
   $rankTableRep.html('');
   $rankTableDem.html('');
 
-  // Show the top 5 precincts for each candidate, given the
+  // Set starting value to 101 so that first 
+  // election result is guaranteed to be a smaller vale
+  var prevDem = 101,
+      prevRep = 101,
+      demCounter = 0,
+      repCounter = 0;
+
+  // Display the top 5 precincts for each candidate in the table, given the
   // current filters
   for (var i = 0; i < 5; i++) {
     var repPrecinct = parties.topRep[i].feature
@@ -84,10 +94,21 @@ function createRankDiv(parties) {
     var demVotes = parseInt(demPrecinct.properties.dem_p*100);
     var repVotes = parseInt(repPrecinct.properties.rep_p*100);
 
+    // Only increment the rank if the pct is actually greater
+    if (demVotes < prevDem) {
+      prevDem = demVotes;
+      demCounter += 1;
+    };
+
+    if (repVotes < prevRep) {
+      prevRep = repVotes;
+      repCounter += 1;
+    };
+
     // Add the tables
     $rankTableDem.append(`
       <tr>
-        <td class="rank">${i+1}</td>
+        <td class="rank">${demCounter}</td>
         <td class="proportion">
           <div>
             ${demPrecinct.properties.PRECINCT_N} 
@@ -104,7 +125,7 @@ function createRankDiv(parties) {
 
     $rankTableRep.append(`
       <tr>
-        <td class="rank">${i+1}</td>
+        <td class="rank">${repCounter}</td>
         <td class="proportion">
           <div>
             ${repPrecinct.properties.PRECINCT_N} 

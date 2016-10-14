@@ -219,7 +219,7 @@ function updateTitle(feature) {
     'low': 'a mean household income below $50,000'
   };
 
-  var titleCounty = selectedCounty.toUpperCase() != 'ALL' ? selectedCounty : 'Atlanta';
+  var titleCounty = selectedCounty.toUpperCase() != 'ALL COUNTIES' ? selectedCounty : 'Atlanta';
 
   if (feature === 'all') {
     $('#results-summary-title').html(titleCounty + ' results')
