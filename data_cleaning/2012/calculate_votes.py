@@ -75,7 +75,7 @@ def merge_votes():
     df1.to_csv('votes_concat.csv', index=False)
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('income_race_precincts.csv', index_col=False)
+    df2 = pd.read_csv('2012_precincts_income_race_clean.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
@@ -85,9 +85,11 @@ def merge_votes():
         how='outer',
         indicator=True)
     # Write unmerged precincts to a list so we can check them
+    unmerged_left = merged[merged._merge == 'left_only']
+    print 'Unmerged: ', len(unmerged_left)
+    unmerged_left.to_csv('unmerged_left.csv')
     unmerged_right = merged[merged._merge == 'right_only']
-    print 'Unmerged: ', len(unmerged_right)
-    unmerged_right.to_csv('unmerged.csv')
+    unmerged_right.to_csv('unmerged_right.csv')
 
     # Filter merged dataset down to only precincts that merged successfully
     merged = merged[merged._merge == 'both']

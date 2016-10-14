@@ -81,7 +81,7 @@ gulp.task('build-assets', function() {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(ENV + 'img'));
 
-  var geojson = gulp.src(SRC + 'data/*.json')
+  var geojson = gulp.src([SRC + 'data/*.json', SRC + 'data/*.geojson'])
     .pipe(gulp.dest(ENV));
 
   var css = gulp.src(ENV + 'css/style.css')

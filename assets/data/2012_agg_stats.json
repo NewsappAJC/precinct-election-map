@@ -1,12 +1,12 @@
 {
     "ALL COUNTIES": {
         "all": {
-            "rep_votes": 545395.0, 
-            "dem_votes": 838162.0
+            "rep_votes": 546611.0, 
+            "dem_votes": 839261.0
         }, 
         "mid": {
-            "rep_votes": 277146.0, 
-            "dem_votes": 468187.0
+            "rep_votes": 278362.0, 
+            "dem_votes": 469286.0
         }, 
         "high": {
             "rep_votes": 147511.0, 
@@ -25,8 +25,8 @@
             "dem_votes": 170122.0
         }, 
         "white": {
-            "rep_votes": 435246.0, 
-            "dem_votes": 298227.0
+            "rep_votes": 435594.0, 
+            "dem_votes": 298514.0
         }
     }, 
     "GWINNETT": {
@@ -109,20 +109,20 @@
     }, 
     "DEKALB": {
         "all": {
-            "rep_votes": 121575.0, 
-            "dem_votes": 467950.0
+            "rep_votes": 123801.0, 
+            "dem_votes": 469886.0
         }, 
         "mid": {
-            "rep_votes": 39271.0, 
-            "dem_votes": 172142.0
+            "rep_votes": 40487.0, 
+            "dem_votes": 173241.0
         }, 
         "high": {
             "rep_votes": 19023.0, 
             "dem_votes": 17246.0
         }, 
         "hispanic": {
-            "rep_votes": 3299.0, 
-            "dem_votes": 6474.0
+            "rep_votes": 3961.0, 
+            "dem_votes": 7024.0
         }, 
         "black": {
             "rep_votes": 8601.0, 
@@ -133,8 +133,8 @@
             "dem_votes": 46684.0
         }, 
         "white": {
-            "rep_votes": 47387.0, 
-            "dem_votes": 65600.0
+            "rep_votes": 47735.0, 
+            "dem_votes": 65887.0
         }
     }, 
     "FULTON": {
