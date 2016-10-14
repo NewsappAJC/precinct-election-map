@@ -286,7 +286,10 @@ function generateLayers() {
       color: 'black'
     });
 
-    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} (${layer.feature.properties.COUNTY_NAM})</span>`)
+    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+        <span class="sub-county">
+          ${layer.feature.properties.COUNTY_NAM} COUNTY
+      </span>`)
     updateTable('#info-data', layer.feature.properties, year);
     $infoTip.show();
   };

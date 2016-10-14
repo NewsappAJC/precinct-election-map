@@ -240,7 +240,12 @@ BEGIN SUMMARY TABLE STYLE
   }
 }
 
+#info-data {
+  margin-top: 30px;
+}
+
 #info-title, #close-button {
+  top: 5px;
   position: absolute;
 }
 
@@ -468,10 +473,12 @@ BEGIN RANKING TABLE
 
 #rank-table-dem, #rank-table-rep {
   @include table;
-  .rank-sub-county {
-    color: #999999;
-    font-size: .7em;
-  }
+}
+
+.sub-county {
+  display: block;
+  color: #999999;
+  font-size: .7em;
 }
 
 .table-title, .table-title {
