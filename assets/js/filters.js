@@ -31,7 +31,7 @@ export default function(aggStats) {
     // Append to selector that appears on desktop
     $('#filters').append(`
       <div class="filter-bar-holder">
-        <div class="filter-bar" data-filter=${buckets[i][0]}>
+        <div class=${buckets[i][0] == 'all' ? 'filter-selected' : 'filter-bar'} data-filter=${buckets[i][0]}>
           <div id="foreground-bar-${i}" class="foreground-bar">
           </div>
         </div>

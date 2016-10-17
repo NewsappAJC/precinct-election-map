@@ -109,7 +109,7 @@ function createRankDiv(parties) {
     $rankTableDem.append(`
       <tr>
         <td class="rank">${demCounter}</td>
-        <td class="proportion">
+        <td class="neighborhood">
           <div>
             ${demPrecinct.properties.PRECINCT_N} 
           </div>
@@ -118,7 +118,7 @@ function createRankDiv(parties) {
           </div>
         </td>
 
-        <td>${demVotes}%</td>
+        <td class="proportion">${demVotes}%</td>
 
       </tr>
     `);
@@ -126,7 +126,7 @@ function createRankDiv(parties) {
     $rankTableRep.append(`
       <tr>
         <td class="rank">${repCounter}</td>
-        <td class="proportion">
+        <td class="neightborhood">
           <div>
             ${repPrecinct.properties.PRECINCT_N} 
           </div>
@@ -134,7 +134,7 @@ function createRankDiv(parties) {
             ${repPrecinct.properties.COUNTY_NAM}
           </div>
         </td>
-        <td>${repVotes}%</td>
+        <td class="proportion">${repVotes}%</td>
       </tr>
     `);
   };

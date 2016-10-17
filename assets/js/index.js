@@ -370,6 +370,7 @@ function onPlaceChanged() {
 // Finally, run main function to generate the map
 initInput();
 getPrecincts(addPrecincts);
+
 // Get aggregate data
 function getAggregatedData() {
   $.ajax({
@@ -396,5 +397,6 @@ function getAggregatedData() {
 
 $loading.hide();
 $map.show();
-map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
+// Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
+map._onResize(); 
 

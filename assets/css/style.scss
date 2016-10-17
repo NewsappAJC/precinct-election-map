@@ -44,8 +44,6 @@ Begin mixins
 }
 
 @mixin table {
-  float: left;
-  max-width: 350px;
   margin: 10px;
   th {
     font-family: 'Boomer-Light';
@@ -54,12 +52,6 @@ Begin mixins
   td {
     font-family: 'Boomer-Light';
     padding: 3px;
-  }
-  td.rank {
-    width: 10%;
-  }
-  td.proportion {
-    width: 45%;
   }
 }
 
@@ -452,19 +444,30 @@ BEGIN RANKING TABLE
   max-width: 800px;
   text-align: left;
   @include centered;
-  div#top-precincts-title {
-    font-family: 'Boomer';
-    font-size: 1.3em;
-    text-align: center;
-    margin-bottom: 15px;
+}
+
+#top-precincts-title {
+  font-family: 'Boomer';
+  font-size: 1.3em;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#rank-table-dem > table, #rank-table-rep > table{
+  @include table;
+  width: 100%;
+  td.rank {
+    width: 10%;
+  }
+  td.neighborhood {
+    width: 70%;
+  }
+  td.proportion {
+    width: 20%;
   }
 }
 
-#rank-table-dem, #rank-table-rep {
-  @include table;
-}
-
-.sub-county {
+.rank-sub-county,  .sub-county {
   display: block;
   color: #999999;
   font-size: .7em;
@@ -503,6 +506,7 @@ BEGIN RANKING TABLE
   clear: both;
   padding: 20px 5px 100px 5px;
   font-family: 'Boomer';
+  color: #999999;
 }
 /********************
 /* END BYLINE STYLES
@@ -516,4 +520,14 @@ BEGIN RANKING TABLE
 
 .filter-bar-holder {
   position: relative;
+}
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-container .flex-item {
+  flex: 1 0 300px;
+  margin: 30px;
 }
