@@ -167,20 +167,16 @@ function addFilterListeners() {
     $(this).on('change click', function(e) {
       console.log('filter clicked')
       // Inelegant way of getting the minimaps instead of the select box.
-      var value = this.dataset.filter;
-      highlight(this);
+      var value = this.dataset.filter || $(this).val();
       updateFilter(value);
       $filterSelect.val(value);
       map.setView({ lat: 33.74, lng: -84.38}, 10);
-      /*
-      var value = $(this).val();
-      var filterEl = $(`a[data-filter=${value}]`);
-      highlight(filterEl);
-      updateFilter(value);
-      if (e.type === 'change') {
-        map.setView({ lat: 33.74, lng: -84.38}, 10);
-      };
-      */
+    });
+  });
+
+  $('.filter-bar, .filter-selected').each(function() {
+    $(this).on('click', function(e) {
+      highlight(this);
     });
   });
 };
