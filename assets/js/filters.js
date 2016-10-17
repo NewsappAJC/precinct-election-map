@@ -30,12 +30,14 @@ export default function(aggStats) {
   for (var i = 0; i < buckets.length; i++) {
     // Append to selector that appears on desktop
     $('#filters').append(`
-      <div class="filter-bar" data-filter=${buckets[i][0]}>
-        <div id="foreground-bar-${i}" class="foreground-bar">
-          <span class="filter-title">
-            ${buckets[i][1]}
-          </span>
+      <div class="filter-bar-holder">
+        <div class="filter-bar" data-filter=${buckets[i][0]}>
+          <div id="foreground-bar-${i}" class="foreground-bar">
+          </div>
         </div>
+        <span class="filter-title">
+          ${buckets[i][1]}
+        </span>
       </div>
     `)
     var demVotes = aggStats['ALL COUNTIES'][buckets[i][0]]['dem_votes'];
@@ -47,6 +49,5 @@ export default function(aggStats) {
     $('#filter-select').append(`
         <option value="${buckets[i][0]}">${buckets[i][1]}</option>
     `)
-  }
-
+  };
 }

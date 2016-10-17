@@ -47,7 +47,6 @@ Begin mixins
   float: left;
   max-width: 350px;
   margin: 10px;
-  display: inline-block;
   th {
     font-family: 'Boomer-Light';
     color: #999999;
@@ -353,6 +352,7 @@ BEGIN ADDRESS SEARCH STYLES
 BEGIN FILTER OPTION STYLES
 ****************************/
 #left {
+  padding-right: 20px;
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -375,6 +375,7 @@ BEGIN FILTER OPTION STYLES
 }
 
 #filter-table {
+  width: 100%;
   margin-bottom: 20px;
   td {
     padding: 5px;
@@ -400,12 +401,11 @@ BEGIN FILTER OPTION STYLES
 }
 
 .filter-bar, .filter-selected{
-  opacity: .8;
+  opacity: .5;
   cursor: pointer;
   font-family: 'Boomer';
-  font-size: 1.2em;
   text-align: left;
-  width: 80%;
+  width: 100%;
   height: 30px;
   background-color: #F5A9A9;
   border-radius: 5px;
@@ -413,14 +413,13 @@ BEGIN FILTER OPTION STYLES
 }
 
 .filter-title {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
   padding: 6px 4px;
-  font-size: .8em;
+  font-size: 1em;
   border-radius: 3px;
   color: black;
-}
-
-.filter img {
-  opacity: .5;
 }
 
 .filter-bar:hover {
@@ -428,13 +427,7 @@ BEGIN FILTER OPTION STYLES
 }
 
 .filter-selected {
-  .filter-title {
-    color: white;
-    background-color: #444;
-  }
-  img {
-    opacity: 1;
-  }
+  opacity: 1;
 }
 /***************************
 END FILTER OPTION STYLES
@@ -444,6 +437,9 @@ END FILTER OPTION STYLES
 BEGIN RANKING TABLE
 ****************************/
 .rank-table-holder {
+  max-width: 1100px;
+  position: relative;
+  @include centered;
   margin-top: 50px;
   background-color: #FAFAFA;
   padding-top: 20px;
@@ -501,6 +497,9 @@ BEGIN RANKING TABLE
 /* BEGIN BYLINE STYLES
 /********************/
 .byline {
+  position: relative;
+  max-width: 1100px;
+  @include centered;
   clear: both;
   padding: 20px 5px 100px 5px;
   font-family: 'Boomer';
@@ -511,6 +510,10 @@ BEGIN RANKING TABLE
 
 .foreground-bar {
   height: 30px;
-  border-radius: 5px;
+  border-radius: 5px 0px 0px 5px;
   background-color: #A9E2F3;
+}
+
+.filter-bar-holder {
+  position: relative;
 }

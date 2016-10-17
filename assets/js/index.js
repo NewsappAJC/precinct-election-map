@@ -28,6 +28,13 @@ var selectedBucket = 'all',
     aggStats,
     year = 2012; //TODO change this for 2016!!
 
+// Helper functions 
+function highlight(el) {
+    $('.filter-selected').attr('class', 'filter-bar')
+    $(el).attr('class', 'filter-selected')
+};
+
+
 $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
 
@@ -49,106 +56,6 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'
 // Create base map
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: cartodbAttribution}).addTo(map);
 
-// Get shapefiles
-function getPrecincts(cb) {
-  $.ajax({
-    dataType: 'json',
-    //url: './2014_precincts_income_race_simple.min.json',
-    url: './2012_precincts_stats_votes.geojson',
-    success: function(data) {
-      cb(data)
-    },
-    failure: function() {
-      console.log('failed to get precincts.');
-    }
-  });
-};
-
-// Get aggregate data
-function getAggregatedData(cb) {
-  $.ajax({
-    dataType: 'json',
-    url: './2012_agg_stats.json',
-    success: function(data) {
-      cb(data)
-    },
-    failure: function() {
-      console.log('failed to get precincts.');
-    }
-  });
-}
-
-
-// push precincts from .json file to list of features so that Leaflet can render them.
-function addPrecincts(layer) {
-  features = layer;
-  console.log(features);
-  generateLayers();
-  createMap();
-}
-
-
-/* Generate a map and a list of filter options */
-function createMap() {
-  // Render filters for demographic data like race and income
-
-  // Default to display all precincts without any filtering
-  $('.filter[data-filter="all"]').attr('class', 'filter-selected');
-
-  // Add the geoJSON data to the map, hide the loading screen, and update the summary table
-  geojson.addTo(map); 
-
-  // Get aggregate data for summary table
-  getAggregatedData(function (data) {
-    aggStats = data;
-    makeFilters(aggStats);
-    updateTitle('all')
-    updateTable($resultsSummary, aggStats['ALL COUNTIES']['all'], year);
-    updateFilter('all')
-  });
-
-  $loading.hide();
-  $map.show();
-  map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
-
-  function setMiniMapStyle(el) {
-      $('.filter-selected').attr('class', 'filter')
-      $(el).attr('class', 'filter-selected')
-  };
-
-  // Add event listeners to filter precincts by the given criteria when clicked
-  $('.filter, .filter-selected, #filter-select').each(function() {
-    $(this).on('change click', function(e) {
-      // Inelegant way of getting the minimaps instead of the select box.
-      if (!this.attributes.id) {
-        value = this.dataset.filter
-        setMiniMapStyle(this);
-        updateFilter(value);
-        $filterSelect.val(value);
-        map.setView({ lat: 33.74, lng: -84.38}, 10);
-      }
-      else {
-        var value = $(this).val();
-        var filterEl = $(`a[data-filter=${value}]`);
-        setMiniMapStyle(filterEl)
-        updateFilter(value);
-        if (e.type === 'change') {
-          map.setView({ lat: 33.74, lng: -84.38}, 10);
-        };
-      };
-    });
-  });
-
-  $('#county-select').change(function() {
-    var value = $(this).val();
-    updateFilter(value);
-    map.setView({ lat: 33.74, lng: -84.38}, 10);
-  })
-
-  createInfo(); // Create the info box that displays precinct information
-  $infoTip.hide(); // Infotip is hidden until one of the precincts is clicked
-}; 
-
 function updateFilter(filter) {
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
@@ -163,11 +70,12 @@ function updateFilter(filter) {
   // Empty the activePrecincts array so that we can fill in only the 
   // precincts that meet the current precinct criteria
   activePrecincts = [];
-  // Loop through features in the geoJSON layer
+
+  // Loop through features in the geoJSON layer (ie the precincts)
   geojson.eachLayer(function (layer) {
-      var layerRace = layer.feature.properties['2012_pre_2'],
-          layerCounty = layer.feature.properties.COUNTY_NAM,
-          layerIncome;
+    var layerRace = layer.feature.properties['2012_pre_2'],
+        layerCounty = layer.feature.properties.COUNTY_NAM,
+        layerIncome;
 
     var income = layer.feature.properties['2012_pre_1']; // Assign income to high middle or low bucket
 
@@ -203,9 +111,80 @@ function updateFilter(filter) {
   updateTitle(selectedBucket);
   updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
   updateRankings(activePrecincts, selectedCounty, selectedBucket);
-
-  // Unset style of all filter options then style selected filter
 }
+// Get shapefiles
+function getPrecincts(cb) {
+  $.ajax({
+    dataType: 'json',
+    //url: './2014_precincts_income_race_simple.min.json',
+    url: './2012_precincts_stats_votes.geojson',
+    success: function(data) {
+      cb(data)
+    },
+    failure: function() {
+      console.log('failed to get precincts.');
+    }
+  });
+};
+
+
+
+// push precincts from .json file to list of features so that Leaflet can render them.
+function addPrecincts(layer) {
+  features = layer;
+  console.log(features);
+  generateLayers();
+  createMap();
+  getAggregatedData();
+}
+
+
+/* Generate a map and a list of filter options */
+function createMap() {
+  // Render filters for demographic data like race and income
+
+  // Default to display all precincts without any filtering
+  $('.filter[data-filter="all"]').attr('class', 'filter-selected');
+
+  // Add the geoJSON data to the map, hide the loading screen, and update the summary table
+  geojson.addTo(map); 
+
+
+  // Add event listeners to filter precincts by the given criteria when clicked
+
+  $('#county-select').change(function() {
+    var value = $(this).val();
+    updateFilter(value);
+    map.setView({ lat: 33.74, lng: -84.38}, 10);
+  })
+
+  createInfo(); // Create the info box that displays precinct information
+  $infoTip.hide(); // Infotip is hidden until one of the precincts is clicked
+}; 
+
+function addFilterListeners() {
+  $('.filter-bar, .filter-selected, #filter-select').each(function() {
+    $(this).on('change click', function(e) {
+      console.log('filter clicked')
+      // Inelegant way of getting the minimaps instead of the select box.
+      var value = this.dataset.filter;
+      highlight(this);
+      updateFilter(value);
+      $filterSelect.val(value);
+      map.setView({ lat: 33.74, lng: -84.38}, 10);
+      /*
+      var value = $(this).val();
+      var filterEl = $(`a[data-filter=${value}]`);
+      highlight(filterEl);
+      updateFilter(value);
+      if (e.type === 'change') {
+        map.setView({ lat: 33.74, lng: -84.38}, 10);
+      };
+      */
+    });
+  });
+};
+
 
 // Set the title of summary table
 function updateTitle(feature) {
@@ -391,4 +370,31 @@ function onPlaceChanged() {
 // Finally, run main function to generate the map
 initInput();
 getPrecincts(addPrecincts);
+// Get aggregate data
+function getAggregatedData() {
+  $.ajax({
+    dataType: 'json',
+    url: './2012_agg_stats.json',
+    success: function(data) {
+      // Update state
+      aggStats = data;
+
+      // Add filters
+      makeFilters(aggStats);
+      addFilterListeners();
+      
+      // Add default values
+      updateTitle('all')
+      updateTable($resultsSummary, aggStats['ALL COUNTIES']['all'], year);
+      updateFilter('all');
+    },
+    failure: function() {
+      console.log('failed to get precincts.');
+    }
+  });
+}
+
+$loading.hide();
+$map.show();
+map._onResize(); // Fixes weird bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
 
