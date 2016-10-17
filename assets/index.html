@@ -3,7 +3,7 @@
   <head>
     <meta name=viewport content="width=device-width, initial-scale=1"/>
     <meta charset="UTF-8"/>
-    <title>How Every Atlanta Neighborhood Voted</title>
+    <title>How Every Neighborhood in Metro Atlanta Voted in the 2012 Presidential Election</title>
     <link rel="Shortcut Icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./css/vendor/leaflet.css"/>
     <link rel="stylesheet" type="text/css" href="./css/vendor/bootstrap.min.css"/>
@@ -17,10 +17,12 @@
       <div id="title-holder">
         <h1 id="main-title">
           <img src="img/ajc-logo.png"/>
-          How Every Precinct in Atlanta Voted in 2012
+          How Every Neighborhood in Metro Atlanta Voted in the 2012 Presidential Election
         </h1>
+        <div class="explanation">
+          Change the filters to see how different groups voted in the 2012 election. Or enter your address to see which candidate won your precinct. 2016 results will be added as each precinct is announced.
+        </div>
         <!--<div class="dateline">Updated 12:10am November 11</div>-->
-        <div class="dateline">By Jonathan Cox</div>
       </div>
       <div id="loading">Loading</div>
       <div id="left">
@@ -29,15 +31,15 @@
       <table id="filter-table">
         <tbody>
           <tr id="row-county-select">
-            <td>
+            <td class="label-holder">
               <label for="counties">County</label>
             </td>
-            <td>
+            <td >
               <select name="counties" class="form-control" id="county-select"></select>
             </td>
           </tr>
           <tr id="row-filter-select">
-            <td>
+            <td class="label-holder">
               <label for="filters">Race/income</label>
             </td>
             <td>
@@ -45,7 +47,7 @@
             </td>
           </tr>
           <tr id="row-search-bar">
-            <td>
+            <td class="label-holder">
               <label for="address-input">Address</label>
             </td>
             <td>
@@ -116,7 +118,11 @@
           </table>
         </div>
 
-        <div style="clear:both"></div>
+        <div class="out-link">
+          <a href="http://www.myajc.com/news/president-election-2016/">
+          Read more election coverage at MyAJC.com
+          </a>
+        </div>
       </div>
     </div>
     <!-- Load the script -->

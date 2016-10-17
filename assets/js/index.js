@@ -117,7 +117,7 @@ function getPrecincts(cb) {
   $.ajax({
     dataType: 'json',
     //url: './2014_precincts_income_race_simple.min.json',
-    url: './2012_precincts_stats_votes.geojson',
+    url: './2012_precincts_stats_votes_simple.json',
     success: function(data) {
       cb(data)
     },

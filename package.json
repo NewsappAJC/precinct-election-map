@@ -1,7 +1,7 @@
 {
-  "name": "stepr",
+  "name": "precinct-election",
   "version": "1.0.0",
-  "description": "Render a sequence of events over a map or image",
+  "description": "Map election results across Atlanta precincts",
   "main": "assets/index.js",
   "scripts": {
     "serve-dev": "rimraf ./dist/dev && gulp serve",
