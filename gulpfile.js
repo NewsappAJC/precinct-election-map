@@ -85,7 +85,6 @@ gulp.task('build-assets', function() {
     .pipe(gulp.dest(ENV));
 
   var css = gulp.src(ENV + 'css/style.css')
-    .pipe(cssnano())
     .pipe(gulp.dest(function(file){
       return file.base; //replace current file
     }));

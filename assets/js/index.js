@@ -251,10 +251,42 @@ function generateLayers() {
   * Begin helper functions 
   ************************/
   function highlightFeature(e) {
+    var layer = e.target;
+
+    if ($(window).width() > MOBILE_WIDTH) {
+      $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+          <span class="sub-county">
+            ${layer.feature.properties.COUNTY_NAM} COUNTY
+        </span>`)
+      updateTable('#info-data', layer.feature.properties, year);
+
+
+      geojson.eachLayer(function (layer) {
+        layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
+      })
+
+      layer.setStyle({
+        weight: 3,
+        opacity: 1,
+        color: 'black'
+      });
+
+      $infoTip.show();
+    };
+  };
+
+  function zoomToFeature(e) {
+    var layer = e.target;
+
+    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+        <span class="sub-county">
+          ${layer.feature.properties.COUNTY_NAM} COUNTY
+      </span>`)
+    updateTable('#info-data', layer.feature.properties, year);
+
     geojson.eachLayer(function (layer) {
       layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
     })
-    var layer = e.target;
 
     layer.setStyle({
       weight: 3,
@@ -262,19 +294,14 @@ function generateLayers() {
       color: 'black'
     });
 
-    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
-        <span class="sub-county">
-          ${layer.feature.properties.COUNTY_NAM} COUNTY
-      </span>`)
-    updateTable('#info-data', layer.feature.properties, year);
-    $infoTip.show();
-  };
-
-  function zoomToFeature(e) {
     highlightFeature(e);
     if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
       map.fitBounds(e.target.getBounds());
+      return
     }
+    var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
+    placeInfo(coords)
+    $infoTip.show();
   };
 
   function resetStyle(e) {
@@ -297,35 +324,38 @@ function generateLayers() {
 function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
-    if ($(window).width() > MOBILE_WIDTH) { // info box shouldn't hide on mobile unless the user clicks the close button
-      // Move the info tip above the mouse if the user is at the bottom of the screen
-      $infoTip.css({left: e.pageX, top: e.pageY + 20})
-
-      if (e.pageY > ($(window).height() - 120)) {
-        $infoTip.css({top: e.pageY - 100})
-      };
-
-      if (e.pageX > ($(window).width() - 200)) {
-        $infoTip.css({left: $(window).width() - 200})
-      };
+    if ($(window).width() > MOBILE_WIDTH) {
+      var dets = {x: e.pageX, y: e.pageY, click: false};
+      placeInfo(dets);
     };
   });
+};
+
+function placeInfo(e) {
+  // Move the info tip above the mouse if the user is at the bottom of the screen
+  if ($(window).width() > MOBILE_WIDTH || e.click) { // it's distracting to zoom on mobile
+
+    $infoTip.css({left: e.x, top: e.y + 20})
+
+    if (e.y > ($(window).height() - 120)) {
+      $infoTip.css({top: e.y - 100})
+    };
+
+    if (e.x > ($(window).width() - 200)) {
+      $infoTip.css({left: $(window).width() - 200})
+    };
+  };
 
   // Event handler to change display of tooltip for mobile or desktop
   $(window).resize(function() {
     $infoTip.hide();
     toggleMobile();
-    if ($(window).width() < MOBILE_WIDTH) {
-      $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
-    }
   });
 
   // Hide info tip when close button is clicked
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
-
-  $infoTip.hide(); // Don't display info tip until user mouses over or clicks on map
 };
 
 

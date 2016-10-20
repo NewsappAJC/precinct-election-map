@@ -5,6 +5,7 @@
   "main": "assets/index.js",
   "scripts": {
     "serve-dev": "rimraf ./dist/dev && gulp serve",
+    "serve-iframe": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && python filter.py && gulp build --production",
     "deploy-staging": "gulp deploy --staging",

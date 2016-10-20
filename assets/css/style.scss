@@ -27,8 +27,8 @@
   font-style: normal
 }
 
-$large-text-bold: 'Boomer';
-$large-text: 'Boomer-Light';
+$large-text-bold: 'Arial';
+$large-text: 'Arial';
 $body-text: 'Boomer';
 $bg-color: #222;
 $text-black: #121212;
@@ -50,7 +50,7 @@ Begin mixins
     color: #999999;
   }
   td {
-    font-family: 'Boomer-Light';
+    font-family: 'Arial';
     padding: 3px;
   }
 }
@@ -71,11 +71,8 @@ html, body {
 
 #main {
   position: relative;
-  max-width: 800px;
-  padding: 20px;
   overflow: hidden;
   top: 0;
-  @include centered;
 }
 
 #loading {
@@ -84,7 +81,7 @@ html, body {
   height: 800px;
   background-color: white;
   padding-top: 100px;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: 2em;
   color: #CCCCCC;
   text-align: center;
@@ -113,7 +110,7 @@ BEGIN MAP STYLES
 }
 
 #data-source {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: .7em;
   font-color: #999999;
 }
@@ -137,7 +134,7 @@ BEGIN SUMMARY TABLE STYLE
 }
 
 .eln-summary-table {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   border-collapse: collapse;
   font-size: 1em;
   background: white;
@@ -155,29 +152,23 @@ BEGIN SUMMARY TABLE STYLE
 }
 
 #results-summary-title, .section-title {
-  font-size: 1.2em;
-  font-family: 'Boomer';
+  font-size: 1.5em;
+  font-family: 'Arial';
   @media (max-width: 400px) {
     margin-bottom: 8px;
-    font-size: 1.5em;
   }
 }
 
 #info {
-  display: none;
-  font-family: 'Boomer';
+  position: absolute;
+  width: 200px;
+  z-index: 999999;
+  font-family: 'Arial';
   font-size: .8em;
   background: white;
   border-radius: 5px;
-  z-index: 999999;
-}
-
-.follow {
   box-shadow: 5px 5px 5px rgba(0,0,0,.8);
-  pointer-events: none;
   padding: 6px 8px;
-  position: absolute;
-  width: 200px;
   tr {
     line-height: 1.5;
   }
@@ -189,29 +180,6 @@ BEGIN SUMMARY TABLE STYLE
   right: 20px;
   display: none;
   cursor: pointer;
-}
-
-.fixed-bottom {
-  position: fixed;
-  width: 100%;
-  bottom: 0px;
-  left: 0px;
-  pointer-events: auto;
-  z-index:99999;
-  #info-holder {
-    position: absolute;
-    box-sizing: border-box;
-    padding: 10px;
-    bottom: 0;
-    width: 100%;
-    max-width: 800px;
-    background-color: white;
-    @include centered;
-    box-shadow: 0px -2px 5px rgba(0,0,0,0.5);
-  }
-  tr {
-    line-height: 1.5;
-  }
 }
 
 #info-data {
@@ -248,7 +216,7 @@ h4.tooltip-title{
 
 .participation {
   font-size: .7em;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   color: grey;
   line-height: 20px;
 }
@@ -295,7 +263,7 @@ h1#main-title {
 }
 
 span#timestamp {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: .9em;
   text-transform: uppercase;
   @media (max-width:400px) {
@@ -318,7 +286,7 @@ BEGIN ADDRESS SEARCH STYLES
 }
 
 label {
-  font-family: 'Boomer';
+  font-family: 'Arial';
 }
 
 /***************************
@@ -347,7 +315,7 @@ BEGIN FILTER OPTION STYLES
 
 .filter-table-head {
   text-align: left;
-  font-family: Boomer;
+  font-family: Arial;
   color: #999999;
 }
 
@@ -367,7 +335,7 @@ BEGIN FILTER OPTION STYLES
 .filter-bar, .filter-selected{
   opacity: .5;
   cursor: pointer;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   text-align: left;
   width: 100%;
   height: 30px;
@@ -403,6 +371,7 @@ BEGIN RANKING TABLE
 .rank-table-holder {
   max-width: 1100px;
   position: relative;
+  margin-bottom: 150px;
   @include centered;
   .out-link {
     width: 100%;
@@ -424,7 +393,7 @@ BEGIN RANKING TABLE
 }
 
 #top-precincts-title {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: 1.3em;
   text-align: center;
 }
@@ -450,7 +419,7 @@ BEGIN RANKING TABLE
 }
 
 .table-title, .table-title {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: 1.2em;
   margin: 10px 0px;
   border-bottom: 1px solid;
@@ -482,7 +451,7 @@ BEGIN RANKING TABLE
   @include centered;
   clear: both;
   padding: 20px 5px 100px 5px;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   color: #999999;
 }
 /********************
@@ -504,9 +473,16 @@ BEGIN RANKING TABLE
   flex-flow: row wrap;
 }
 
+.flex-item:first-child {
+  padding-right: 10px;
+}
+
+.flex-item:last-child {
+  padding-left: 10px;
+}
+
 .flex-container .flex-item {
   flex: 1 0 300px;
-  margin: 10px;
 }
 
 .explanation {
