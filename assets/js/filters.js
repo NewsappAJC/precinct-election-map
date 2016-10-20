@@ -46,7 +46,7 @@ export default function(aggStats) {
 
 
     // Append to selector that displays on mobile.
-    $('#filter-select').append(`
+    $('#demographic-select').append(`
         <option value="${buckets[i][0]}">${buckets[i][1]}</option>
     `)
   };

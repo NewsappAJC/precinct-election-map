@@ -7,14 +7,16 @@ import makeFilters from './filters';
 import updateTable from './table-generator';
 import updateRankings from './ranking-table';
 
+// Constants
+var MOBILE_WIDTH = 600;
+
 // DOM refs
 var autocomplete,
     $infoTip = $('#info'),
     $loading = $('#loading'),
     $map = $('#map'),
     $closeButton = $('#close-button'),
-    $filterSelectRow = $('#row-filter-select'),
-    $filterSelect = $('#filter-select'),
+    $filterSelect = $('#demographic-select'),
     $countiesSelect = $('#counties-selector-holder'),
     $resultsSummary = $('#results-summary');
 
@@ -163,7 +165,7 @@ function createMap() {
 }; 
 
 function addFilterListeners() {
-  $('.filter-bar, .filter-selected, #filter-select').each(function() {
+  $('.filter-bar, .filter-selected, #demographic-select').each(function() {
     $(this).on('change click', function(e) {
       console.log('filter clicked')
       // Inelegant way of getting the minimaps instead of the select box.
@@ -270,13 +272,13 @@ function generateLayers() {
 
   function zoomToFeature(e) {
     highlightFeature(e);
-    if ($(window).width() > 1200) { // it's distracting to zoom on mobile
+    if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
       map.fitBounds(e.target.getBounds());
     }
   };
 
   function resetStyle(e) {
-    if ($(window).width() > 1200) {
+    if ($(window).width() > MOBILE_WIDTH) {
       $infoTip.hide();
     }
 
@@ -295,21 +297,25 @@ function generateLayers() {
 function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
-    if ($(window).width() > 1200) { // info box shouldn't hide on mobile unless the user clicks the close button
-      if (e.pageY < ($(window).height() - 120)) {
-        $infoTip.css({left: e.pageX - 100, top: e.pageY + 20})
-      }
-      else {
-        $infoTip.css({left: e.pageX - 100, top: e.pageY - 120})
-      }
-    }
-  })
+    if ($(window).width() > MOBILE_WIDTH) { // info box shouldn't hide on mobile unless the user clicks the close button
+      // Move the info tip above the mouse if the user is at the bottom of the screen
+      $infoTip.css({left: e.pageX, top: e.pageY + 20})
+
+      if (e.pageY > ($(window).height() - 120)) {
+        $infoTip.css({top: e.pageY - 100})
+      };
+
+      if (e.pageX > ($(window).width() - 200)) {
+        $infoTip.css({left: $(window).width() - 200})
+      };
+    };
+  });
 
   // Event handler to change display of tooltip for mobile or desktop
   $(window).resize(function() {
     $infoTip.hide();
     toggleMobile();
-    if ($(window).width() < 1200) {
+    if ($(window).width() < MOBILE_WIDTH) {
       $infoTip.show(); // In case window resizes when user's mouse isn't hovering over a precinct
     }
   });
@@ -326,9 +332,8 @@ function createInfo() {
 /* Depending on the size of the display, have tooltip follow the mouse or stick to the
 bottom of the screen. */
 function toggleMobile() {
-  if ($(window).width() < 1200) {
+  if ($(window).width() < MOBILE_WIDTH) {
     $('#filters').hide(); // Instead of showing filter options as boxes, display as select box
-    $filterSelectRow.show();
     $closeButton.show();
 
     // Configure infotip
@@ -338,13 +343,11 @@ function toggleMobile() {
   }
   else {
     $('#filters').show(); 
-    $filterSelectRow.hide();
     $closeButton.hide();
     $infoTip.toggleClass('fixed-bottom', false);
     $infoTip.toggleClass('follow', true);
   }
 }
-
 
 /* Add event listeners to autocomplete input field and query Google
  * Places API */

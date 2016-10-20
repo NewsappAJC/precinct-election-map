@@ -6,8 +6,6 @@ var candidates = {
   2016: {rep: 'Trump', dem: 'Clinton'}
 }
 
-
-
 export default function(el, props, year) {
   /* Helper function */
   function wCommas(string_) {

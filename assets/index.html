@@ -13,55 +13,51 @@
   </head>
   <body>
     <!-- Main app -->
-    <div id="jumbotron">
+    <div id="main">
       <div id="title-holder">
+        <a href="http://www.myajc.com/news/president-election-2016/">
+          <img class="logo" src="img/ajc-logo.jpg"/>
+        </a>
         <h1 id="main-title">
-          <img src="img/ajc-logo.png"/>
           How Every Neighborhood in Metro Atlanta Voted in the 2012 Presidential Election
         </h1>
         <div class="explanation">
-          Change the filters to see how different groups voted in the 2012 election. Or enter your address to see which candidate won your precinct. 2016 results will be added as each precinct is announced.
+          See how different groups voted in the 2012 election, or enter your address to see which candidate won your precinct. Scroll down to see each candidate's top precincts.
+        <a href="http://www.myajc.com/news/president-election-2016/">
+        Read more election coverage at MyAJC.com
+        </a>
         </div>
         <!--<div class="dateline">Updated 12:10am November 11</div>-->
       </div>
-      <div id="loading">Loading</div>
-      <div id="left">
 
-      <div class="section-title">Filters</div>
-      <table id="filter-table">
-        <tbody>
-          <tr id="row-county-select">
-            <td class="label-holder">
-              <label for="counties">County</label>
-            </td>
-            <td >
-              <select name="counties" class="form-control" id="county-select"></select>
-            </td>
-          </tr>
-          <tr id="row-filter-select">
-            <td class="label-holder">
-              <label for="filters">Race/income</label>
-            </td>
-            <td>
-              <select name="filters" class="form-control" id="filter-select"></select>
-            </td>
-          </tr>
-          <tr id="row-search-bar">
-            <td class="label-holder">
-              <label for="address-input">Address</label>
-            </td>
-            <td>
-              <input placeholder="Enter address" class="form-control" id="address-input"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="flex-container">
 
-      <div id="filters"></div>
-      </div>
+        <!-- Summary table -->
+        <div class="summary-holder flex-item">
+          <div id="results-summary-title"></div>
+          <div id="results-summary"></div>
+        </div>
+
+        <!-- Filter form -->
+        <div class="filter-holder flex-item">
+          <div class="form">
+            <div class="form-group">
+              <label for="counties" class="control-label">County</label>
+              <select name="counties" class="form-control filter-control" name="county-select" id="county-select"></select>
+            </div>
+            <div class="form-group">
+              <label for="demographic-select" class="control-label">Demographics</label>
+              <select 
+                name="filters"
+                class="form-control filter-control"
+                name="demographic-select"
+                id="demographic-select"></select>
+            </div>
+          </div>
+        </div><!--flex-holder-->
+      </div> <!--flex-container-->
+
       <div id="map-box">
-        <div id="results-summary-title"></div>
-        <div id="results-summary"></div>
         <div id="map"></div>
         <div id="data-source">
           Demographic data from the Census Bureau's 2012 5-year American Community Survey. 
@@ -71,9 +67,56 @@
           Election results from the Georgia Secretary of State. 
           <a href="http://sos.ga.gov/index.php/Elections/current_and_past_elections_results">[website]</a><br>
         </div>
-      </div>
-    </div>
+      </div><!--map-box-->
 
+
+      <div class="address-input-holder">
+        <div class="form-group">
+          <label for="address-input">Find your neighborhood</label>
+          <input placeholder="Enter address" class="form-control filter-control" name="address-input" id="address-input"/>
+        </div>
+      </div>
+
+      <div class="rank-table-holder">
+        <div id="top-precincts-title">Top Precincts for Each Candidate</div>
+        <div class="top-precincts flex-container">
+          <div id="rank-table-rep" class="flex-item">
+            <div class="table-title rep-title">Mitt Romney</div>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan=2>Precinct</th>
+                  <th>Percent</th>
+                </tr>
+              </thead>
+              <tbody id='rank-table-rep-body'></tbody>
+            </table>
+          </div>
+
+          <div id="rank-table-dem" class="flex-item">
+            <div class="table-title dem-title">Barack Obama</div>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan=2>Precinct</th>
+                  <th>Percent</th>
+                </tr>
+              </thead>
+              <tbody id='rank-table-dem-body'></tbody>
+            </table>
+          </div>
+
+          <div class="out-link">
+            <div>
+              <a href="http://www.myajc.com/news/president-election-2016/">
+              Read more election coverage at MyAJC.com
+              </a>
+            </div>
+          <img class="sep-logo centered" src="img/ajc-logo.jpg"/>
+          </div>
+        </div><!--top-precincts-->
+      </div><!-- rank-table-holder -->
+    </div><!--Main-->
     <div id="info">
       <div id="info-holder">
         <div id="metadata">
@@ -86,45 +129,9 @@
           <div id="close-button">Close [x]</div>
         </div>
         <div id="info-data"></div>
-      </div>
-    </div>
+      </div><!--info-holder-->
+    </div><!--info-->
 
-    <div class="rank-table-holder">
-      <div id="top-precincts-title">Top Precincts for Each Candidate</div>
-      <div class="top-precincts flex-container">
-        <div id="rank-table-rep" class="flex-item">
-          <div class="table-title rep-title">Mitt Romney</div>
-          <table>
-            <thead>
-              <tr>
-                <th colspan=2>Precinct</th>
-                <th>Percent</th>
-              </tr>
-            </thead>
-            <tbody id='rank-table-rep-body'></tbody>
-          </table>
-        </div>
-
-        <div id="rank-table-dem" class="flex-item">
-          <div class="table-title dem-title">Barack Obama</div>
-          <table>
-            <thead>
-              <tr>
-                <th colspan=2>Precinct</th>
-                <th>Percent</th>
-              </tr>
-            </thead>
-            <tbody id='rank-table-dem-body'></tbody>
-          </table>
-        </div>
-
-        <div class="out-link">
-          <a href="http://www.myajc.com/news/president-election-2016/">
-          Read more election coverage at MyAJC.com
-          </a>
-        </div>
-      </div>
-    </div>
     <!-- Load the script -->
     <script src="./main.js" type="text/javascript"></script>
   </body>

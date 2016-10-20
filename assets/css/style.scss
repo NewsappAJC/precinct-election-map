@@ -69,13 +69,13 @@ html, body {
   overflow: auto;
 }
 
-#jumbotron {
-  max-width: 1100px;
+#main {
+  position: relative;
+  max-width: 800px;
+  padding: 20px;
   overflow: hidden;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  position: relative;
+  @include centered;
 }
 
 #loading {
@@ -99,30 +99,13 @@ BEGIN MAP STYLES
 *******************/
 #map-box {
   box-sizing: border-box;
-  border-left: 1px solid #e2e2e2;
   position: relative;
-  padding-left: 20px;
-  width: 800px;
-  @media (min-width: 1200px) {
-    float: left;
-  }
-  @media (max-width: 1200px) {
-    width: 100%;
-    padding: 0px 15px;
-    max-width: 800px;
-    @include centered;
-  }
+  width: 100%
 }
 
 #map {
   height: 800px;
   width: 100%;
-  @media (max-width: 1200px) {
-    height: 500px;
-  }
-  @media (max-width: 400px) {
-    height: 400px;
-  }
 }
 
 .leaflet-interactive {
@@ -172,7 +155,7 @@ BEGIN SUMMARY TABLE STYLE
 }
 
 #results-summary-title, .section-title {
-  font-size: 2em;
+  font-size: 1.2em;
   font-family: 'Boomer';
   @media (max-width: 400px) {
     margin-bottom: 8px;
@@ -280,25 +263,30 @@ BEGIN MAIN TITLE STYLES
 div#title-holder {
   padding: 15px;
   margin-bottom: 10px;
-  text-align: center;
   position: relative;
   width: 100%;
-  @media (max-width:1200px) {
+}
+
+.logo {
+  display: inline-block;
+  height: 40px;
+  @media (max-width: 600px) {
+    position: relative;
     @include centered;
   }
 }
 
+.sep-logo {
+  height: 40px;
+}
+
 h1#main-title {
+  margin-top: 10px;
   line-height: 1;
   font-family: 'Publico';
   font-size: 2.4em;
   @media (max-width:400px) {
     font-size: 1.5em;
-  }
-  img {
-    display: inline-block;
-    height: 30px;
-    width: 30px;
   }
 }
 
@@ -363,20 +351,6 @@ BEGIN FILTER OPTION STYLES
   color: #999999;
 }
 
-#filter-table {
-  width: 100%;
-  margin-bottom: 20px;
-  td {
-    padding: 5px;
-  }
-  th {
-    padding: 5px;
-  }
-  .label-holder {
-    text-align: right
-  }
-}
-
 #filter-select, #county-select {
   font-size: 1em;
   line-height: 15px;
@@ -387,9 +361,7 @@ BEGIN FILTER OPTION STYLES
 }
 
 #filters {
-  @media (max-width: 1200px) {
-    margin-bottom: 20px;
-  }
+  display: none;
 }
 
 .filter-bar, .filter-selected{
@@ -439,14 +411,13 @@ BEGIN RANKING TABLE
     text-align: center;
     cursor: pointer;
   }
-  margin-top: 50px;
+  margin-top: 10px;
   padding-top: 20px;
 }
 
 .top-precincts {
   position: relative;
   clear: both;
-  padding: 20px;
   max-width: 800px;
   text-align: left;
   @include centered;
@@ -535,11 +506,19 @@ BEGIN RANKING TABLE
 
 .flex-container .flex-item {
   flex: 1 0 300px;
-  margin: 5px;
+  margin: 10px;
 }
 
 .explanation {
   position: relative;
   @include centered;
   max-width: 800px;
+}
+
+.address-input-holder {
+  margin: 20px 0px 10px 0px;
+}
+
+.out-link {
+  margin-bottom: 200px;
 }
