@@ -8,8 +8,8 @@
     "serve-iframe": "rimraf ./dist/dev && gulp serve",
     "serve-prod": "rimraf ./dist/prod && gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
-    "deploy-staging": "gulp deploy --staging",
-    "deploy-production": "gulp deploy --production"
+    "deploy-staging": "rimraf ./dist/dev && gulp deploy --staging",
+    "deploy-production": "rimraf ./dist/prod && gulp deploy --production"
   },
   "repository": {
     "type": "git",
