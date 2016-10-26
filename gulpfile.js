@@ -116,7 +116,7 @@ gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done)
 gulp.task('publish', function(){
   var AWS = require('aws-sdk');
 
-  var staging_bucket = "ajci-staging-sites",
+  var staging_bucket = "ajc-staging-sites",
   prod_bucket = "ajcnewsapps",
   staging_subdir = 'precinct-election-map-staging', //s3 bucket subdirectory DO NOT RUN SYNC WITH SUBDIRECTORIES,
   prod_subdir = '2016/precinct-election-map';
