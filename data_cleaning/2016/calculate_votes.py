@@ -3,9 +3,13 @@ import os
 import difflib # Useful for fuzzy matching
 import re
 from glob import glob
+import pdb
 
 # Third-party imports
 import pandas as pd
+
+import clarity_live
+from clarity_live import Parser
 
 # Begin helper functions
 def get_income(row):
@@ -15,6 +19,18 @@ def get_income(row):
         return 'mid'
     else:
         return 'high'
+
+def clean(row):
+    r = re.compile(r'\d{3} ')
+    precinct1 = re.sub(r, '', row['Precinct'])
+    precinct2 = re.sub(re.compile(r'EP04-05|EP04-13'), 'EP04', precinct1)
+    precinct3 = re.sub(re.compile(r'10H1|10H2'), '10H', precinct2)
+    precinct4 = re.sub(re.compile(r'CATES D - 04|CATES D - 07'), 'CATES D', precinct3)
+    precinct5 = re.sub(re.compile(r'AVONDALE HIGH - 05|AVONDALE HIGH - 04'), 'AVONDALE HIGH', precinct4)
+    precinct6 = re.sub(re.compile(r'CHAMBLEE 2'), 'CHAMBLEE', precinct5)
+    precinct7 = re.sub(re.compile(r'WADSWORTH ELEM - 04'), 'WADSWORTH ELEM', precinct6)
+    return precinct6.strip().upper()[:20]
+
 # End helper functions
 
 #-----------------------------------------------------#
@@ -25,45 +41,28 @@ def get_income(row):
 # based on this data
 #-----------------------------------------------------#
 def merge_votes():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    p = Parser(clarity_live.CONTEST_URL) # Scrape election results from clarity
+    p.parse_precinct_results(counties=clarity_live.COUNTIES)
+    p.to_csv()
+    votes = pd.DataFrame(p.vote_data, columns=p.headers)
+    #votes = pd.read_csv('w_ajc_precincts')
 
-    # Get a list of all the .csv files in the precinct_results dir
-    precinct_results = glob(os.path.join(current_dir, 'precinct_results', '*.csv'))
-    list_ = []
+    # Rename column headers
+    rvotes = votes.rename(columns={'CRUZ': 'rep_votes', 'J.': 'dem_votes'})
 
-    # Create a single dataframe by concatenating all the .csv files
-    for f in precinct_results:
-        df = pd.read_csv(f, index_col=False, header=2)
-        # We're only interested in the total votes for each candidate
-        df = df[['Precinct', 'Registered Voters', 'Total Votes', 'Total Votes.1', 'Total']]
+    # Filter out precincts with zero votes
+    rvotes = rvotes[rvotes.apply(lambda x: x.rep_votes > 0 and 
+        x.dem_votes > 0 and 
+        x.total > 0, axis=1)] 
 
-        # Rename some of the columns. This assumes that every csv from the
-        # Secretary of State lists the candidates in the same order, double-check this.
-        df = df.rename(columns={
-            'Total Votes': 'rep_votes',
-            'Total Votes.1': 'dem_votes',
-            'Registered Voters':'registered_v',
-            'Total': 'total'})
+    # Calculate proportion of total votes that each candidate got
+    rvotes['rep_p'] = rvotes.apply(lambda x: x['rep_votes']/x['total'], axis=1)
+    rvotes['dem_p'] = rvotes.apply(lambda x: x['dem_votes']/x['total'], axis=1)
+    rvotes['Precinct'] = rvotes.apply(clean, axis=1)
 
-        # Filter out precincts with zero votes
-        df = df[df.apply(lambda x: x.rep_votes > 0 and 
-            x.dem_votes > 0 and 
-            x.total > 0, axis=1)] 
-
-        # Calculate proportion of total votes that each candidate got
-        df['rep_p'] = df.apply(lambda x: x['rep_votes']/x['total'], axis=1)
-        df['dem_p'] = df.apply(lambda x: x['dem_votes']/x['total'], axis=1)
-
-        # Get the county name from the csv to limit fuzzy matching later
-        df['county'] = os.path.split(f)[1][:-4].upper()
-
-        # Append the cleaned dataframe to our list of precincts
-        list_.append(df)
-
-    # Concat the list of dataframes into a single dataframe
-    df1 = pd.concat(list_)
-    df1.to_csv('income_race_votes_concat.csv', index=False)
-
+    rvotes.to_csv('income_race_votes_concat.csv', index=False)
+    print 'File written to CSV'
+    return
     # Import the .csv with the precinct demographic data
     df2 = pd.read_csv('atl_precincts_income_race_matched.csv', index_col=False)
 
