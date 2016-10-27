@@ -20,6 +20,8 @@ def get_income(row):
     else:
         return 'high'
 
+# A messy system for renaming up the few precincts scraped from the site that
+# have names that don't match the map names, when the map names can't be changed
 def clean(row):
     r = re.compile(r'\d{3} ')
     precinct1 = re.sub(r, '', row['Precinct'])
@@ -41,11 +43,10 @@ def clean(row):
 # based on this data
 #-----------------------------------------------------#
 def merge_votes():
-    p = Parser(clarity_live.CONTEST_URL) # Scrape election results from clarity
-    p.parse_precinct_results(counties=clarity_live.COUNTIES)
-    p.to_csv()
-    votes = pd.DataFrame(p.vote_data, columns=p.headers)
-    #votes = pd.read_csv('w_ajc_precincts')
+    #p = Parser(clarity_live.CONTEST_URL) # Scrape election results from clarity
+    #p.parse_precinct_results(counties=clarity_live.COUNTIES)
+    #p.to_csv()
+    votes = pd.read_csv('data.csv')
 
     # Rename column headers
     rvotes = votes.rename(columns={'CRUZ': 'rep_votes', 'J.': 'dem_votes'})
@@ -60,11 +61,9 @@ def merge_votes():
     rvotes['dem_p'] = rvotes.apply(lambda x: x['dem_votes']/x['total'], axis=1)
     rvotes['Precinct'] = rvotes.apply(clean, axis=1)
 
-    rvotes.to_csv('income_race_votes_concat.csv', index=False)
-    print 'File written to CSV'
-    return
+    rvotes.to_csv('cleaned_votes.csv', index=False)
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('atl_precincts_income_race_matched.csv', index_col=False)
+    df2 = pd.read_csv('ajc_precincts.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
@@ -73,19 +72,7 @@ def merge_votes():
         right_on='Precinct',
         how='outer',
         indicator=True)
-    merged.to_csv('all_w_ind.csv')
-
-    # If any precincts were left out, write them to the unmerged_precincts .csv
-    unmerged_left = merged[merged._merge == 'left_only']
-    print 'Unmerged: ', len(unmerged_left)
-    unmerged_right = merged[merged._merge == 'right_only']
-
-    #if len(unmerged) > 0:
-    #    unmerged.to_csv('unmerged_precincts.csv', index=False)
-    #else:
-    #    print 'All precincts merged successfully'
-    unmerged_left.to_csv('unmerged_left.csv')
-    unmerged_right.to_csv('unmerged_right.csv')
+    merged.to_csv('all_w_unmerged.csv')
 
     # Filter merged dataset down to only precincts with matching names
     merged = merged[merged._merge == 'both']
@@ -94,7 +81,7 @@ def merge_votes():
     merged['income_bin'] = merged.apply(get_income, axis=1)
 
     # Write to a csv. I will have to manually join this .csv to the map with QGIS
-    merged.to_csv('income_race_votes.csv')
+    merged.to_csv('income_race_votes_merged.csv')
 
     # Calculate aggregated stats for summary table
     race = merged.groupby('race')[['rep_votes', 'dem_votes']].sum().transpose()
