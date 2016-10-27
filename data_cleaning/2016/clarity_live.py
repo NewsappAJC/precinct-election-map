@@ -21,22 +21,28 @@ COUNTIES = ['CLAYTON', 'COBB', 'DEKALB', 'FULTON', 'GWINNETT']
 class Parser(object):
     """
     Use Selenium's PhantomJS headless browser to simulate clicks on the 
-    Clarity elections site and get precinct-level vote data for a given race, LIVE.
+    Clarity elections site and get precinct-level vote data for a given race.
     """
     # Create webdriver and navigate to the URL of the contest
     # Create a new webdriver on every loop because it's less expensive than
     # running multiple webdrivers at the same time
     def __init__(self, contest_url):
         self.url = contest_url
+        self.precinct_results = None
 
-    def _clean(self, string):
+    def _strip_commas(self, string):
         return string.replace(',','')
+
 
     def _build_driver(self):
         driver = webdriver.PhantomJS()
         driver.get(self.url)
         assert 'Election' in driver.title # Make sure we have the right page
         return driver
+
+    # Define this method in subclass
+    def merge(self):
+        pass
 
     def parse_precinct_results(self, output_file=OUTPUT, counties=None):
         # TODO replace this with logging
@@ -93,7 +99,7 @@ class Parser(object):
 
                     # Strip commas out of the total so that we can check whether the votes we've 
                     # parsed add up to the correct amount.
-                    total = self._clean(row.find_elements_by_tag_name('td')[len(row.find_elements_by_tag_name('td')) - 1].text)
+                    total = self._strip_commas(row.find_elements_by_tag_name('td')[len(row.find_elements_by_tag_name('td')) - 1].text)
                     ftotal = int(total)
                     # No point summing up the math when testing with primary data
                     #assert int(clean(candidate_1)) + int(clean(candidate_2)) + int(clean(candidate_3)) == totalh
@@ -110,15 +116,14 @@ class Parser(object):
             driver.get(self.url)
 
         driver.close()
-        self.vote_data = data
-        return
+        self.precinct_results = {'headers': headers, 'data': data}
 
-    def to_csv(self, path=OUTPUT):
+    def to_csv(self, list_, path=OUTPUT):
         with open(path, 'w') as f:
             print 'Writing to file {}'.format(path)
             data_writer = csv.writer(f, delimiter=',')
             data_writer.writerow(self.headers)
-            for row in self.vote_data:
+            for row in self.list_:
                 data_writer.writerow(row)
         return
 
