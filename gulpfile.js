@@ -97,7 +97,7 @@ gulp.task('watch', function(done) {
 
   gulp.watch(SRC + 'js/*.js', gulp.series('compile'));
 
-  gulp.watch([SRC + 'img/*', SRC + 'index.html'], gulp.series('build-assets'));
+  gulp.watch([SRC + 'img/*', SRC + '*.html'], gulp.series('build-assets'));
   done();
 });
 

@@ -3,6 +3,7 @@ import datetime
 import time
 import csv
 import re
+import pdb
 
 # Third-party library imports
 from selenium import webdriver
@@ -12,33 +13,35 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Constants
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/54042/149045/en/md_data.html?cid=6000&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=50&'
 DELAY = 120 # Number of milliseconds to wait before running the script again
 OUTPUT = '/Users/jcox/Dev/election/data_cleaning/data.csv' # File to write to
-COUNTIES = ['GWINNETT', 'FULTON', 'COBB', 'CLAYTON', 'DEKALB']
-
-# Helper functions
-def clean(string):
-    return string.replace(',','')
-
+COUNTIES = ['CLAYTON', 'COBB', 'DEKALB', 'FULTON', 'GWINNETT']
 
 class Parser(object):
+    """
+    Use Selenium's PhantomJS headless browser to simulate clicks on the 
+    Clarity elections site and get precinct-level vote data for a given race.
+    """
     # Create webdriver and navigate to the URL of the contest
     # Create a new webdriver on every loop because it's less expensive than
     # running multiple webdrivers at the same time
     def __init__(self, contest_url):
         self.url = contest_url
 
+    def _clean(self, string):
+        return string.replace(',','')
+
     def _build_driver(self):
         driver = webdriver.PhantomJS()
-        driver.get(CONTEST_URL)
-        assert 'Election' in driver.title # 
+        driver.get(self.url)
+        assert 'Election' in driver.title # Make sure we have the right page
         return driver
 
     def parse_precinct_results(self, output_file=OUTPUT, counties=None):
         # TODO replace this with logging
         print 'Getting precinct data...'
-        self.driver = _build_driver()
+        driver = self._build_driver()
 
         # Get number of counties on summary page so that we know how many to loop through
         num_counties = len(driver.find_elements_by_css_selector('table.vts-data > tbody > tr')) - 1
@@ -56,17 +59,17 @@ class Parser(object):
             except IndexError:
                 continue
 
-            # Skip counties not in the list supplied by the user
+            # Skip counties not in the list supplied by the user. If not list 
+            # is provided then loop through all the counties
             if counties is not None and county_name.upper() not in counties:
                 continue
 
-            # The URL for each county is generated anew by Clarity each page visit
-            # emulating a click is a sure bet to get to the detail page
+            # The URL for each county is generated anew by Clarity on each page visit
+            # Emulating a click is a sure bet to get to the detail page
             links[1].click()
 
             # Wait until the new page loads
             delay = 3
-
             try: 
                 check = EC.presence_of_element_located((By.ID, 'precinctDetailLabel'))
                 WebDriverWait(driver, delay).until(check)
@@ -77,7 +80,7 @@ class Parser(object):
             rows = driver.find_elements_by_css_selector('table.vts-data > tbody > tr')
             ths = rows[0].find_elements_by_tag_name('th')
 
-            headers = [ths[1].text, 'County', ths[2].text, ths[3].text]
+            self.headers = [ths[1].text, 'County', ths[2].text.split()[1], ths[3].text.split()[1], 'total']
 
             for row in rows[1:len(rows)-1]:
                 try:
@@ -86,11 +89,15 @@ class Parser(object):
                     candidate_2 = row.find_elements_by_tag_name('td')[3].text
                     candidate_3 = row.find_elements_by_tag_name('td')[4].text
 
-                    total = int(clean(row.find_elements_by_tag_name('td')[5].text))
-                    assert int(clean(candidate_1)) + int(clean(candidate_2)) + int(clean(candidate_3)) == total  # check the math
+                    # Strip commas out of the total so that we can check whether the votes we've 
+                    # parsed add up to the correct amount.
+                    total = self._clean(row.find_elements_by_tag_name('td')[5].text)
+                    ftotal = int(total)
+                    # No point summing up the math when testing with primary data
+                    #assert int(clean(candidate_1)) + int(clean(candidate_2)) + int(clean(candidate_3)) == totalh
 
                     # If the test passes, append the data
-                    data.append([precinct_name.upper(), county_name, candidate_1, candidate_2])
+                    data.append([precinct_name.upper(), county_name, candidate_1, candidate_2, ftotal])
 
                     print 'Adding precinct {}, ({})'.format(precinct_name, county_name)
                 except IndexError: # Some rows repeat the headers and these throw index errors
@@ -98,16 +105,18 @@ class Parser(object):
                     pass
 
             # Navigate back to the root URL
-            driver.get(contest_url)
+            driver.get(self.url)
 
         driver.close()
-        return data
+        self.vote_data = data
+        return
 
-    def write_to_csv(self, path=OUTPUT)
-        with open(OUTPUT, 'w') as f:
+    def write_to_csv(self, path=OUTPUT):
+        with open(path, 'w') as f:
             print 'Writing to file {}'.format(path)
             data_writer = csv.writer(f, delimiter=',')
-            data_writer.writerow(headers)
-            for row in self.data:
+            data_writer.writerow(self.headers)
+            for row in self.vote_data:
                 data_writer.writerow(row)
+        return
 
