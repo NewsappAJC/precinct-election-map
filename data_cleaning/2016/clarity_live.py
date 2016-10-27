@@ -6,17 +6,13 @@ import re
 import pdb
 
 # Third-party library imports
+import requests
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-# Constants
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=50&'
-DELAY = 120 # Number of milliseconds to wait before running the script again
-OUTPUT = 'data.csv' # File to write to
-COUNTIES = ['CLAYTON', 'COBB', 'DEKALB', 'FULTON', 'GWINNETT']
 
 class Parser(object):
     """
@@ -30,28 +26,28 @@ class Parser(object):
         self.url = contest_url
         self.precinct_results = None
 
-    def _strip_commas(self, string):
-        return string.replace(',','')
-
-
     def _build_driver(self):
         driver = webdriver.PhantomJS()
         driver.get(self.url)
         assert 'Election' in driver.title # Make sure we have the right page
         return driver
 
+    def _clean(string):
+        return string.replace(',', '')
+
     # Define this method in subclass
     def merge(self):
         pass
 
-    def parse_precinct_results(self, output_file=OUTPUT, counties=None):
+    def parse_precinct_results(self, counties=None):
         # TODO replace this with logging
         print 'Getting precinct data...'
         driver = self._build_driver()
 
         # Get number of counties on summary page so that we know how many to loop through
         num_counties = len(driver.find_elements_by_css_selector('table.vts-data > tbody > tr')) - 1
-        data = [] # This array will hold all the data for our precinct results
+
+        data = []
 
         # Skip the titles in the first row
         for i in range(1, num_counties):
@@ -86,23 +82,19 @@ class Parser(object):
             rows = driver.find_elements_by_css_selector('table.vts-data > tbody > tr')
             ths = rows[0].find_elements_by_tag_name('th')
 
-            self.headers = [ths[1].text, 'County', ths[5].text.split()[1], ths[14].text.split()[1], 'total']
+            # Clarity always displays candidates in alphabetical order by last name
+            self.headers = [ths[1].text, 'County', 'dem_votes', 'rep_votes', 'total']
 
             for row in rows[1:len(rows)-1]:
                 try:
                     precinct_name = row.find_elements_by_tag_name('a')[0].get_attribute('name').upper()
                     #candidate_1 = row.find_elements_by_tag_name('td')[5].text
                     #candidate_2 = row.find_elements_by_tag_name('td')[14].text
-                    # MATURITY
                     candidate_1 = 69
                     candidate_2 = 69
 
-                    # Strip commas out of the total so that we can check whether the votes we've 
-                    # parsed add up to the correct amount.
                     total = self._strip_commas(row.find_elements_by_tag_name('td')[len(row.find_elements_by_tag_name('td')) - 1].text)
                     ftotal = int(total)
-                    # No point summing up the math when testing with primary data
-                    #assert int(clean(candidate_1)) + int(clean(candidate_2)) + int(clean(candidate_3)) == totalh
 
                     # If the test passes, append the data
                     data.append([precinct_name.upper(), county_name, int(candidate_1), int(candidate_2), int(138)])
@@ -117,13 +109,4 @@ class Parser(object):
 
         driver.close()
         self.precinct_results = {'headers': headers, 'data': data}
-
-    def to_csv(self, list_, path=OUTPUT):
-        with open(path, 'w') as f:
-            print 'Writing to file {}'.format(path)
-            data_writer = csv.writer(f, delimiter=',')
-            data_writer.writerow(self.headers)
-            for row in self.list_:
-                data_writer.writerow(row)
-        return
 
