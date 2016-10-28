@@ -2,6 +2,7 @@
 import os
 import re
 import pdb
+import logging
 
 # Third-party imports
 import pandas as pd
@@ -12,7 +13,10 @@ from clarity_live import Parser
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
 CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=50&'
-COUNTIES = ['CLAYTON']
+COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 class ResultSnapshot(Parser):
     def __init__(self, **kwargs):
@@ -27,7 +31,7 @@ class ResultSnapshot(Parser):
         have names that don't match the map names, when the map names can't be changed
         """
         r = re.compile(r'\d{3} ')
-        precinct1 = re.sub(r, '', row['Precinct'])
+        precinct1 = re.sub(r, '', row['precinct'])
         precinct2 = re.sub(re.compile(r'EP04-05|EP04-13'), 'EP04', precinct1)
         precinct3 = re.sub(re.compile(r'10H1|10H2'), '10H', precinct2)
         precinct4 = re.sub(re.compile(r'CATES D - 04|CATES D - 07'), 'CATES D', precinct3)
@@ -63,8 +67,8 @@ class ResultSnapshot(Parser):
         # Calculate proportion of total votes that each candidate got
         cframe['rep_p'] = cframe.apply(lambda x: x['rep_votes']/x['total'], axis=1)
         cframe['dem_p'] = cframe.apply(lambda x: x['dem_votes']/x['total'], axis=1)
-        cframe['Precinct'] = cframe.apply(self._clean, axis=1)
-        cframe['income_bin'] = merged.apply(self._get_income, axis=1)
+        cframe['precinct'] = cframe.apply(self._clean, axis=1)
+        #cframe['income_bin'] = cframe.apply(self._get_income, axis=1)
 
         return cframe
 
@@ -77,11 +81,11 @@ class ResultSnapshot(Parser):
         votes = pd.DataFrame(votes)
         stats = pd.read_csv(statsf, index_col=False)
 
-        fvotes = get_vote_stats(votes)
+        fvotes = self._clean_vote_stats(votes)
 
-        merged = stats.merge(votes,
+        merged = stats.merge(fvotes,
             left_on='ajc_precinct',
-            right_on='Precinct',
+            right_on='precinct',
             how='outer',
             indicator=True)
 
@@ -89,7 +93,9 @@ class ResultSnapshot(Parser):
         self.merged_precincts = merged[merged._merge == 'both']
 
         path = os.path.join(DIR, 'vote_data.csv')
-        df.to_csv(path)
+
+        logging.info('Writing precinct information to csv {}'.format(path))
+        self.merged_precincts.to_csv(path)
         return
 
     def aggregate_stats(self):
@@ -103,13 +109,16 @@ class ResultSnapshot(Parser):
         merged = race.merge(income, left_index=True, right_index=True)
         merged['all'] = merged.sum(axis=1)
 
-        merged.to_json(os.path.join(DIR, 'aggregated_stats.json'))
+        path = os.path.join(DIR, 'aggregated_stats.json')
+        logging.info('Writing aggregated stats to csv {}'.format(path))
+        merged.to_json(path)
         return
 
 
 if __name__ == '__main__':
-    p = Parser(CONTEST_URL) # Scrape election results from clarity
-    p.parse_precinct_results(COUNTIES)
+    p = ResultSnapshot(contest_url=CONTEST_URL)
+    p.get_county_urls(COUNTIES)
+    p.parse_precinct_results()
     p.merge()
     p.aggregate_stats()
 

@@ -1,8 +1,6 @@
 # Standard library imports
-import datetime
-import time
+import logging
 import csv
-import re
 import pdb
 import json
 
@@ -16,6 +14,10 @@ from selenium.common.exceptions import TimeoutException
 
 
 COUNTIES = ['FULTON', 'COBB', 'CLAYTON', 'GWINNETT', 'DEKALB']
+CANDIDATES = {'rep': 'DONALD J. TRUMP', 'dem': 'TED CRUZ'} # For testing
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 class Parser(object):
     """
@@ -48,13 +50,19 @@ class Parser(object):
         detail page, and append the URLs to self.urls.
         """
         # TODO replace this with logging
-        print 'Getting precinct data...'
+        logging.info('Creating Selenium driver and accessing Clarity')
         driver = self._build_driver()
 
         # Get number of counties on summary page so that we know how many to loop through
         num_counties = len(driver.find_elements_by_css_selector('table.vts-data > tbody > tr')) - 1
 
         data = []
+
+        try:
+            scounties = (', ').join(counties)
+        except TypeError: 
+            scounties = 'All counties'
+        logging.info('Getting detail page URLs for {}'.format(scounties))
 
         # Skip the titles in the first row
         for i in range(1, num_counties):
@@ -100,21 +108,35 @@ class Parser(object):
         Get JSON data from the endpoints listed in :county_urls: and parse
         the election results from each
         """
+        self.precinct_results = []
         for base_url in self.county_urls:
+            logging.info('Getting precinct details from {}'.format(base_url))
             candidate_data = requests.get(base_url + '/json/sum.json')
             vote_data = requests.get(base_url + '/json/details.json')
 
             # Get a list of candidates and append it to the list of headers
-            contest = json.loads(candidate_data.content)['Contests'][0]
-            candidates = contest['CH']
+            contests = json.loads(candidate_data.content)['Contests']
+            # Find out which of the contests contains the candidates we're interested in, since the
+            order = [i for i, val in enumerate(contests) if 'TED CRUZ' in val['CH']][0] 
+            candidates = contests[order]['CH']
 
             #Get votes for each candidate
-            contest = json.loads(vote_data.content)['Contests'][0]
+            contests = json.loads(vote_data.content)['Contests']
+            contest = contests[order]
 
             for precinct, votes in zip(contest['P'], contest['V']):
                 data = {'precinct': precinct}
                 for candidate, count in zip(candidates, votes):
-                    data[candidate] = int(count)
+                    if candidate == CANDIDATES['rep']:
+                        #data['rep_votes'] = int(count)
+                        data['rep_votes'] = 42
+                    elif candidate == CANDIDATES['dem']:
+                        #data['dem_votes'] = int(count)
+                        data['dem_votes'] = 42
+                    else:
+                        data[candidate] = 42
+                #data['total'] = sum(votes)
+                data['total'] = 84
 
                 self.precinct_results.append(data)
 
