@@ -5,7 +5,9 @@ import pdb
 
 # Third-party imports
 import pandas as pd
-import clarity_live
+
+# Local module imports
+from clarity_live import Parser
 
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -66,13 +68,14 @@ class ResultSnapshot(Parser):
 
         return cframe
 
-    def merge(self, votes=self.precinct_results, stats='ajc_precincts.csv'):
+    def merge(self, statsf='ajc_precincts.csv'):
         """
         Public method used to merge the election result dataset with the precinct 
         maps from the Reapportionment office.
         """
-        votes = pd.DataFrame(votes['data'], columns=votes['headers'])
-        stats = pd.read_csv(stats, index_col=False)
+        votes = self.precinct_results
+        votes = pd.DataFrame(votes)
+        stats = pd.read_csv(statsf, index_col=False)
 
         fvotes = get_vote_stats(votes)
 

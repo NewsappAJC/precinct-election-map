@@ -4,6 +4,7 @@ import time
 import csv
 import re
 import pdb
+import json
 
 # Third-party library imports
 import requests
@@ -14,32 +15,38 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 
+COUNTIES = ['FULTON', 'COBB', 'CLAYTON', 'GWINNETT', 'DEKALB']
+
 class Parser(object):
     """
+    Base class that provides scraping functionality for Clarity Elections site.
     Use Selenium's PhantomJS headless browser to simulate clicks on the 
-    Clarity elections site and get precinct-level vote data for a given race.
+    and get precinct-level vote data for a given race.
     """
     # Create webdriver and navigate to the URL of the contest
     # Create a new webdriver on every loop because it's less expensive than
     # running multiple webdrivers at the same time
     def __init__(self, contest_url):
         self.url = contest_url
-        self.precinct_results = None
+
+        self.county_urls = [] # Will hold the dynamically generated URLs
+        self.precinct_results = []
 
     def _build_driver(self):
+        """
+        Create an instance of Selenium's webdriver.PhantomJS(), used to 
+        simulate clicks on the Clarity elections site
+        """
         driver = webdriver.PhantomJS()
         driver.get(self.url)
         assert 'Election' in driver.title # Make sure we have the right page
         return driver
 
-    def _clean(string):
-        return string.replace(',', '')
-
-    # Define this method in subclass
-    def merge(self):
-        pass
-
-    def parse_precinct_results(self, counties=None):
+    def get_county_urls(self, counties=None):
+        """
+        Use Selenium to get the dynamically generated URLs for each county's 
+        detail page, and append the URLs to self.urls.
+        """
         # TODO replace this with logging
         print 'Getting precinct data...'
         driver = self._build_driver()
@@ -72,41 +79,43 @@ class Parser(object):
 
             # Wait until the new page loads
             delay = 3
-            try: 
+            try:
                 check = EC.presence_of_element_located((By.ID, 'precinctDetailLabel'))
                 WebDriverWait(driver, delay).until(check)
             except TimeoutException:
                 print 'page took too long to load'
 
-            # Get all the precincts in the county
-            rows = driver.find_elements_by_css_selector('table.vts-data > tbody > tr')
-            ths = rows[0].find_elements_by_tag_name('th')
+            # Remove cruft at the end of URL and append it to our list of URLs
+            split_url = driver.current_url.split('/')
+            curl = ('/').join(split_url[:-2])
+            self.county_urls.append(curl)
 
-            # Clarity always displays candidates in alphabetical order by last name
-            self.headers = [ths[1].text, 'County', 'dem_votes', 'rep_votes', 'total']
-
-            for row in rows[1:len(rows)-1]:
-                try:
-                    precinct_name = row.find_elements_by_tag_name('a')[0].get_attribute('name').upper()
-                    #candidate_1 = row.find_elements_by_tag_name('td')[5].text
-                    #candidate_2 = row.find_elements_by_tag_name('td')[14].text
-                    candidate_1 = 69
-                    candidate_2 = 69
-
-                    total = self._strip_commas(row.find_elements_by_tag_name('td')[len(row.find_elements_by_tag_name('td')) - 1].text)
-                    ftotal = int(total)
-
-                    # If the test passes, append the data
-                    data.append([precinct_name.upper(), county_name, int(candidate_1), int(candidate_2), int(138)])
-
-                    print 'Adding precinct {}, ({})'.format(precinct_name, county_name)
-                except IndexError: # Some rows repeat the headers and these throw index errors
-                    print 'Skipping empty row'
-                    pass
-
-            # Navigate back to the root URL
             driver.get(self.url)
 
         driver.close()
-        self.precinct_results = {'headers': headers, 'data': data}
+        return
+
+    def parse_precinct_results(self):
+        """
+        Get JSON data from the endpoints listed in :county_urls: and parse
+        the election results from each
+        """
+        for base_url in self.county_urls:
+            candidate_data = requests.get(base_url + '/json/sum.json')
+            vote_data = requests.get(base_url + '/json/details.json')
+
+            # Get a list of candidates and append it to the list of headers
+            contest = json.loads(candidate_data.content)['Contests'][0]
+            candidates = contest['CH']
+
+            #Get votes for each candidate
+            contest = json.loads(vote_data.content)['Contests'][0]
+
+            for precinct, votes in zip(contest['P'], contest['V']):
+                data = {'precinct': precinct}
+                for candidate, count in zip(candidates, votes):
+                    data[candidate] = int(count)
+
+                self.precinct_results.append(data)
+
 
