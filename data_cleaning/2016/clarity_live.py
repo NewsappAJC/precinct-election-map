@@ -107,7 +107,7 @@ class Parser(object):
         driver.close()
         return
 
-    def parse_precinct_results(self):
+    def get_precincts(self):
         """
         Get JSON data from the endpoints listed in :county_urls: and parse
         the precinct-level election results from each one
@@ -173,15 +173,25 @@ class ResultSnapshot(Parser):
         return precinct6.strip().upper()[:20]
 
     def _get_income(self, row):
-        """
-        Private method for binning income
-        """
         if row['avg_income'] < 50000:
             return 'low'
         elif row['avg_income'] < 100000:
             return 'mid'
         else:
             return 'high'
+
+    def _get_rep_proportion(self, row):
+        try:
+            return float(row['rep_votes'])/row['total']
+        except ZeroDivisionError:
+            return 0
+
+    def _get_dem_proportion(self, row):
+        try:
+            return float(row['dem_votes'])/row['total']
+        except ZeroDivisionError:
+            return 0
+
 
     def _clean_vote_stats(self, precincts):
         """
@@ -190,15 +200,12 @@ class ResultSnapshot(Parser):
         and perform other operations necessary before it's ready to be 
         consumed by the JS app
         """
-        # Filter out precincts with zero votes
-        # Rename column headers
-        cframe = precincts[precincts.apply(lambda x: x.rep_votes > 0 and 
-            x.dem_votes > 0 and 
-            x.total > 0, axis=1)] 
+        cframe = precincts
 
+        pdb.set_trace()
         # Calculate proportion of total votes that each candidate got
-        cframe['rep_p'] = cframe.apply(lambda x: x['rep_votes']/x['total'], axis=1)
-        cframe['dem_p'] = cframe.apply(lambda x: x['dem_votes']/x['total'], axis=1)
+        cframe['rep_p'] = cframe.apply(self._get_rep_proportion, axis=1)
+        cframe['dem_p'] = cframe.apply(self._get_dem_proportion, axis=1)
         cframe['precinct'] = cframe.apply(self._clean, axis=1)
 
         return cframe
@@ -211,7 +218,7 @@ class ResultSnapshot(Parser):
         else:
             return 'high'
 
-    def merge(self, statsf='ajc_precincts.csv'):
+    def merge_votes(self, statsf='ajc_precincts.csv'):
         """
         Public method used to merge the election result dataset with the precinct 
         maps from the Reapportionment office.
@@ -307,7 +314,7 @@ class ResultSnapshot(Parser):
 if __name__ == '__main__':
     p = ResultSnapshot(contest_url=CONTEST_URL)
     p.get_county_urls(input_counties=COUNTIES)
-    p.parse_precinct_results()
-    p.merge()
+    p.get_precincts()
+    p.merge_votes()
     p.aggregate_stats()
 
