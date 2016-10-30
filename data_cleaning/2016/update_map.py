@@ -2,16 +2,23 @@
 import json
 import os
 import csv
+import logging
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MAP_PATH = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 def update_map():
     """
     Take map JSON data and generate a new map with updated election data.
     """
+    logging.info('Adding latest vote information to map file {}'.format(MAP_PATH))
+
     f = open('vote_data.csv')
     votes = csv.DictReader(f)
-    map_data = open('2014_precincts_income_race.json', 'r').read()
+    map_data = open('2014_income_race.json', 'r').read()
 
     map_ = json.loads(map_data)
     for i, feature in enumerate(map_['features']):
@@ -23,7 +30,8 @@ def update_map():
         except IndexError:
             continue
 
-    #with open(os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json'), 'w') as f:
-    with open('map.json', 'w') as f:
+    with open(MAP_PATH, 'w') as f:
         f.write(json.dumps(map_))
 
+if __name__ == '__main__':
+    update_map()

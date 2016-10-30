@@ -150,7 +150,6 @@ class Parser(object):
 
                 self.precinct_results.append(data)
 
-
 class ResultSnapshot(Parser):
     """
     Class that contains utilities for cleaning Georgia election results and
@@ -220,7 +219,7 @@ class ResultSnapshot(Parser):
         else:
             return 'high'
 
-    def merge_votes(self, statsf='ajc_precincts.csv'):
+    def merge_votes(self, statsf='ajc_precincts_merged.csv'):
         """
         Public method used to merge the election result dataset with the precinct 
         maps from the Reapportionment office.
