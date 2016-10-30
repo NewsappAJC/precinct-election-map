@@ -21,6 +21,7 @@ from update_map import update_map
 
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(DIR))
 CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
 CANDIDATES = {'rep': 'DONALD J. TRUMP', 'dem': 'TED CRUZ'} # For testing w 2016 republican primary data
@@ -303,7 +304,7 @@ class ResultSnapshot(Parser):
         data['ALL COUNTIES']['all']['rep_votes'] = merged['rep_votes'].sum()
         data['ALL COUNTIES']['all']['dem_votes'] = merged['dem_votes'].sum()
 
-        path = os.path.join(DIR, 'aggregated_stats.json')
+        path = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
         logging.info('Writing aggregated stats to {}'.format(path))
 
         with open(path, 'w') as f:

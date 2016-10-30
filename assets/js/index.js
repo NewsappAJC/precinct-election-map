@@ -404,7 +404,7 @@ getPrecincts(addPrecincts);
 function getAggregatedData() {
   $.ajax({
     dataType: 'json',
-    url: './2012_agg_stats.json',
+    url: './2014agg_stats.json',
     success: function(data) {
       // Update state
       aggStats = data;
