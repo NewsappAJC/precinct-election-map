@@ -16,9 +16,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+# Local imports
+from update_map import update_map
+
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=50&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
 CANDIDATES = {'rep': 'DONALD J. TRUMP', 'dem': 'TED CRUZ'} # For testing w 2016 republican primary data
 
@@ -57,7 +60,7 @@ class Parser(object):
         detail page, and append the URLs to self.county_urls.
         """
         self.county_urls = [] # Reset county URLs
-        logging.info('Creating Selenium driver and access Clarity')
+        logging.info('Creating Selenium driver and accessing Clarity')
         driver = self._build_driver()
 
         try:
@@ -113,7 +116,6 @@ class Parser(object):
         the precinct-level election results from each one
         """
         self.precinct_results = []
-        pdb.set_trace()
         for county_name, base_url in self.county_urls:
             logging.info('Getting precinct details from {}'.format(base_url))
             candidate_data = requests.get(base_url + '/json/sum.json')
@@ -133,17 +135,18 @@ class Parser(object):
 
             for precinct, votes in zip(contest['P'], contest['V']):
                 data = {'precinct': precinct, 'county': county_name}
+                total = 0
                 for candidate, count in zip(candidates, votes):
                     if candidate == CANDIDATES['rep']:
-                        #data['rep_votes'] = int(count)
-                        data['rep_votes'] = 42
+                        total += float(count)
+                        data['rep_votes'] = int(count)
                     elif candidate == CANDIDATES['dem']:
-                        #data['dem_votes'] = int(count)
-                        data['dem_votes'] = 42
+                        total += float(count)
+                        data['dem_votes'] = int(count)
                     else:
-                        data[candidate] = 42
+                        total += float(count)
                 #data['total'] = sum(votes)
-                data['total'] = 84
+                data['total'] = total
 
                 self.precinct_results.append(data)
 
@@ -202,7 +205,6 @@ class ResultSnapshot(Parser):
         """
         cframe = precincts
 
-        pdb.set_trace()
         # Calculate proportion of total votes that each candidate got
         cframe['rep_p'] = cframe.apply(self._get_rep_proportion, axis=1)
         cframe['dem_p'] = cframe.apply(self._get_dem_proportion, axis=1)
@@ -317,4 +319,5 @@ if __name__ == '__main__':
     p.get_precincts()
     p.merge_votes()
     p.aggregate_stats()
+    update_map()
 
