@@ -5,7 +5,9 @@ import _ from 'underscore';
 // DOM refs
 var $rankTableDem = $('#rank-table-dem-body'),
     $rankTableRep = $('#rank-table-rep-body'),
-    $title = $('#top-precincts-title');
+    $title = $('#top-precincts-title'),
+    $demTitle = $('#dem-rank-title'),
+    $repTitle = $('#rep-rank-title');
 
 // State
 var sortedPrecinctsRep,
@@ -21,19 +23,29 @@ var filters = {
   'low': 'a mean household income below $50,000'
 };
 
+var candidates = {
+  2012: {rep: 'Romney', dem: 'Obama'},
+  2016: {rep: 'Trump', dem: 'Clinton'}
+}
 
-export default function(activePrecincts, county, filter) {
+
+export default function(activePrecincts, county, filter, year) {
+  // Update the titles
+  $demTitle.html(candidates[year]['dem']);
+  $repTitle.html(candidates[year]['rep']);
+
   // Set the subhed
-  var f = filters[filter];
-  var titleText;
+  var f = filters[filter],
+      titleText,
+      fcounty = county.toUpperCase()
 
-  if ((county == 'All counties' || county == 'all counties') && filter == 'all') {
+  if (fcounty === 'ALL COUNTIES' && filter === 'all') {
     titleText = 'All Precincts';
   }
-  else if (county == 'all counties' || county == 'All counties') {
+  else if (fcounty === 'ALL COUNTIES') {
     titleText = 'Precincts with ' + f;
   }
-  else if (filter == 'all') {
+  else if (filter === 'all') {
     titleText = county + ' County';
   }
   else {
@@ -48,10 +60,19 @@ export default function(activePrecincts, county, filter) {
   `)
   if (activePrecincts.length >= 10) {
     sortedPrecinctsRep = _.sortBy(activePrecincts, function(p) {
-      return p.feature.properties.rep_p;
+      var prop = p.feature.properties.rep_p
+      // Handle undefined values
+      if (prop === undefined) {
+        return 0;
+      };
+      return prop;
     }).reverse();
     sortedPrecinctsDem = _.sortBy(activePrecincts, function(p) {
-      return p.feature.properties.dem_p;
+      var prop = p.feature.properties.dem_p
+      if (prop === undefined) {
+        return 0;
+      };
+      return prop;
     }).reverse();
   };
   

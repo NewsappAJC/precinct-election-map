@@ -28,7 +28,7 @@ def update_map():
             match = [x for x in votes if x['PRECINCT_N'] == name][0]
             # CSV DictReader automatically parses all columns as strings, 
             # so we need to manually convert these back to ints
-            for x in ['rep_votes', 'dem_votes', 'rep_p', 'dem_p', 'avg_income']:
+            for x in ['rep_votes', 'dem_votes', 'rep_p', 'dem_p', 'total', 'avg_income']:
                 match[x] = float(match[x])
             map_['features'][i]['properties'] = match
         except IndexError:

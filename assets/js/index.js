@@ -75,11 +75,11 @@ function updateFilter(filter) {
 
   // Loop through features in the geoJSON layer (ie the precincts)
   geojson.eachLayer(function (layer) {
-    var layerRace = layer.feature.properties['2012_pre_2'],
+    var layerRace = layer.feature.properties['race'],
         layerCounty = layer.feature.properties.COUNTY_NAM,
         layerIncome;
 
-    var income = layer.feature.properties['2012_pre_1']; // Assign income to high middle or low bucket
+    var income = layer.feature.properties['avg_income']; // Assign income to high middle or low bucket
 
     if (!layer.feature.properties['dem_votes'] && !layer.feature.properties['rep_votes']) {
       map.removeLayer(layer);
@@ -116,7 +116,7 @@ function updateFilter(filter) {
   // Update the summary table results for the given filter
   updateTitle(selectedBucket);
   updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
-  updateRankings(activePrecincts, selectedCounty, selectedBucket);
+  updateRankings(activePrecincts, selectedCounty, selectedBucket, year);
 }
 // Get shapefiles
 function getPrecincts(cb) {
@@ -132,7 +132,6 @@ function getPrecincts(cb) {
     }
   });
 };
-
 
 
 // push precincts from .json file to list of features so that Leaflet can render them.
