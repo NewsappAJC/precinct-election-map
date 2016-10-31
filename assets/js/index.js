@@ -66,6 +66,7 @@ $2012toggle.on('click', function() {
   $2016toggle.addClass('inactive-year-toggle');
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
+  getAggregatedData();
 })
 
 $2016toggle.on('click', function() {
@@ -74,6 +75,7 @@ $2016toggle.on('click', function() {
   $2012toggle.addClass('inactive-year-toggle');
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
+  getAggregatedData();
 })
 
 function updateFilter(filter) {
@@ -433,9 +435,10 @@ getPrecincts(addPrecincts, year);
 
 // Get aggregate data
 function getAggregatedData() {
+  var url = year == 2012 ? './2012agg_stats.json' : './2014agg_stats.json';
   $.ajax({
     dataType: 'json',
-    url: './2014agg_stats.json',
+    url: url,
     success: function(data) {
       // Update state
       aggStats = data;
