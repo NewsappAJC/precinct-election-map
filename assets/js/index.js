@@ -28,7 +28,7 @@ var selectedBucket = 'all',
     geojson,
     interactiveLayer,
     aggStats,
-    year = 2012; //TODO change this for 2016!!
+    year = 2016; //TODO change this for 2016!!
 
 // Helper functions 
 function highlight(el) {
@@ -80,6 +80,10 @@ function updateFilter(filter) {
         layerIncome;
 
     var income = layer.feature.properties['2012_pre_1']; // Assign income to high middle or low bucket
+
+    if (!layer.feature.properties['dem_votes'] && !layer.feature.properties['rep_votes']) {
+      map.removeLayer(layer);
+    };
 
     // TODO bin this in the data so I don't have to do it here
     if (income < 50000) {
