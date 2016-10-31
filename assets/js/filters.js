@@ -20,6 +20,10 @@ export default function(aggStats) {
     'Gwinnett',
   ]
 
+  // Clear the filters
+  $('#demographic-select').html('')
+  $('#county-select').html('')
+
   for (var i = 0; i < counties.length; i++) {
     // Append to counties selector
     $('#county-select').append(`

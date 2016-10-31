@@ -18,7 +18,9 @@ var autocomplete,
     $closeButton = $('#close-button'),
     $filterSelect = $('#demographic-select'),
     $countiesSelect = $('#counties-selector-holder'),
-    $resultsSummary = $('#results-summary');
+    $resultsSummary = $('#results-summary'),
+    $2012toggle = $('#2012-toggle'),
+    $2016toggle = $('#2016-toggle');
 
 // State
 var selectedBucket = 'all',
@@ -35,7 +37,6 @@ function highlight(el) {
     $('.filter-selected').attr('class', 'filter-bar')
     $(el).attr('class', 'filter-selected')
 };
-
 
 $map.hide(); // Map is hidden until it's done loading
 toggleMobile(); // Check size of display and display precinct information accordingly
@@ -57,6 +58,21 @@ L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'
 
 // Create base map
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {attribution: cartodbAttribution}).addTo(map);
+
+// Add event listener to year toggle
+$2012toggle.on('click', function() {
+  year = 2012;
+  $(this).removeClass('inactive-year-toggle');
+  $2016toggle.addClass('inactive-year-toggle');
+  getPrecincts(addPrecincts, year);
+})
+
+$2016toggle.on('click', function() {
+  year = 2016;
+  $(this).removeClass('inactive-year-toggle');
+  $2012toggle.addClass('inactive-year-toggle');
+  getPrecincts(addPrecincts, year);
+})
 
 function updateFilter(filter) {
   // County filters and demographic filters are both set by this function, 
@@ -119,11 +135,15 @@ function updateFilter(filter) {
   updateRankings(activePrecincts, selectedCounty, selectedBucket, year);
 }
 // Get shapefiles
-function getPrecincts(cb) {
+function getPrecincts(cb, year) {
+  var url = year === 2012 ? '2012_precincts_stats_votes_simple.json' : '2014_precincts_income_raceUPDATE.json';
+  map.eachLayer(function (layer) {
+    map.removeLayer(layer);
+  });
   $.ajax({
     dataType: 'json',
     //url: './2014_precincts_income_race_simple.min.json',
-    url: './2014_precincts_income_raceUPDATE.json',
+    url: url,
     success: function(data) {
       cb(data)
     },
@@ -410,7 +430,7 @@ function onPlaceChanged() {
 
 // Finally, run main function to generate the map
 initInput();
-getPrecincts(addPrecincts);
+getPrecincts(addPrecincts, year);
 
 // Get aggregate data
 function getAggregatedData() {

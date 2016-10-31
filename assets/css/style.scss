@@ -498,3 +498,17 @@ BEGIN RANKING TABLE
 .out-link {
   margin-bottom: 200px;
 }
+
+.year-toggle {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.inactive-year-toggle {
+  color: #e2e2e2;
+}
+
+.year-toggle {
+  cursor: pointer;
+}
