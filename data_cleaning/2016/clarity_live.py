@@ -24,7 +24,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR))
 CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'rep': 'DONALD J. TRUMP', 'dem': 'TED CRUZ'} # For testing w 2016 republican primary data
+CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'} # For testing w 2016 republican primary data
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -240,7 +240,6 @@ class ResultSnapshot(Parser):
         # Drop null values
         merged = merged[pd.notnull(merged['rep_votes'])]
         merged = merged[pd.notnull(merged['dem_votes'])]
-        pdb.set_trace()
 
         self.unmerged_precincts = merged[merged._merge != 'both']
         self.merged_precincts = merged[merged._merge == 'both']
