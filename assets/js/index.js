@@ -64,6 +64,7 @@ $2012toggle.on('click', function() {
   year = 2012;
   $(this).removeClass('inactive-year-toggle');
   $2016toggle.addClass('inactive-year-toggle');
+  geojson.clearLayers();
   getPrecincts(addPrecincts, year);
 })
 
@@ -71,6 +72,7 @@ $2016toggle.on('click', function() {
   year = 2016;
   $(this).removeClass('inactive-year-toggle');
   $2012toggle.addClass('inactive-year-toggle');
+  geojson.clearLayers();
   getPrecincts(addPrecincts, year);
 })
 
@@ -137,9 +139,6 @@ function updateFilter(filter) {
 // Get shapefiles
 function getPrecincts(cb, year) {
   var url = year === 2012 ? '2012_precincts_stats_votes_simple.json' : '2014_precincts_income_raceUPDATE.json';
-  map.eachLayer(function (layer) {
-    map.removeLayer(layer);
-  });
   $.ajax({
     dataType: 'json',
     //url: './2014_precincts_income_race_simple.min.json',
