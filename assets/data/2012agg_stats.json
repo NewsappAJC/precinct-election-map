@@ -1,12 +1,12 @@
 {
     "ALL COUNTIES": {
         "all": {
-            "rep_votes": 546611.0, 
-            "dem_votes": 839261.0
+            "rep_votes": 545949.0, 
+            "dem_votes": 838711.0
         }, 
         "mid": {
-            "rep_votes": 278362.0, 
-            "dem_votes": 469286.0
+            "rep_votes": 277700.0, 
+            "dem_votes": 468736.0
         }, 
         "high": {
             "rep_votes": 147511.0, 
@@ -109,20 +109,20 @@
     }, 
     "DEKALB": {
         "all": {
-            "rep_votes": 123801.0, 
-            "dem_votes": 469886.0
+            "rep_votes": 122477.0, 
+            "dem_votes": 468786.0
         }, 
         "mid": {
-            "rep_votes": 40487.0, 
-            "dem_votes": 173241.0
+            "rep_votes": 39825.0, 
+            "dem_votes": 172691.0
         }, 
         "high": {
             "rep_votes": 19023.0, 
             "dem_votes": 17246.0
         }, 
         "hispanic": {
-            "rep_votes": 3961.0, 
-            "dem_votes": 7024.0
+            "rep_votes": 3299.0, 
+            "dem_votes": 6474.0
         }, 
         "black": {
             "rep_votes": 8601.0, 

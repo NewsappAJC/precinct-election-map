@@ -10,7 +10,7 @@ import pandas as pd
 
 # Constants
 BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
-FPATH = join(BASE_DIR, 'assets', 'data', '2012_agg_stats.json')
+FPATH = join(BASE_DIR, 'assets', 'data', '2012agg_stats.json')
 
 # Begin helper functions
 def bin_income(row):
@@ -75,7 +75,7 @@ def merge_votes():
     df1.to_csv('votes_concat.csv', index=False)
 
     # Import the .csv with the precinct demographic data
-    df2 = pd.read_csv('2012_precincts_income_race_clean.csv', index_col=False)
+    df2 = pd.read_csv('2012_precincts_income_race.csv', index_col=False)
 
     # Perform a left join to find out how many precincts don't have a match in
     # the election data
@@ -96,6 +96,7 @@ def merge_votes():
 
     # Bin by income
     merged['income_bin'] = merged.apply(bin_income, axis=1)
+    merged.to_csv('vote_data.csv')
 
     # Calculate aggregated stats for summary table
     race = merged.groupby(['county', 'race'])['rep_votes', 'dem_votes'].sum().unstack()
