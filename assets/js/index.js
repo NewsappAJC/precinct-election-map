@@ -137,14 +137,38 @@ function updateFilter(filter) {
   updateTitle(selectedBucket);
   updateTable($resultsSummary, aggStats[selectedCounty.toUpperCase()][selectedBucket], year);
   updateRankings(activePrecincts, selectedCounty, selectedBucket, year);
+
+  // Add zoom functionality when user clicks one of the top precincts.
+  $('.rank-row').each(function() {
+    $(this).on('click', function() {
+        var lng = parseFloat(this.dataset['x']),
+            lat = parseFloat(this.dataset['y']);
+
+      console.log(lat + ' ' + lng)
+      map.setView({lat: lat, lng: lng}, 14);
+    });
+  });
 }
 // Get shapefiles
 function getPrecincts(cb, year) {
   var url = year === 2012 ? '2012_precincts_stats_votes_simple.json' : '2014_precincts_income_raceUPDATE.json';
   $.ajax({
     dataType: 'json',
-    //url: './2014_precincts_income_race_simple.min.json',
     url: url,
+    success: function(data) {
+      cb(data)
+    },
+    failure: function() {
+      console.log('failed to get precincts.');
+    }
+  });
+};
+
+function getPastPrecincts(cb, year) {
+  //var url = year === 2012 ? '2012_precincts_stats_votes_simple.json' : '2014_precincts_income_raceUPDATE.json';
+  $.ajax({
+    dataType: 'json',
+    url: './2014_precincts_income_race_simple.min.json',
     success: function(data) {
       cb(data)
     },

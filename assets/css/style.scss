@@ -502,7 +502,7 @@ BEGIN RANKING TABLE
 .year-toggle {
   font-size: 2em;
   font-weight: bold;
-  text-align: center;
+  text-align: right;
 }
 
 .inactive-year-toggle {
@@ -510,5 +510,10 @@ BEGIN RANKING TABLE
 }
 
 .year-toggle {
+  cursor: pointer;
+}
+
+.rank-row:hover {
+  background-color: #e2e2e2;
   cursor: pointer;
 }

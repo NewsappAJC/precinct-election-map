@@ -220,7 +220,7 @@ class ResultSnapshot(Parser):
         else:
             return 'high'
 
-    def merge_votes(self, statsf='ajc_precincts_merged.csv'):
+    def merge_votes(self, statsf='ajc_precincts_merged_centers.csv'):
         """
         Public method used to merge the election result dataset with the precinct 
         maps from the Reapportionment office.

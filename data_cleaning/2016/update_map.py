@@ -18,7 +18,7 @@ def update_map():
 
     f = open('vote_data.csv')
     votes = csv.DictReader(f)
-    map_data = open('2014_income_race.json', 'r').read()
+    map_data = open('2014_income_race_centers.json', 'r').read()
 
     map_ = json.loads(map_data)
     for i, feature in enumerate(map_['features']):

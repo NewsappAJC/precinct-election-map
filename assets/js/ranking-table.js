@@ -53,13 +53,14 @@ export default function(activePrecincts, county, filter, year) {
   };
 
   $title.html(`
-     Top Precincts for Each Candidate
+     Top Precincts (Tap to Zoom)
      <span id='ranking-subhed'>
        ${titleText}
      </span>
   `)
   if (activePrecincts.length >= 10) {
     sortedPrecinctsRep = _.sortBy(activePrecincts, function(p) {
+      // Check that the coordinates are always nested like this
       var prop = p.feature.properties.rep_p
       // Handle undefined values
       if (prop === undefined) {
@@ -112,6 +113,11 @@ function createRankDiv(parties) {
     var repPrecinct = parties.topRep[i].feature
     var demPrecinct = parties.topDem[i].feature
 
+    // Yeah, getting the first point is arbitrary, but calculating the 
+    // center of each precinct would require a little more work
+    var repZoomPoint = repPrecinct.geometry.coordinates[0][0][0];
+    var demZoomPoint = demPrecinct.geometry.coordinates[0][0][0];
+
     var demVotes = parseInt(demPrecinct.properties.dem_p*100);
     var repVotes = parseInt(repPrecinct.properties.rep_p*100);
 
@@ -128,7 +134,9 @@ function createRankDiv(parties) {
 
     // Add the tables
     $rankTableDem.append(`
-      <tr>
+      <tr class="rank-row" 
+          data-x=${demPrecinct.properties.XCOORD}
+          data-y=${demPrecinct.properties.YCOORD}>
         <td class="rank">${demCounter}</td>
         <td class="neighborhood">
           <div>
@@ -145,9 +153,11 @@ function createRankDiv(parties) {
     `);
 
     $rankTableRep.append(`
-      <tr>
+      <tr class="rank-row"
+          data-x=${repPrecinct.properties.XCOORD}
+          data-y=${repPrecinct.properties.YCOORD}>
         <td class="rank">${repCounter}</td>
-        <td class="neightborhood">
+        <td class="neightborhood"
           <div>
             ${repPrecinct.properties.PRECINCT_N} 
           </div>
