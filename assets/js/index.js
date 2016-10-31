@@ -151,7 +151,7 @@ function updateFilter(filter) {
 }
 // Get shapefiles
 function getPrecincts(cb, year) {
-  var url = year === 2012 ? '2012_precincts_stats_votes_simple.json' : '2014_precincts_income_raceUPDATE.json';
+  var url = year === 2012 ? '2012_precincts_stats_votes_simple2.json' : '2014_precincts_income_raceUPDATE.json';
   $.ajax({
     dataType: 'json',
     url: url,
