@@ -237,6 +237,11 @@ class ResultSnapshot(Parser):
             how='outer',
             indicator=True)
 
+        # Drop null values
+        merged = merged[pd.notnull(merged['rep_votes'])]
+        merged = merged[pd.notnull(merged['dem_votes'])]
+        pdb.set_trace()
+
         self.unmerged_precincts = merged[merged._merge != 'both']
         self.merged_precincts = merged[merged._merge == 'both']
 

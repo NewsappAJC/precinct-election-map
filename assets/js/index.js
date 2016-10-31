@@ -211,9 +211,16 @@ function updateTitle(feature) {
 
 // Return an object with appropriate styles given the party results of a given precinct
 function setColor(feature) {
-  var style = {color: '#2E64FE', fillOpacity: .3, opacity: .5, weight: 1};
+  var style = {color: '#2E64FE', fillOpacity: .3, fillColor: '#e2e2e2', opacity: .5, weight: 1},
+      rep = feature.properties.rep_votes,
+      dem = feature.properties.dem_votes;
 
-  var party = feature.properties.rep_votes > feature.properties.dem_votes ? 'Republican' : 'Democrat';
+  // Skip precincts with null values for both republican and democrat vote counts
+  if (!rep && !dem) {
+    return style;
+  }
+
+  var party = rep > dem ? 'Republican' : 'Democrat';
 
   switch (party) {
     case 'Republican': {
@@ -240,6 +247,9 @@ function generateLayers() {
 
   // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
+    if (!layer.feature.properties.rep_votes && !layer.feature.properties.dem_votes) {
+      map.removeLayer(layer);
+    };
     layer.on({
       click: zoomToFeature,
       mouseover: highlightFeature,
@@ -259,7 +269,6 @@ function generateLayers() {
             ${layer.feature.properties.COUNTY_NAM} COUNTY
         </span>`)
       updateTable('#info-data', layer.feature.properties, year);
-
 
       geojson.eachLayer(function (layer) {
         layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
