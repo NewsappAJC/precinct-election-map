@@ -238,7 +238,7 @@ function generateLayers() {
     e.target.setStyle({
       opacity: .5,
       weight: 1,
-      color: white
+      color: 'white'
     })
   };
   /**********************
