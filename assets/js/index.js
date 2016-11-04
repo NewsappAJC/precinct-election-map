@@ -259,7 +259,7 @@ function updateTitle(feature) {
 
 // Return an object with appropriate styles given the party results of a given precinct
 function setColor(feature) {
-  var style = {color: '#2E64FE', fillOpacity: .3, fillColor: '#e2e2e2', opacity: .5, weight: 1},
+  var style = {color: 'white', fillOpacity: .3, fillColor: '#e2e2e2', opacity: .5, weight: 1},
       rep = feature.properties.rep_votes,
       dem = feature.properties.dem_votes;
 
@@ -319,7 +319,7 @@ function generateLayers() {
       updateTable('#info-data', layer.feature.properties, year);
 
       geojson.eachLayer(function (layer) {
-        layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
+        layer.setStyle({opacity: .5, weight: 1, color: 'white'})
       })
 
       layer.setStyle({
