@@ -211,7 +211,7 @@ function generateLayers() {
     updateTable('#info-data', layer.feature.properties, year);
 
     geojson.eachLayer(function (layer) {
-      layer.setStyle({opacity: .5, weight: 1, color: '#2E64FE'})
+      layer.setStyle({opacity: .5, weight: 1, color: 'white'})
     })
 
     layer.setStyle({
@@ -238,7 +238,7 @@ function generateLayers() {
     e.target.setStyle({
       opacity: .5,
       weight: 1,
-      color: '#2E64FE'
+      color: white
     })
   };
   /**********************

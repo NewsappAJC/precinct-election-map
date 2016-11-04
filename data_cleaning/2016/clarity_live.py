@@ -16,15 +16,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-# Local imports
-from update_map import update_map
-
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = os.path.dirname(os.path.dirname(DIR))
+BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
+
+# Alter for any given race on a clarityelection.com site
 CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'} # For testing w 2016 primary data
+CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
+
+# Input and output file locations. Change as needed
+STATS_FILE = os.path.join(DIR, 'ajc_precincts_merged_centers.csv')
+VOTES_TMP = '/tmp/vote_data.csv'
+MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
+AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
+# End constants
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -60,7 +66,7 @@ class Parser(object):
         Use Selenium to get the dynamically generated URLs for each county's 
         detail page, and append the URLs to self.county_urls.
         """
-        self.county_urls = [] # Reset county URLs
+        self.county_urls = [] # Reset county URLs each time the scraper runs
         logging.info('Creating Selenium driver and accessing Clarity')
         driver = self._build_driver()
 
@@ -76,7 +82,7 @@ class Parser(object):
         num_counties = len(driver.find_elements_by_css_selector(selector)) - 1
 
         # Have to do this instead of looping through county objects because
-        # it will throw a StaleElementReferenceException
+        # Selenium will throw a StaleElementReferenceException
         for i in range(num_counties):
             # Get links from each county row
             county = driver.find_elements_by_css_selector(selector)[i]
@@ -108,6 +114,7 @@ class Parser(object):
             # Navigate back to the contest's home page
             driver.get(self.main_url)
 
+        # After looping through all the counties, close the driver
         driver.close()
         return
 
@@ -116,19 +123,27 @@ class Parser(object):
         Get JSON data from the endpoints listed in :county_urls: and parse
         the precinct-level election results from each one
         """
-        self.precinct_results = []
+        self.precinct_results = [] # Reset the precinct results
         for county_name, base_url in self.county_urls:
             logging.info('Getting precinct details from {}'.format(base_url))
+
+            # Candidate names and votes are stored in separate files. God knows
+            # why.
             candidate_data = requests.get(base_url + '/json/sum.json')
             vote_data = requests.get(base_url + '/json/details.json')
 
-            # Get a list of candidates and append it to the list of headers
+            # Get the list of candidates
             contests = json.loads(candidate_data.content)['Contests']
+
             # Find out which of the contests contains the candidates we're interested in.
-            # Clarity changes the order of contests in the JSON files in multi-contest
-            # elections.
-            order = [i for i, val in enumerate(contests) if CANDIDATES['rep'] in val['CH']][0]
-            candidates = contests[order]['CH']
+            # Clarity sometimes includes multiple contests in the same JSON file
+            try:
+                order = [i for i, val in enumerate(contests) if CANDIDATES['rep'] in val['CH']][0]
+                candidates = contests[order]['CH']
+            except KeyError:
+                logging.error("""The contestant names you supplied don\'t match
+                    any in the data files. Are you sure you spelled the names
+                    correctly?""")
 
             #Get votes for each candidate
             contests = json.loads(vote_data.content)['Contests']
@@ -138,17 +153,13 @@ class Parser(object):
                 data = {'precinct': precinct, 'county': county_name}
                 total = 0
                 for candidate, count in zip(candidates, votes):
+                    total += float(count)
                     if candidate == CANDIDATES['rep']:
-                        total += float(count)
                         data['rep_votes'] = int(count)
                     elif candidate == CANDIDATES['dem']:
-                        total += float(count)
                         data['dem_votes'] = int(count)
-                    else:
-                        total += float(count)
-                #data['total'] = sum(votes)
-                data['total'] = total
 
+                data['total'] = total
                 self.precinct_results.append(data)
 
 class ResultSnapshot(Parser):
@@ -162,8 +173,8 @@ class ResultSnapshot(Parser):
 
     def _clean(self, row):
         """
-        Private method forrenaming up the few precincts scraped from the site that
-        have names that don't match the map names, when the map names can't be changed
+        Private method for renaming the few precincts scraped from the site that
+        have names that don't match names in the precinct shapefiles.
         """
         r = re.compile(r'\d{3} ')
         precinct1 = re.sub(r, '', row['precinct'])
@@ -173,7 +184,7 @@ class ResultSnapshot(Parser):
         precinct5 = re.sub(re.compile(r'AVONDALE HIGH - 05|AVONDALE HIGH - 04'), 'AVONDALE HIGH', precinct4)
         precinct6 = re.sub(re.compile(r'CHAMBLEE 2'), 'CHAMBLEE', precinct5)
         precinct7 = re.sub(re.compile(r'WADSWORTH ELEM - 04'), 'WADSWORTH ELEM', precinct6)
-        return precinct6.strip().upper()[:20]
+        return precinct7.strip().upper()[:20] # Restrict to 20 chars
 
     def _get_income(self, row):
         if row['avg_income'] < 50000:
@@ -220,13 +231,13 @@ class ResultSnapshot(Parser):
         else:
             return 'high'
 
-    def merge_votes(self, statsf='ajc_precincts_merged_centers.csv'):
+    def merge_votes(self, statsf=STATS_FILE, outf=VOTES_TMP):
         """
         Public method used to merge the election result dataset with the precinct 
         maps from the Reapportionment office.
         """
-        votes = self.precinct_results
-        votes = pd.DataFrame(votes)
+        votes_raw = self.precinct_results
+        votes = pd.DataFrame(votes_raw)
         stats = pd.read_csv(statsf, index_col=False)
 
         fvotes = self._clean_vote_stats(votes)
@@ -237,26 +248,25 @@ class ResultSnapshot(Parser):
             how='outer',
             indicator=True)
 
-        # Drop null values
+        # Drop precincts with null values for the election results
         merged = merged[pd.notnull(merged['rep_votes'])]
         merged = merged[pd.notnull(merged['dem_votes'])]
 
         self.unmerged_precincts = merged[merged._merge != 'both']
         self.merged_precincts = merged[merged._merge == 'both']
 
-        path = os.path.join(DIR, 'vote_data.csv')
-
-        logging.info('Writing precinct information to csv {}'.format(path))
-        self.merged_precincts.to_csv(path)
+        logging.info('Writing precinct information to csv {}'.format(outf))
+        self.merged_precincts.to_csv(outf)
         return
 
-    def aggregate_stats(self, statsfile='2014_precincts_income_race.csv'):
+    def aggregate_stats(self, statsfile=STATS_FILE):
         """
         Calculate an aggregate stats file that's used to populate summary
         statistics in the map
         """
         just_votes = self.merged_precincts
         stats = pd.read_csv(statsfile)
+
         merged = just_votes.merge(stats, how='inner')
         merged['income_bin'] = merged.apply(self._get_income, axis=1)
 
@@ -277,7 +287,7 @@ class ResultSnapshot(Parser):
         # Create a nested defaultdict
         data = defaultdict(lambda: defaultdict(dict))
 
-        fields = ['black', 
+        fields = ['black',
                   'white',
                   'hispanic',
                   'high',
@@ -308,13 +318,51 @@ class ResultSnapshot(Parser):
         data['ALL COUNTIES']['all']['rep_votes'] = merged['rep_votes'].sum()
         data['ALL COUNTIES']['all']['dem_votes'] = merged['dem_votes'].sum()
 
-        path = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
-        logging.info('Writing aggregated stats to {}'.format(path))
+        logging.info('Writing aggregated stats to {}'.format(AGG_STATS_OUTPUT))
 
-        with open(path, 'w') as f:
+        with open(AGG_STATS_OUTPUT, 'w') as f:
             f.write(json.dumps(data, indent=4))
 
         return
+
+    def update_map(self, vote_file=VOTES_TMP):
+        """
+        Take map JSON data and generate a new map with updated election data.
+        """
+        logging.info('Adding latest vote information to map file {}'.format(MAP_OUTPUT))
+
+        f = open(vote_file)
+        votes = csv.DictReader(f)
+        map_data = open('2014_income_race_centers.json', 'r').read()
+
+        map_ = json.loads(map_data)
+        for i, feature in enumerate(map_['features']):
+            name = feature['properties']['PRECINCT_N']
+            try:
+                f.seek(0)
+                match = [x for x in votes if x['PRECINCT_N'] == name][0]
+                # CSV DictReader automatically parses all columns as strings, 
+                # so we need to manually convert these back to floats
+                floats = [
+                    'rep_votes',
+                    'dem_votes',
+                    'rep_p',
+                    'dem_p',
+                    'total',
+                    'avg_income'
+                ]
+
+                for x in floats:
+                    match[x] = float(match[x])
+                map_['features'][i]['properties'] = match
+
+            # Catch cases where the map has precincts that aren't in the voter
+            # files
+            except IndexError:
+                continue
+
+        with open(MAP_OUTPUT, 'w') as f:
+            f.write(json.dumps(map_))
 
 
 if __name__ == '__main__':
@@ -323,5 +371,5 @@ if __name__ == '__main__':
     p.get_precincts()
     p.merge_votes()
     p.aggregate_stats()
-    update_map()
+    p.update_map()
 

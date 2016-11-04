@@ -5,7 +5,6 @@ import csv
 import logging
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-MAP_PATH = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
