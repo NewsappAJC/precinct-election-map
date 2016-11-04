@@ -27,6 +27,7 @@ CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
 
 # Input and output file locations. Change as needed
 STATS_FILE = os.path.join(DIR, 'ajc_precincts_merged_centers.csv')
+MAP_INPUT = os.path.join(DIR, '2014_income_race_centers.json')
 VOTES_TMP = '/tmp/vote_data.csv'
 MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
 AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
@@ -325,7 +326,7 @@ class ResultSnapshot(Parser):
 
         return
 
-    def update_map(self, vote_file=VOTES_TMP):
+    def update_map(self, vote_file=VOTES_TMP, geoJSON=MAP_INPUT):
         """
         Take map JSON data and generate a new map with updated election data.
         """
@@ -333,7 +334,7 @@ class ResultSnapshot(Parser):
 
         f = open(vote_file)
         votes = csv.DictReader(f)
-        map_data = open('2014_income_race_centers.json', 'r').read()
+        map_data = open(geoJSON, 'r').read()
 
         map_ = json.loads(map_data)
         for i, feature in enumerate(map_['features']):
