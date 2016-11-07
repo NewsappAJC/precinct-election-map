@@ -28,6 +28,7 @@ CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_da
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
 CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
+PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 
 # Input and output file locations. Change as needed
 STATS_FILE = os.path.join(DIR, 'ajc_precincts_merged_centers.csv')
@@ -64,7 +65,7 @@ class Parser(object):
         Create an instance of Selenium's webdriver.PhantomJS(), used to 
         simulate clicks on the Clarity elections site
         """
-        driver = webdriver.PhantomJS('/Users/jcox/Desktop/phantomjs/bin/phantomjs')
+        driver = webdriver.PhantomJS(PHANTOM_JS_INSTALLATION)
         driver.get(self.main_url)
         assert 'Election' in driver.title # Make sure we have the right page
         return driver
@@ -373,6 +374,7 @@ class ResultSnapshot(Parser):
             except IndexError:
                 continue
 
+        # Add relevant metadata
         f = '%-I:%M %p, %A %b %-d' # eg: 12:30 AM, Wednesday Nov. 8
         metadata['last_update'] = datetime.datetime.now().strftime(f)
         metadata['precincts_reporting'] = reporting

@@ -12,17 +12,28 @@ Hosted Here: TKTK
 
 Installation
 ---
+Install node dependencies
 `npm install`
 
-Startup
+Install Python dependencies
+`pip install -r requirements.txt`
+
+Setup
 ---
+To run the scraper and regenerate the map with data from a Clarity elections site:
+
+1. Edit the constants at the top of `clarity_live.py` to fit the parameters of the race you're interested in scraping.
+2. You may need to install PhantomJS separately and pass the path to the binary in the `clarity_live.py` script. [Get PhantomJS](phantomjs.org)
+3. Run the `clarity_live.py` script to grab the most recent results and regenerate the map: `python data_cleaning/2016/clarity_live.py`
+
+Run the development server
 `npm run serve-dev`
 
 Deployment
 ---
-To deploy the map with live updates on election night, simply spin up a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy` in succession.
+To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession.
 
-You may have to install and change the path of the PhantomJS executable, and if you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578)
+If you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578)
 
 Data
 ---
