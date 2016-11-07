@@ -62,6 +62,7 @@ function getTiles() {
 /**************************************
  * Add event listeners to autocomplete address 
  * input field and query Google Places API
+ * https://developers.google.com/maps/documentation/javascript/places-autocomplete
  * **************************************/
 function initInput() {
   var input = document.getElementById('address-input');
@@ -94,7 +95,6 @@ $2016toggle.on('click', function() {
   getPrecincts(addPrecincts, year);
   getAggregatedData();
 })
-
 
 
 /**************************************

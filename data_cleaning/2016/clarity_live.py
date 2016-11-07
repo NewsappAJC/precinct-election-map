@@ -29,7 +29,9 @@ CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
 STATS_FILE = os.path.join(DIR, 'ajc_precincts_merged_centers.csv')
 MAP_INPUT = os.path.join(DIR, '2014_income_race_centers.json')
 VOTES_TMP = '/tmp/vote_data.csv'
+
 MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
+METADATA_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_metadata.json')
 AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
 # End constants
 
@@ -51,6 +53,7 @@ class Parser(object):
         self.precinct_results = []
         self.unmerged_precincts = None
         self.merged_precincts = None
+        self.total_precincts = 0
 
     def _build_driver(self):
         """
@@ -335,8 +338,10 @@ class ResultSnapshot(Parser):
         f = open(vote_file)
         votes = csv.DictReader(f)
         map_data = open(geoJSON, 'r').read()
-
         map_ = json.loads(map_data)
+
+        metadata = {}
+        reporting = 0
         for i, feature in enumerate(map_['features']):
             name = feature['properties']['PRECINCT_N']
             try:
@@ -357,13 +362,21 @@ class ResultSnapshot(Parser):
                     match[x] = float(match[x])
                 map_['features'][i]['properties'] = match
 
+                reporting += 1
+
             # Catch cases where the map has precincts that aren't in the voter
             # files
             except IndexError:
                 continue
 
-        with open(MAP_OUTPUT, 'w') as f:
-            f.write(json.dumps(map_))
+        f = '%-I:%M %p, %A %b %-d' # eg: 12:30 AM, Wednesday Nov. 8
+        metadata['last_update'] = datetime.datetime.now().strftime(f)
+        metadata['precincts_reporting'] = reporting
+        metadata['total_precincts'] = TOTAL_PRECINCTS
+
+        with open(MAP_OUTPUT, 'w') as a, open(METADATA_OUTPUT, 'w') as b:
+            a.write(json.dumps(map_))
+            b.write(json.dumps(metadata))
 
 
 if __name__ == '__main__':
