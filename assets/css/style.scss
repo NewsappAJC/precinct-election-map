@@ -27,8 +27,8 @@
   font-style: normal
 }
 
-$large-text-bold: 'Boomer';
-$large-text: 'Boomer-Light';
+$large-text-bold: 'Arial';
+$large-text: 'Arial';
 $body-text: 'Boomer';
 $bg-color: #222;
 $text-black: #121212;
@@ -42,79 +42,86 @@ Begin mixins
   left: 50%;
   transform: translateX(-50%);
 }
+
+@mixin table {
+  margin: 10px;
+  th {
+    font-family: 'Boomer-Light';
+    color: #999999;
+  }
+  td {
+    font-family: 'Arial';
+    padding: 3px;
+  }
+}
+
 /********
 End mixins
 *********/
 
+/******************
+BEGIN PAGE STYLES
+*******************/
 html, body {
   margin: 0;
   box-sizing: border-box;
   height: 100%;
-  overflow: auto; // SO that fixed item actually stays fixed at the bottom of the screen
+  overflow: auto;
 }
 
-/********
-Begin map
-*********/
-#jumbotron {
-  max-width: 1100px;
-  height: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+#main {
   position: relative;
-}
-
-#map-box {
-  box-sizing: border-box;
-  border-left: 1px solid #e2e2e2;
-  position: relative;
-  padding-left: 20px;
-  width: 800px;
-  @media (min-width: 1200px) {
-    float: left;
-  }
-  @media (max-width: 1200px) {
-    width: 100%;
-    padding: 0px 15px;
-    max-width: 800px;
-    @include centered;
-  }
-}
-
-#map {
-  height: 800px;
-  width: 100%;
-  @media (max-width: 1200px) {
-    height: 500px;
-    margin-bottom: 100px;
-  }
-  @media (max-width: 400px) {
-    height: 400px;
-  }
+  overflow: hidden;
+  top: 0;
 }
 
 #loading {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 800px;
   background-color: white;
   padding-top: 100px;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: 2em;
   color: #CCCCCC;
   text-align: center;
   z-index: 9999;
+}
+/******************
+END PAGE STYLES
+*******************/
+
+/******************
+BEGIN MAP STYLES
+*******************/
+#map-box {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%
+}
+
+#map {
+  height: 800px;
+  width: 100%;
 }
 
 .leaflet-interactive {
   z-index: 99999;
 }
 
-.main-map {
-  border-left: 1px solid black;
+#data-source {
+  font-family: 'Arial';
+  font-size: .7em;
+  font-color: #999999;
 }
 
-/* Begin candidate summary table style */
+/******************
+END MAP STYLES
+*******************/
+
+/************************
+BEGIN SUMMARY TABLE STYLE
+*************************/
 #results-summary {
   top: 0;
   right: 0;
@@ -126,68 +133,42 @@ Begin map
   border-radius: 10px;
 }
 
-#results-summary-title, .section-title {
-  font-size: 2em;
-  font-family: 'Boomer';
-  @media (max-width: 400px) {
-    margin-bottom: 8px;
-    font-size: 1.5em;
-  }
-}
-
 .eln-summary-table {
-  tr {
-    font-family: 'Publico';
-  }
-}
-#info {
-  display: none;
-  font-family: 'Boomer';
-  font-size: .8em;
+  font-family: 'Arial';
+  border-collapse: collapse;
+  font-size: 1em;
   background: white;
-  border-radius: 5px;
-  z-index: 999999;
-}
-
-
-#results-summary-table {
-  font-family: 'Boomer';
-  font-size: .8em;
-  background: white;
+  width: 100%;
   tr {
+    border-bottom: 1px solid #e2e2e2;
     line-height: 30px;
     @media (max-width: 400px) {
       line-height: 1.5;
     }
   }
-}
-
-.eln-summary-table {
-  width: 100%;
-  tbody {
-    display: table-row-group;
-  }
-  tr {
-    display: table-row;
-  }
-  th {
-    font-family: 'Boomer-Light';
-    color: #999999;
-    border-bottom: 1px solid #e2e2e2;
-    text-align: left;
-  }
   td {
-    padding: 3px;
     border-bottom: 1px solid #e2e2e2;
   }
 }
 
-.follow {
-  box-shadow: 5px 5px 5px rgba(0,0,0,.8);
-  pointer-events: none;
-  padding: 6px 8px;
+#results-summary-title, .section-title {
+  font-size: 1.5em;
+  font-family: 'Arial';
+  @media (max-width: 400px) {
+    margin-bottom: 8px;
+  }
+}
+
+#info {
   position: absolute;
   width: 200px;
+  z-index: 999999;
+  font-family: 'Arial';
+  font-size: .8em;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px rgba(0,0,0,.8);
+  padding: 6px 8px;
   tr {
     line-height: 1.5;
   }
@@ -201,34 +182,12 @@ Begin map
   cursor: pointer;
 }
 
-.fixed-bottom {
-  position: fixed;
-  width: 100%;
-  bottom: 0px;
-  left: 0px;
-  pointer-events: auto;
-  z-index:99999;
-  #info-holder {
-    position: absolute;
-    box-sizing: border-box;
-    padding: 10px;
-    bottom: 0;
-    width: 100%;
-    max-width: 800px;
-    background-color: white;
-    @include centered;
-    box-shadow: 0px -2px 5px rgba(0,0,0,0.5);
-  }
-  tr {
-    line-height: 1.5;
-  }
-}
-
-#metadata {
-  height: 30px;
+#info-data {
+  margin-top: 30px;
 }
 
 #info-title, #close-button {
+  top: 5px;
   position: absolute;
 }
 
@@ -257,43 +216,54 @@ h4.tooltip-title{
 
 .participation {
   font-size: .7em;
-  font-family: 'Boomer';
+  font-family: 'Arial';
   color: grey;
   line-height: 20px;
 }
 
-/* End candidate table style */
+/**********************
+END SUMMARY TABLE STYLES
+***********************/
 
-/* Begin title */
-
+/**********************
+BEGIN MAIN TITLE STYLES
+***********************/
 div#title-holder {
-  margin-bottom: 20px;
-  text-align: left;
+  padding: 15px;
+  margin-bottom: 10px;
   position: relative;
   width: 100%;
-  max-width: 800px;
-  @media (max-width:1200px) {
+}
+
+.logo {
+  display: inline-block;
+  height: 40px;
+  @media (max-width: 600px) {
+    position: relative;
     @include centered;
   }
 }
 
+.sep-logo {
+  height: 40px;
+}
+
 h1#main-title {
-  margin-bottom: 5px;
+  margin-top: 10px;
   line-height: 1;
   font-family: 'Publico';
   font-size: 2.4em;
   @media (max-width:400px) {
     font-size: 1.5em;
   }
-  img {
-    display: inline-block;
-    height: 30px;
-    width: 30px;
-  }
+}
+
+.dateline {
+  color: #999999;
 }
 
 span#timestamp {
-  font-family: 'Boomer';
+  font-family: 'Arial';
   font-size: .9em;
   text-transform: uppercase;
   @media (max-width:400px) {
@@ -301,9 +271,13 @@ span#timestamp {
   }
 }
 
-/* End title */
+/**********************
+END MAIN TITLE STYLES
+***********************/
 
-/* Begin address search */
+/***************************
+BEGIN ADDRESS SEARCH STYLES
+****************************/
 #search-bar {
   margin-bottom: 40px;
   @media (max-width: 400px) {
@@ -312,30 +286,18 @@ span#timestamp {
 }
 
 label {
-  font-family: 'Boomer';
-  @media (max-width: 400px) {
-    font-size: .8em;
-  }
+  font-family: 'Arial';
 }
 
-#address-input {
-  font-family: 'Boomer';
-  font-size: .8em;
-  box-shadow: inset 2px 3px 3px rgba(0,0,0,0.1);
-  outline: none;
-  width: 100%;
-  padding: 2px;
-  line-height: 15px;
-  border-radius: 3px;
-  border: 1px #e2e2e2 solid;
-  box-sizing: border-box;
-}
+/***************************
+BEGIN ADDRESS SEARCH STYLES
+****************************/
 
-/* End address search */
-
-/* Begin filter options */
-
+/***************************
+BEGIN FILTER OPTION STYLES
+****************************/
 #left {
+  padding-right: 20px;
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -353,24 +315,13 @@ label {
 
 .filter-table-head {
   text-align: left;
-  font-family: Boomer;
+  font-family: Arial;
   color: #999999;
-}
-
-#filter-table {
-  margin-bottom: 20px;
-  td {
-    padding: 5px;
-  }
-  th {
-    padding: 5px;
-  }
 }
 
 #filter-select, #county-select {
   font-size: 1em;
   line-height: 15px;
-  width: 100%;
   text-align: center;
   label {
     font-size: 1em;
@@ -378,70 +329,191 @@ label {
 }
 
 #filters {
-  @media (max-width: 1200px) {
-    margin-bottom: 20px;
-  }
+  display: none;
 }
 
-.filter, .filter-selected{
+.filter-bar, .filter-selected{
+  opacity: .5;
   cursor: pointer;
-  font-family: 'Boomer';
-  padding: 5px;
-  display: inline-block;
-  text-align: center;
-  width: 40%;
-  @media (max-width: 1200px) {
-    width: 100px;
-  }
-  img {
-    width: 100%;
-    @media (max-width: 1200px) {
-      display: none;
-    }
-  }
+  font-family: 'Arial';
+  text-align: left;
+  width: 100%;
+  height: 30px;
+  background-color: #F5A9A9;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .filter-title {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
   padding: 6px 4px;
-  font-size: .8em;
+  font-size: 1em;
   border-radius: 3px;
   color: black;
 }
 
-.filter img {
-  opacity: .5;
-}
-
-.filter:hover, .filter:focus{
-  img {
-    opacity: .7;
-  }
-  span.filter-title {
-    background-color: #E2E2E2;
-  }
+.filter-bar:hover {
+  opacity: 1;
 }
 
 .filter-selected {
-  .filter-title {
-    color: white;
-    background-color: #444;
-  }
-  img {
-    opacity: 1;
-  }
+  opacity: 1;
 }
-/* End filter options */
+/***************************
+END FILTER OPTION STYLES
+****************************/
 
 /***************************
-/* BEGIN YEAR SELECT
-/***************************/
-#unselected-year {
+BEGIN RANKING TABLE
+****************************/
+.rank-table-holder {
+  max-width: 1100px;
+  position: relative;
+  margin-bottom: 150px;
+  @include centered;
+  .out-link {
+    width: 100%;
+    display: block;
+    font-size: 1em;
+    text-align: center;
+    cursor: pointer;
+  }
+  margin-top: 10px;
+  padding-top: 20px;
+}
+
+.top-precincts {
+  position: relative;
+  clear: both;
+  max-width: 800px;
+  text-align: left;
+  @include centered;
+}
+
+#top-precincts-title {
+  font-family: 'Arial';
+  font-size: 1.3em;
+  text-align: center;
+}
+
+#rank-table-dem > table, #rank-table-rep > table{
+  @include table;
+  width: 100%;
+  td.rank {
+    width: 10%;
+  }
+  td.neighborhood {
+    width: 70%;
+  }
+  td.proportion {
+    width: 20%;
+  }
+}
+
+.rank-sub-county,  .sub-county {
+  display: block;
+  color: #999999;
+  font-size: .7em;
+}
+
+.table-title, .table-title {
+  font-family: 'Arial';
+  font-size: 1.2em;
+  margin: 10px 0px;
+  border-bottom: 1px solid;
+}
+
+#dem-rank-title {
+ color: #58D3F7;
+}
+
+#rep-rank-title {
+  color: #FA5858;
+}
+
+#ranking-subhed {
+  display: block;
+  color: #999999;
+  font-size: .7em;
+}
+/**************************
+/* END RANKING TABLE STYLES
+/**************************/
+
+/*********************
+/* BEGIN BYLINE STYLES
+/********************/
+.byline {
+  position: relative;
+  max-width: 1100px;
+  @include centered;
+  clear: both;
+  padding: 20px 5px 100px 5px;
+  font-family: 'Arial';
+  color: #999999;
+}
+/********************
+/* END BYLINE STYLES
+/********************/
+
+.foreground-bar {
+  height: 30px;
+  border-radius: 5px 0px 0px 5px;
+  background-color: #A9E2F3;
+}
+
+.filter-bar-holder {
+  position: relative;
+}
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-item:first-child {
+  padding-right: 10px;
+}
+
+.flex-item:last-child {
+  padding-left: 10px;
+}
+
+.flex-container .flex-item {
+  flex: 1 0 300px;
+}
+
+.explanation {
+  position: relative;
+  @include centered;
+  max-width: 800px;
+}
+
+.address-input-holder {
+  margin: 20px 0px 10px 0px;
+}
+
+.out-link {
+  margin-bottom: 200px;
+}
+
+.year-toggle {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: right;
+}
+
+.inactive-year-toggle {
   color: #e2e2e2;
+}
+
+.year-toggle {
   cursor: pointer;
 }
-#unselected-year:hover {
-  color: $text-black;
+
+.rank-row:hover {
+  background-color: #e2e2e2;
+  cursor: pointer;
 }
-/***************************
-/* END YEAR SELECT
-/***************************/

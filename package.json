@@ -1,14 +1,15 @@
 {
-  "name": "stepr",
+  "name": "precinct-election",
   "version": "1.0.0",
-  "description": "Render a sequence of events over a map or image",
+  "description": "Map election results across Atlanta precincts",
   "main": "assets/index.js",
   "scripts": {
     "serve-dev": "rimraf ./dist/dev && gulp serve",
-    "serve-prod": "rimraf ./dist/prod && gulp serve --production",
-    "build-prod": "rimraf ./dist/prod && python filter.py && gulp build --production",
-    "deploy-staging": "gulp deploy --staging",
-    "deploy-production": "gulp deploy --production"
+    "serve-iframe": "rimraf ./dist/dev && gulp serve",
+    "serve-prod": "gulp serve --production",
+    "build-prod": "rimraf ./dist/prod && gulp build --production",
+    "deploy-staging": "rimraf ./dist/dev && gulp deploy --staging",
+    "deploy-production": "rimraf ./dist/prod && gulp deploy --production"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "browserify": "^13.1.0",
     "buffer": "^4.9.1",
     "compression-webpack-plugin": "^0.3.1",
+    "cron": "^1.1.1",
     "css-loader": "^0.23.1",
     "d3": "^4.2.4",
     "gulp": "github:gulpjs/gulp#4.0",

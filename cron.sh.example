@@ -1,0 +1,4 @@
+# Using absolute paths because the env tends to get confused
+SHELL=/bin/bash
+
+* * * * * . $HOME/.bash_profile && cd /Users/jcox/Dev/election && /Users/jcox/.virtualenvs/election/bin/python data_cleaning/2016/clarity_live.py && /Users/jcox/.nvm/versions/node/v6.9.1/bin/npm run serve-prod

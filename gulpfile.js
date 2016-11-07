@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   argv = require('yargs').argv,
+  CronJob = require('cron').CronJob,
   rename = require('gulp-rename'),
   buffer = require('vinyl-buffer'), // Vinyl is an interface between browserify and gulp
   livereload = require('gulp-livereload'),
@@ -81,11 +82,10 @@ gulp.task('build-assets', function() {
   var images = gulp.src(SRC + 'img/**')
     .pipe(gulp.dest(ENV + 'img'));
 
-  var geojson = gulp.src(SRC + 'data/*.json')
+  var geojson = gulp.src([SRC + 'data/*.json', SRC + 'data/*.geojson'])
     .pipe(gulp.dest(ENV));
 
   var css = gulp.src(ENV + 'css/style.css')
-    .pipe(cssnano())
     .pipe(gulp.dest(function(file){
       return file.base; //replace current file
     }));
@@ -98,7 +98,7 @@ gulp.task('watch', function(done) {
 
   gulp.watch(SRC + 'js/*.js', gulp.series('compile'));
 
-  gulp.watch([SRC + 'img/*', SRC + 'index.html'], gulp.series('build-assets'));
+  gulp.watch([SRC + 'img/*', SRC + '*.html'], gulp.series('build-assets'));
   done();
 });
 
@@ -114,14 +114,13 @@ gulp.task('build', gulp.series('sass', 'compile', 'build-assets', function(done)
   done();
 }));
 
-/*
 gulp.task('publish', function(){
   var AWS = require('aws-sdk');
 
   var staging_bucket = "ajc-staging-sites",
-  prod_bucket = "investigations.myajc.com",
-  staging_subdir = 'deadly-encounter-staging', //s3 bucket subdirectory DO NOT RUN SYNC WITH SUBDIRECTORIES,
-  prod_subdir = 'deadly-encounter';
+  prod_bucket = "ajcnewsapps",
+  staging_subdir = 'precinct-election-map-staging', //s3 bucket subdirectory DO NOT RUN SYNC WITH SUBDIRECTORIES,
+  prod_subdir = '2016/precinct-election-map';
 
   if(ENV === PROD){
     var s3_bucket = prod_bucket,
@@ -154,7 +153,7 @@ gulp.task('publish', function(){
   DO NOT RUN `publisher.sync()` when targeting
   a child directory of a bucket or it will 
   delete everything else in the bucket
-  *********************************************
+  *********************************************/
   return gulp.src(PROD + '**\/*')
     //because we are targeting a child path of a bucket we need to modify the path the reflect that
     .pipe(rename(function(filePath) {
@@ -174,4 +173,4 @@ gulp.task('publish', function(){
 
 gulp.task('deploy', gulp.series('build', 'publish', function(done){
   done();
-})); */
+})); 
