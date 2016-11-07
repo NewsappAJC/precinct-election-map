@@ -20,7 +20,9 @@ var autocomplete,
     $countiesSelect = $('#counties-selector-holder'),
     $resultsSummary = $('#results-summary'),
     $2012toggle = $('#2012-toggle'),
-    $2016toggle = $('#2016-toggle');
+    $2016toggle = $('#2016-toggle'),
+    $metaReporting = $('#meta-reporting'),
+    $metaLastUpdated = $('#meta-last-updated');
 
 // State
 var selectedBucket = 'all', // Holds demographic filters
@@ -31,7 +33,9 @@ var selectedBucket = 'all', // Holds demographic filters
     geojson,
     interactiveLayer,
     aggStats,
-    map;
+    map,
+    lastUpdated,
+    precinctsReporting;
 
 
 /**************************************
@@ -40,7 +44,7 @@ var selectedBucket = 'all', // Holds demographic filters
 **************************************/
 function getTiles() {
   // Create Leaflet map and get tiles from Carto
-  map = L.map('map', {minZoom: 9, scrollWheelZoom: false});
+  map = L.map('map', {minZoom: 9, scrollWheelZoom: false, dragging: false});
   map.setView({ lat: 33.74, lng: -84.38}, 10);
 
   // Use panes to "sandwich" GeoJSON features between map tiles and road labels
@@ -95,6 +99,29 @@ $2016toggle.on('click', function() {
   getPrecincts(addPrecincts, year);
   getAggregatedData();
 })
+/**************************************
+ * Make AJAX request to get metadata 
+ * about the number of precincts loaded
+ * and the last time the script ran
+**************************************/
+function getMetadata() {
+  var url;
+  $.ajax({
+    dataType: 'json',
+    url: '2014_metadata.json',
+    success: function(data) {
+      var precinctsReporting = data['precincts_reporting'];
+      var totalPrecincts = data['total_precincts'];
+      var lastUpdated = data['last_update'];
+
+      $metaLastUpdated.html(`Last updated ${lastUpdated}`);
+      $metaReporting.html(`${precinctsReporting} / ${totalPrecincts} precincts reporting`);
+    },
+    failure: function() {
+      console.log('failed to get precincts.');
+    }
+  });
+};
 
 
 /**************************************
@@ -520,6 +547,7 @@ function onPlaceChanged() {
 
 
 function main() {
+  getMetadata();
   toggleMobile();
   getTiles();
   initInput();
