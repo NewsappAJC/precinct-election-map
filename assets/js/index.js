@@ -44,7 +44,7 @@ var selectedBucket = 'all', // Holds demographic filters
 **************************************/
 function getTiles() {
   // Create Leaflet map and get tiles from Carto
-  map = L.map('map', {minZoom: 9, scrollWheelZoom: false, dragging: false});
+  map = L.map('map', {minZoom: 9, scrollWheelZoom: false});
   map.setView({ lat: 33.74, lng: -84.38}, 10);
 
   // Use panes to "sandwich" GeoJSON features between map tiles and road labels

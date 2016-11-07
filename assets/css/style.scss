@@ -73,6 +73,7 @@ html, body {
   position: relative;
   overflow: hidden;
   top: 0;
+  padding: 10px;
 }
 
 #loading {
@@ -97,7 +98,8 @@ BEGIN MAP STYLES
 #map-box {
   box-sizing: border-box;
   position: relative;
-  width: 100%
+  width: 100%;
+  padding: 0px 15px; // Necessary so user can still scroll on mobile
 }
 
 #map {
@@ -503,6 +505,9 @@ BEGIN RANKING TABLE
   font-size: 2em;
   font-weight: bold;
   text-align: right;
+  @media (max-width: 600px) {
+    text-align: center;
+  }
 }
 
 .inactive-year-toggle {
@@ -516,4 +521,8 @@ BEGIN RANKING TABLE
 .rank-row:hover {
   background-color: #e2e2e2;
   cursor: pointer;
+}
+
+.meta {
+  font-size: .8em;
 }
