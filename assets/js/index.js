@@ -444,7 +444,7 @@ function updateFilter(filterInput) {
 function setColor(feature) {
   // Set default styles
   var style = {color: 'white',
-    fillOpacity: .3,
+    fillOpacity: .5,
     fillColor: null,
     opacity: .5,
     weight: 1
@@ -461,7 +461,7 @@ function setColor(feature) {
       break;
     }
     case 'Democrat': {
-      style.fillColor = '#2ECCFA';
+      style.fillColor = 'blue';
       break;
     }
   };
