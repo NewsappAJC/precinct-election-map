@@ -15,7 +15,7 @@ Installation
 Install node dependencies
 `npm install`
 
-Install Python dependencies
+Install Python dependencies (if you don't have virtualenv it's a good idea to install it)
 `pip install -r requirements.txt`
 
 Setup
@@ -29,11 +29,16 @@ To run the scraper and regenerate the map with data from a Clarity elections sit
 Run the development server
 `npm run serve-dev`
 
+
 Deployment
 ---
 To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession.
 
 If you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578)
+
+Notes
+---
+We aren't keeping the voting data and demographic statistics separate from the geographic coordinates because that information needs to be accessible in each feature's array of `properties`. It may be possible to keep those separate.
 
 Data
 ---
