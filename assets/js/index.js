@@ -245,9 +245,9 @@ function generateLayers() {
     if(stickyOn && layer._path.id == $selectedPrecinct.attr('id')){
       stickyOn = false;
     } else {
-      stickyOn = false;
-      var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
-      placeInfo(coords);
+      stickyOn = false; //or the tooltip won't move
+      //var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
+      placeInfo(e.originalEvent, true);
       $infoTip.show();
       stickyOn = true;
     }
@@ -497,8 +497,8 @@ function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
     if ($(window).width() > MOBILE_WIDTH) {
-      var dets = {x: e.pageX, y: e.pageY, click: false};
-      placeInfo(dets);
+      //var dets = {x: e.pageX, y: e.pageY, click: false};
+      placeInfo(e, false);
     };
   });
   // $('#map-box').on('mouseleave', function(e){
@@ -511,23 +511,24 @@ function createInfo() {
  * Set the X and Y coordinates
  * of the infobox
  * ****************************/
-function placeInfo(e) {
-
-
+function placeInfo(e, clicked) {
+  var $map = $('#map'),
+      mapWidth = $map.width();
   // Move the info tip above the mouse if the user is at the bottom of the screen
   if(!stickyOn){
-    if ($(window).width() > MOBILE_WIDTH || e.click) {
+    var x = e.clientX,
+        y = e.clientY;
+    //if ($mapWidth > MOBILE_WIDTH || clicked) {
+    $infoTip.css({left: x + 50, top: y - 20})
 
-      $infoTip.css({left: e.x, top: e.y + 20})
+    if (y > ($(window).height() - 140)) {
+      $infoTip.css({top: y - 100})
+    }; //I don't think this works in the iFrame
 
-      if (e.y > ($(window).height() - 120)) {
-        $infoTip.css({top: e.y - 100})
-      };
-
-      if (e.x > ($(window).width() - 200)) {
-        $infoTip.css({left: $(window).width() - 200})
-      };
+    if (x > (mapWidth - 200)) {
+      $infoTip.css({left: mapWidth - 200, top: y + 50})
     };
+      //};
   }
 
   // Event handler to change display of tooltip for mobile or desktop on
