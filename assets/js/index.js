@@ -403,6 +403,7 @@ function updateFilter(filterInput) {
       layerIncome = 'high'
     }
 
+    var $path = $(layer._path);
     if (layerCounty === fcounty || fcounty === 'ALL COUNTIES') {
       if (layerRace === selectedBucket ||
         layerIncome === selectedBucket ||
@@ -411,13 +412,14 @@ function updateFilter(filterInput) {
         layer.setStyle(setColor(layer.feature));
         togglePrecincts();
         activePrecincts.push(layer);
+        $path.removeClass('precinct-hidden');
       }
       else {
-        layer.setStyle({fillOpacity: 0});
+       $path.addClass('precinct-hidden');
       };
     }
     else {
-      layer.setStyle({fillOpacity: 0});
+      $path.addClass('precinct-hidden');
     };
   });
 
