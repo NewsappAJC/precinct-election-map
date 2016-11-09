@@ -46,7 +46,7 @@ export default function(aggStats) {
     `)
     var demVotes = aggStats['ALL COUNTIES'][buckets[i][0]]['dem_votes'];
     var repVotes = aggStats['ALL COUNTIES'][buckets[i][0]]['rep_votes'];
-    $('#foreground-bar-' + i).css('width', parseInt(100 * demVotes / (demVotes + repVotes)) + '%')
+    $('#foreground-bar-' + i).css('width', parseInt(100 * demVotes / (demVotes + repVotes)) + '%'); //what is this?
 
 
     // Append to selector that displays on mobile.

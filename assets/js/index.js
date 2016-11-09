@@ -39,6 +39,7 @@ var selectedBucket = 'all', // Holds demographic filters
 
 var $selectedPrecinct; //so we can deselect it when another is chosen without looping through everything
 var stickyOn = false; //whether or not a precinct has been clicked
+
 /**************************************
  * Create a Leaflet map instance and get map
  * tiles from OpenStreetMap
@@ -197,7 +198,7 @@ function generateLayers() {
     };
     layer.on({
       click: zoomToFeature,
-      mouseover: highlightFeature,
+      mouseover: targetFeature,
       mouseout: resetStyle
     });
   };
@@ -205,28 +206,25 @@ function generateLayers() {
   /*********************** 
   * Begin helper functions for Geojson
   ************************/
-  function highlightFeature(e) {
+  function targetFeature(e) {
     var layer = e.target,
-    precID = layer._path.id;
-    if(stickyOn && precID === $selectedPrecinct.attr('id')){
-      strokes();
+        pathID = layer._path.id;
 
+    if(stickyOn && pathID === $selectedPrecinct.attr('id')){
+      highlight();
     } else if (!stickyOn){
-      console.log("sticky off");
-      strokes()
+      highlight();
     }
-    function strokes(){
-      console.log('strokes');
+    function highlight(){
       if ($(window).width() > MOBILE_WIDTH) {
         $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
             <span class="sub-county">
               ${layer.feature.properties.COUNTY_NAM} COUNTY
         </span>`);
-        updateTable('#info-data', layer.feature.properties, year);
+        updateTable('#info-data', layer.feature.properties, year); //this only works when filtering
 
-        //$(layer._path).addClass('precinct-selected');
         $selectedPrecinct = $(layer._path);
-        togglePrecincts(layer._path.id);
+        toggleStrokes(pathID);
         $infoTip.show();
       }
     }
@@ -234,31 +232,27 @@ function generateLayers() {
 
   function zoomToFeature(e) {
     //triggered on precinct shape click
-    var layer = e.target;
+    var layer = e.target,
+        pathID = layer._path.id;
 
-    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+    /*$('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N}
         <span class="sub-county">
           ${layer.feature.properties.COUNTY_NAM} COUNTY
-      </span>`)
-    updateTable('#info-data', layer.feature.properties, year);
+      </span>`)*/
+    updateTable('#info-data', layer.feature.properties, year); //this doesn't work
 
-    if(stickyOn && layer._path.id == $selectedPrecinct.attr('id')){
+    if(stickyOn && pathID == $selectedPrecinct.attr('id')){
+      //stop being sticky if sticky element is clicked
       stickyOn = false;
     } else {
       stickyOn = false; //or the tooltip won't move
-      //var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
       placeInfo(e.originalEvent, true);
       $infoTip.show();
       stickyOn = true;
     }
 
-    togglePrecincts(layer._path.id);
-
-    highlightFeature(e);
-    /*if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
-      map.fitBounds(e.target.getBounds());
-      return
-    }*/
+    toggleStrokes(pathID);
+    targetFeature(e);
   };
 
   function resetStyle(e) {
@@ -266,7 +260,7 @@ function generateLayers() {
       if ($(window).width() > MOBILE_WIDTH) {
         $infoTip.hide();
       };
-      togglePrecincts();
+      toggleStrokes();
     }
   };
   /**********************
@@ -314,8 +308,7 @@ function createMap() {
 function addFilterListeners() {
   $('.filter-bar, .filter-selected, #demographic-select').each(function() {
     $(this).on('change click', function(e) {
-      console.log('filter clicked')
-      // Inelegant way of getting the minimaps instead of the select box.
+      // Inelegant way of getting the minimaps instead of the select box. < it's not the minimaps but it has to do with the demographic filters not sure how - E
       var value = this.dataset.filter || $(this).val();
       updateFilter(value);
       $filterSelect.val(value);
@@ -410,7 +403,7 @@ function updateFilter(filterInput) {
         selectedBucket === 'all') {
 
         layer.setStyle(setColor(layer.feature));
-        togglePrecincts();
+        toggleStrokes();
         activePrecincts.push(layer);
         $path.removeClass('precinct-hidden');
       }
@@ -434,15 +427,14 @@ function updateFilter(filterInput) {
     $(this).on('click', function(e) {
       stickyOn = true;
 
-      togglePrecincts(this.dataset.precinct);
+      toggleStrokes(this.dataset.precinct);
       $infoTip.hide()
     });
   });
 } // End updateFilter()
 
-
 //deselect previously active precinct and select new one
-function togglePrecincts(activeID){
+function toggleStrokes(activeID){
   if ($selectedPrecinct !== undefined){
     $selectedPrecinct.removeClass('precinct-selected');
   }
@@ -497,13 +489,9 @@ function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
     if ($(window).width() > MOBILE_WIDTH) {
-      //var dets = {x: e.pageX, y: e.pageY, click: false};
-      placeInfo(e, false);
+      placeInfo(e);
     };
   });
-  // $('#map-box').on('mouseleave', function(e){
-  //   $infoTip.hide();
-  // });
 };
 
 
@@ -511,14 +499,15 @@ function createInfo() {
  * Set the X and Y coordinates
  * of the infobox
  * ****************************/
-function placeInfo(e, clicked) {
+function placeInfo(e) {
   var $map = $('#map'),
       mapWidth = $map.width();
+
   // Move the info tip above the mouse if the user is at the bottom of the screen
-  if(!stickyOn){
+  if(!stickyOn){ //only update position if not sticky 
     var x = e.clientX,
         y = e.clientY;
-    //if ($mapWidth > MOBILE_WIDTH || clicked) {
+    //if ($mapWidth > MOBILE_WIDTH || e.type == "click") {
     $infoTip.css({left: x + 50, top: y - 20})
 
     if (y > ($(window).height() - 140)) {
@@ -538,7 +527,7 @@ function placeInfo(e, clicked) {
     toggleMobile();
   });
 
-  // Hide info tip when close button is clicked
+  // Hide info tip when mobile close button is clicked
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
@@ -558,7 +547,7 @@ function toggleMobile() {
   }
   else {
     $closeButton.hide();
-    $infoTip.toggleClass('follow', true);
+    $infoTip.toggleClass('follow', true); //does this do something?
   };
 };
 
