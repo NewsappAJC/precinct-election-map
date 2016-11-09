@@ -9,18 +9,12 @@
 [INFO  - 2016-11-09T05:29:22.833Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
 [INFO  - 2016-11-09T05:34:22.823Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
 [INFO  - 2016-11-09T05:39:22.813Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
-cateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1478668303739
-
-  phantomjs://platform/console++.js:263 in error
-[ERROR - 2016-11-09T05:11:44.515Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1478668304496
-
-  phantomjs://platform/console++.js:263 in error
-[ERROR - 2016-11-09T05:11:45.275Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1478668305256
-
-  phantomjs://platform/console++.js:263 in error
-[ERROR - 2016-11-09T05:11:46.039Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1478668306016
-
-  phantomjs://platform/console++.js:263 in error
+[INFO  - 2016-11-09T05:44:22.803Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-11-09T05:49:22.793Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-11-09T05:54:22.783Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-11-09T05:59:22.773Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2016-11-09T06:04:22.762Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+ in error
 [ERROR - 2016-11-09T05:11:46.830Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1478668306782
 
   phantomjs://platform/console++.js:263 in error

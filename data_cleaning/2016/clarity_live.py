@@ -24,7 +24,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/182440/en/md_data.html?cid=5000&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/182505/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
 CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map

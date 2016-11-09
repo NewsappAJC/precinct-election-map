@@ -1,32 +1,32 @@
 {
     "ALL COUNTIES": {
         "all": {
-            "rep_votes": 451122.0, 
-            "dem_votes": 886629.0
+            "rep_votes": 456573.0, 
+            "dem_votes": 908903.0
         }, 
         "mid": {
-            "rep_votes": 216028.0, 
-            "dem_votes": 459971.0
+            "rep_votes": 226215.0, 
+            "dem_votes": 480354.0
         }, 
         "high": {
-            "rep_votes": 129999.0, 
-            "dem_votes": 122328.0
+            "rep_votes": 135061.0, 
+            "dem_votes": 125849.0
         }, 
         "hispanic": {
-            "rep_votes": 2698.0, 
-            "dem_votes": 12145.0
+            "rep_votes": 2812.0, 
+            "dem_votes": 12339.0
         }, 
         "black": {
-            "rep_votes": 22691.0, 
-            "dem_votes": 297800.0
+            "rep_votes": 24405.0, 
+            "dem_votes": 313586.0
         }, 
         "low": {
-            "rep_votes": 18247.0, 
-            "dem_votes": 170641.0
+            "rep_votes": 19382.0, 
+            "dem_votes": 179126.0
         }, 
         "white": {
-            "rep_votes": 326172.0, 
-            "dem_votes": 321645.0
+            "rep_votes": 335493.0, 
+            "dem_votes": 329678.0
         }
     }, 
     "GWINNETT": {
@@ -35,28 +35,28 @@
             "dem_votes": 154930.0
         }, 
         "mid": {
-            "rep_votes": 89203.0, 
-            "dem_votes": 111885.0
+            "rep_votes": 96363.0, 
+            "dem_votes": 118440.0
         }, 
         "high": {
-            "rep_votes": 42107.0, 
-            "dem_votes": 27021.0
+            "rep_votes": 45446.0, 
+            "dem_votes": 28906.0
         }, 
         "hispanic": {
-            "rep_votes": 1577.0, 
-            "dem_votes": 6084.0
+            "rep_votes": 1691.0, 
+            "dem_votes": 6278.0
         }, 
         "black": {
-            "rep_votes": 5777.0, 
-            "dem_votes": 17268.0
+            "rep_votes": 6335.0, 
+            "dem_votes": 17835.0
         }, 
         "low": {
-            "rep_votes": 4041.0, 
-            "dem_votes": 15852.0
+            "rep_votes": 4475.0, 
+            "dem_votes": 17527.0
         }, 
         "white": {
-            "rep_votes": 86482.0, 
-            "dem_votes": 60330.0
+            "rep_votes": 92624.0, 
+            "dem_votes": 63864.0
         }
     }, 
     "CLAYTON": {
@@ -109,32 +109,32 @@
     }, 
     "DEKALB": {
         "all": {
-            "rep_votes": 42080.0, 
-            "dem_votes": 216857.0
+            "rep_votes": 47531.0, 
+            "dem_votes": 239131.0
         }, 
         "mid": {
-            "rep_votes": 24179.0, 
-            "dem_votes": 147235.0
+            "rep_votes": 27206.0, 
+            "dem_votes": 161063.0
         }, 
         "high": {
-            "rep_votes": 14956.0, 
-            "dem_votes": 26156.0
+            "rep_votes": 16679.0, 
+            "dem_votes": 27792.0
         }, 
         "hispanic": {
-            "rep_votes": 1325.0, 
-            "dem_votes": 3400.0
+            "rep_votes": 1538.0, 
+            "dem_votes": 4241.0
         }, 
         "black": {
-            "rep_votes": 6504.0, 
-            "dem_votes": 128005.0
+            "rep_votes": 7660.0, 
+            "dem_votes": 143224.0
         }, 
         "low": {
-            "rep_votes": 2614.0, 
-            "dem_votes": 38481.0
+            "rep_votes": 3315.0, 
+            "dem_votes": 45291.0
         }, 
         "white": {
-            "rep_votes": 26440.0, 
-            "dem_votes": 63557.0
+            "rep_votes": 29619.0, 
+            "dem_votes": 68056.0
         }
     }, 
     "FULTON": {
