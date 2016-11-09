@@ -117,6 +117,17 @@ BEGIN MAP STYLES
   font-color: #999999;
 }
 
+.precinct-default {
+	stroke: white;
+	stroke-width: 1;
+	stroke-opacity: .5;
+	fill-opacity: .5;
+}
+.precinct-selected {
+  stroke: black;
+  stroke-width: 3px;
+  stroke-opacity: 1;
+}
 /******************
 END MAP STYLES
 *******************/

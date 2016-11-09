@@ -214,16 +214,7 @@ function generateLayers() {
         </span>`)
       updateTable('#info-data', layer.feature.properties, year);
 
-      geojson.eachLayer(function (layer) {
-        layer.setStyle({opacity: .5, weight: 1, color: 'white'})
-      })
-
-      layer.setStyle({
-        weight: 3,
-        opacity: 1,
-        color: 'black'
-      });
-
+      $(layer._path).addClass('precinct-selected');
       $infoTip.show();
     };
   };
@@ -237,15 +228,7 @@ function generateLayers() {
       </span>`)
     updateTable('#info-data', layer.feature.properties, year);
 
-    geojson.eachLayer(function (layer) {
-      layer.setStyle({opacity: .5, weight: 1, color: 'white'})
-    })
-
-    layer.setStyle({
-      weight: 3,
-      opacity: 1,
-      color: 'black'
-    });
+    $(layer._path).addClass('precinct-selected');
 
     highlightFeature(e);
     if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
@@ -262,11 +245,7 @@ function generateLayers() {
       $infoTip.hide();
     };
 
-    e.target.setStyle({
-      opacity: .5,
-      weight: 1,
-      color: 'white'
-    })
+    $(e.target._path).removeClass('precinct-selected');
   };
   /**********************
   * End helper functions 
@@ -407,6 +386,7 @@ function updateFilter(filterInput) {
         selectedBucket === 'all') {
 
         layer.setStyle(setColor(layer.feature));
+        $(layer._path).removeClass('precinct-selected');
         activePrecincts.push(layer);
       }
       else {
@@ -443,11 +423,9 @@ function updateFilter(filterInput) {
 **************************************/
 function setColor(feature) {
   // Set default styles
-  var style = {color: 'white',
-    fillOpacity: .5,
-    fillColor: null,
-    opacity: .5,
-    weight: 1
+  var style = {
+    fillColor : null,
+    className: 'precinct-default'
   };
 
   var rep = feature.properties.rep_votes,
