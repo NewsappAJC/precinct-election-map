@@ -24,7 +24,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/180045/en/md_data.html?cid=5000&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/180715/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
 CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
@@ -112,7 +112,6 @@ class Parser(object):
                 check = EC.presence_of_element_located((By.ID, 'precinctDetailLabel'))
                 WebDriverWait(driver, delay).until(check)
             except TimeoutException:
-                pdb.set_trace()
                 print 'Page took too long to load'
 
             # Remove cruft at the end of URL and append it to our list of URLs

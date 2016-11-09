@@ -464,7 +464,7 @@ function setColor(feature) {
       break;
     }
     case 'Democrat': {
-      style.fillColor = 'blue';
+      style.fillColor = '#0040FF';
       break;
     }
   };
