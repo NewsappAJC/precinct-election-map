@@ -2,6 +2,7 @@
 
 # Standard lib imports
 import os
+from time import sleep
 import re
 import pdb
 import logging
@@ -65,9 +66,8 @@ class Parser(object):
         Create an instance of Selenium's webdriver.PhantomJS(), used to 
         simulate clicks on the Clarity elections site
         """
-        driver = webdriver.PhantomJS(PHANTOM_JS_INSTALLATION)
+        driver = webdriver.Firefox()
         driver.get(self.main_url)
-        assert 'Election' in driver.title # Make sure we have the right page
         return driver
 
     def get_county_urls(self, input_counties=None, delay=10):
@@ -94,9 +94,17 @@ class Parser(object):
         # Selenium will throw a StaleElementReferenceException
         for i in range(num_counties):
             driver.get(self.main_url)
+            sleep(1.1)
+
             # Get links from each county row
             county = driver.find_elements_by_css_selector(selector)[i]
-            links = county.find_elements_by_tag_name('a')
+            # Because Selenium fucking sucks
+            try:
+                links = county.find_elements_by_tag_name('a')
+            except:
+                x = driver.find_elements_by_css_selector(selector)[i]
+                county = x
+                links = county.find_elements_by_tag_name('a')
 
             try: 
                 county_name = links[0].get_attribute('id')
@@ -128,9 +136,10 @@ class Parser(object):
 
         # After looping through all the counties, close the driver
         driver.quit()
+        self._get_precincts()
         return
 
-    def get_precincts(self):
+    def _get_precincts(self):
         """
         Get JSON data from the endpoints listed in :county_urls: and parse
         the precinct-level election results from each one
@@ -152,7 +161,8 @@ class Parser(object):
             try:
                 order = [i for i, val in enumerate(contests) if CANDIDATES['rep'] in val['CH']][0]
                 candidates = contests[order]['CH']
-            except KeyError:
+            except:
+                continue
                 logging.error("""The contestant names you supplied don\'t match
                     any in the data files. Are you sure you spelled the names
                     correctly?""")
@@ -174,6 +184,9 @@ class Parser(object):
                 data['total'] = total
 
                 self.precinct_results.append(data)
+
+        votes = pd.DataFrame(self.precinct_results)
+        votes.to_csv('votes_data_complete.csv', index=False)
 
 class ResultSnapshot(Parser):
     """
@@ -397,9 +410,5 @@ class ResultSnapshot(Parser):
 
 if __name__ == '__main__':
     p = ResultSnapshot(contest_url=CONTEST_URL)
-    p.get_county_urls(input_counties=COUNTIES)
-    p.get_precincts()
-    p.merge_votes()
-    p.aggregate_stats()
-    p.update_map()
+    p.get_county_urls()
 
