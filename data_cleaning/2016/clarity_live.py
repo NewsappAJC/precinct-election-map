@@ -24,9 +24,9 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/180045/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
+CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
 PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 
@@ -37,7 +37,7 @@ VOTES_TMP = '/tmp/vote_data.csv'
 
 MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
 METADATA_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_metadata.json')
-AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
+AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats.json')
 # End constants
 
 # Configure logging
@@ -112,6 +112,7 @@ class Parser(object):
                 check = EC.presence_of_element_located((By.ID, 'precinctDetailLabel'))
                 WebDriverWait(driver, delay).until(check)
             except TimeoutException:
+                pdb.set_trace()
                 print 'Page took too long to load'
 
             # Remove cruft at the end of URL and append it to our list of URLs
@@ -367,7 +368,8 @@ class ResultSnapshot(Parser):
                     match[x] = float(match[x])
                 map_['features'][i]['properties'] = match
 
-                reporting += 1
+                if int(match['dem_votes']) != 0 or int(match['rep_votes']) != 0:
+                    reporting += 1
 
             # Catch cases where the map has precincts that aren't in the voter
             # files

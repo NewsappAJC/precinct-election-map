@@ -21,6 +21,7 @@ var autocomplete,
     $resultsSummary = $('#results-summary'),
     $2012toggle = $('#2012-toggle'),
     $2016toggle = $('#2016-toggle'),
+    $metaHolder = $('meta-holder'),
     $metaReporting = $('#meta-reporting'),
     $metaLastUpdated = $('#meta-last-updated');
 
@@ -89,6 +90,7 @@ $2012toggle.on('click', function() {
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
   getAggregatedData();
+  $metaHolder.hide();
 })
 
 $2016toggle.on('click', function() {
@@ -98,6 +100,7 @@ $2016toggle.on('click', function() {
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
   getAggregatedData();
+  $metaHolder.show();
 })
 /**************************************
  * Make AJAX request to get metadata 

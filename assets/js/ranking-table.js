@@ -40,7 +40,7 @@ export default function(activePrecincts, county, filter, year) {
       fcounty = county.toUpperCase()
 
   if (fcounty === 'ALL COUNTIES' && filter === 'all') {
-    titleText = 'All Precincts';
+    titleText = 'Metro Atlanta';
   }
   else if (fcounty === 'ALL COUNTIES') {
     titleText = 'Precincts with ' + f;
@@ -53,7 +53,8 @@ export default function(activePrecincts, county, filter, year) {
   };
 
   $title.html(`
-     Top Precincts (Tap to Zoom)
+     Top Precincts
+     <div class="instructions"> Select a precinct to zoom in </div>
      <span id='ranking-subhed'>
        ${titleText}
      </span>
