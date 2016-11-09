@@ -446,15 +446,21 @@ function updateFilter(filterInput) {
 **************************************/
 function setColor(feature) {
   // Set default styles
-  var style = {color: 'white',
+  var style = {
+    stroke: 'white',
+    color: 'white',
     fillOpacity: .5,
-    fillColor: null,
+    fillColor: 'white',
     opacity: .5,
     weight: 1
   };
 
   var rep = feature.properties.rep_votes,
       dem = feature.properties.dem_votes;
+
+  if (!rep && !dem) {
+    return style;
+  };
 
   var party = rep > dem ? 'Republican' : 'Democrat';
 
