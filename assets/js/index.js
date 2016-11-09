@@ -37,7 +37,8 @@ var selectedBucket = 'all', // Holds demographic filters
     lastUpdated,
     precinctsReporting;
 
-
+var $selectedPrecinct; //so we can deselect it when another is chosen without looping through everything
+var stickyOn = false; //whether or not a precinct has been clicked
 /**************************************
  * Create a Leaflet map instance and get map
  * tiles from OpenStreetMap
@@ -184,8 +185,8 @@ function getAggregatedData() {
 function generateLayers() {
   geojson = L.geoJson(features, {
       onEachFeature: onEachFeature,
-      style: function(feature) { 
-        return setColor(feature)
+      style: function(feature) {
+        return setColor(feature);
       }
   });
 
@@ -198,28 +199,41 @@ function generateLayers() {
       click: zoomToFeature,
       mouseover: highlightFeature,
       mouseout: resetStyle
-    })
+    });
   };
 
   /*********************** 
   * Begin helper functions for Geojson
   ************************/
   function highlightFeature(e) {
-    var layer = e.target;
+    var layer = e.target,
+    precID = layer._path.id;
+    if(stickyOn && precID === $selectedPrecinct.attr('id')){
+      strokes();
 
-    if ($(window).width() > MOBILE_WIDTH) {
-      $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
-          <span class="sub-county">
-            ${layer.feature.properties.COUNTY_NAM} COUNTY
-        </span>`)
-      updateTable('#info-data', layer.feature.properties, year);
+    } else if (!stickyOn){
+      console.log("sticky off");
+      strokes()
+    }
+    function strokes(){
+      console.log('strokes');
+      if ($(window).width() > MOBILE_WIDTH) {
+        $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+            <span class="sub-county">
+              ${layer.feature.properties.COUNTY_NAM} COUNTY
+        </span>`);
+        updateTable('#info-data', layer.feature.properties, year);
 
-      $(layer._path).addClass('precinct-selected');
-      $infoTip.show();
-    };
+        //$(layer._path).addClass('precinct-selected');
+        $selectedPrecinct = $(layer._path);
+        togglePrecincts(layer._path.id);
+        $infoTip.show();
+      }
+    }
   };
 
   function zoomToFeature(e) {
+    //triggered on precinct shape click
     var layer = e.target;
 
     $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
@@ -228,24 +242,32 @@ function generateLayers() {
       </span>`)
     updateTable('#info-data', layer.feature.properties, year);
 
-    $(layer._path).addClass('precinct-selected');
+    if(stickyOn && layer._path.id == $selectedPrecinct.attr('id')){
+      stickyOn = false;
+    } else {
+      stickyOn = false;
+      var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
+      placeInfo(coords);
+      $infoTip.show();
+      stickyOn = true;
+    }
+
+    togglePrecincts(layer._path.id);
 
     highlightFeature(e);
-    if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
+    /*if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
       map.fitBounds(e.target.getBounds());
       return
-    }
-    var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
-    placeInfo(coords)
-    $infoTip.show();
+    }*/
   };
 
   function resetStyle(e) {
-    if ($(window).width() > MOBILE_WIDTH) {
-      $infoTip.hide();
-    };
-
-    $(e.target._path).removeClass('precinct-selected');
+    if(!stickyOn){
+      if ($(window).width() > MOBILE_WIDTH) {
+        $infoTip.hide();
+      };
+      togglePrecincts();
+    }
   };
   /**********************
   * End helper functions 
@@ -357,6 +379,7 @@ function updateFilter(filterInput) {
 
   // Loop through features in the geoJSON layer (i.e. the precincts)
   geojson.eachLayer(function (layer) {
+    layer._path.id = layer.feature.properties['CTYSOSID'];
     var layerRace = layer.feature.properties['race'],
         layerCounty = layer.feature.properties.COUNTY_NAM,
         layerIncome;
@@ -386,7 +409,7 @@ function updateFilter(filterInput) {
         selectedBucket === 'all') {
 
         layer.setStyle(setColor(layer.feature));
-        $(layer._path).removeClass('precinct-selected');
+        togglePrecincts();
         activePrecincts.push(layer);
       }
       else {
@@ -406,16 +429,26 @@ function updateFilter(filterInput) {
   // Add zoom functionality when user clicks one of the top precincts in 
   // the table at the bottom of the page
   $('.rank-row').each(function() {
-    $(this).on('click', function() {
-        var lng = parseFloat(this.dataset['x']),
-            lat = parseFloat(this.dataset['y']);
-      console.log(lat + ' ' + lng)
-      map.setView({lat: lat, lng: lng}, 14);
+    $(this).on('click', function(e) {
+      stickyOn = true;
+
+      togglePrecincts(this.dataset.precinct);
+      $infoTip.hide()
     });
   });
 } // End updateFilter()
 
 
+//deselect previously active precinct and select new one
+function togglePrecincts(activeID){
+  if ($selectedPrecinct !== undefined){
+    $selectedPrecinct.removeClass('precinct-selected');
+  }
+  if(activeID){
+    $selectedPrecinct = $('#'+activeID);
+    $selectedPrecinct.addClass('precinct-selected');
+  }
+}
 /**************************************
  * Return an object with appropriate 
  * styles given the vote distribution 
@@ -423,14 +456,20 @@ function updateFilter(filterInput) {
 **************************************/
 function setColor(feature) {
   // Set default styles
+  //if you don't set these you will see flashes of default blue stuff
   var style = {
-    fillColor : null,
+    fillColor : 'white',
+    fillOpacity: 0,
+    stroke: 'white',
     className: 'precinct-default'
   };
 
   var rep = feature.properties.rep_votes,
       dem = feature.properties.dem_votes;
 
+  if(!rep && !dem){
+    return style;
+  } 
   var party = rep > dem ? 'Republican' : 'Democrat';
 
   switch (party) {
@@ -443,6 +482,7 @@ function setColor(feature) {
       break;
     }
   };
+
   return style;
 };
 
@@ -459,6 +499,9 @@ function createInfo() {
       placeInfo(dets);
     };
   });
+  // $('#map-box').on('mouseleave', function(e){
+  //   $infoTip.hide();
+  // });
 };
 
 
@@ -467,19 +510,23 @@ function createInfo() {
  * of the infobox
  * ****************************/
 function placeInfo(e) {
+
+
   // Move the info tip above the mouse if the user is at the bottom of the screen
-  if ($(window).width() > MOBILE_WIDTH || e.click) {
+  if(!stickyOn){
+    if ($(window).width() > MOBILE_WIDTH || e.click) {
 
-    $infoTip.css({left: e.x, top: e.y + 20})
+      $infoTip.css({left: e.x, top: e.y + 20})
 
-    if (e.y > ($(window).height() - 120)) {
-      $infoTip.css({top: e.y - 100})
+      if (e.y > ($(window).height() - 120)) {
+        $infoTip.css({top: e.y - 100})
+      };
+
+      if (e.x > ($(window).width() - 200)) {
+        $infoTip.css({left: $(window).width() - 200})
+      };
     };
-
-    if (e.x > ($(window).width() - 200)) {
-      $infoTip.css({left: $(window).width() - 200})
-    };
-  };
+  }
 
   // Event handler to change display of tooltip for mobile or desktop on
   // window resize
@@ -492,8 +539,8 @@ function placeInfo(e) {
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
-};
 
+};
 
 /**************************************
  * Hover the precinct infobox or fix it to 
@@ -535,4 +582,3 @@ function main() {
 
 
 main();
-
