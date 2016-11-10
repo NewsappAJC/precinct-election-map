@@ -267,7 +267,6 @@ function generateLayers() {
 **************************************/
 function addPrecincts(layer) {
   features = layer;
-  console.log(features);
   generateLayers();
   createMap();
   getAggregatedData();

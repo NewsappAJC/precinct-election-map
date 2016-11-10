@@ -102,8 +102,8 @@ function createRankDiv(parties) {
   $rankTableDem.html('');
 
   // Set starting value to 101 so that first 
-  // election result is guaranteed to be a smaller value
-  //but what is it for? And what is the "first" election result and why do we want it to be smaller anyway? 
+  // election result is guaranteed to be less than that
+  // and its rank will automatically increment
   var prevDem = 101,
       prevRep = 101,
       demCounter = 0,
