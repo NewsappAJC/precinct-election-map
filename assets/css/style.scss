@@ -212,10 +212,11 @@ BEGIN SUMMARY TABLE STYLE
   width: 10px;
   height: 10px;
   display: inline-block;
+  opacity: .7;
 }
 
 .dem-party-tag {
-  background-color: #00BFFF;
+  background-color: #0040FF;
 }
 
 .gop-party-tag {
@@ -443,7 +444,8 @@ BEGIN RANKING TABLE
 }
 
 #dem-rank-title {
- color: #58D3F7;
+ color: #0040FF;
+ opacity: .7;
 }
 
 #rep-rank-title {
@@ -540,4 +542,9 @@ BEGIN RANKING TABLE
 
 .meta {
   font-size: .8em;
+}
+
+.instructions {
+  font-size: .8em;
+  color: #999999;
 }

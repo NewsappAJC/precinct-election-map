@@ -21,6 +21,7 @@ var autocomplete,
     $resultsSummary = $('#results-summary'),
     $2012toggle = $('#2012-toggle'),
     $2016toggle = $('#2016-toggle'),
+    $metaHolder = $('meta-holder'),
     $metaReporting = $('#meta-reporting'),
     $metaLastUpdated = $('#meta-last-updated');
 
@@ -91,6 +92,7 @@ $2012toggle.on('click', function() {
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
   getAggregatedData();
+  $metaHolder.hide();
 })
 
 $2016toggle.on('click', function() {
@@ -100,6 +102,7 @@ $2016toggle.on('click', function() {
   geojson.clearLayers();
   getPrecincts(addPrecincts, year);
   getAggregatedData();
+  $metaHolder.show();
 })
 /**************************************
  * Make AJAX request to get metadata 
@@ -435,7 +438,7 @@ function setColor(feature) {
   // Set default styles
   //if you don't set these you will see flashes of default blue stuff
   var style = {
-    fillColor : 'white',
+    fillColor: 'white',
     fillOpacity: 0,
     stroke: 'white',
     className: 'precinct-default'
@@ -444,9 +447,9 @@ function setColor(feature) {
   var rep = feature.properties.rep_votes,
       dem = feature.properties.dem_votes;
 
-  if(!rep && !dem){
+  if (!rep && !dem) {
     return style;
-  } 
+  };
   var party = rep > dem ? 'Republican' : 'Democrat';
 
   switch (party) {
@@ -455,7 +458,7 @@ function setColor(feature) {
       break;
     }
     case 'Democrat': {
-      style.fillColor = 'blue';
+      style.fillColor = '#0040FF';
       break;
     }
   };
