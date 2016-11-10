@@ -112,13 +112,11 @@ function createRankDiv(parties) {
   // Display the top 5 precincts for each candidate in the table, given the
   // current filters
   for (var i = 0; i < 5; i++) {
-    var repPrecinct = parties.topRep[i].feature
-    var demPrecinct = parties.topDem[i].feature
+    var repPrecinct = parties.topRep[i].feature;
+    var demPrecinct = parties.topDem[i].feature;
 
-    // Yeah, getting the first point is arbitrary, but calculating the 
-    // center of each precinct would require a little more work
-    //var repZoomPoint = repPrecinct.geometry.coordinates[0][0][0];
-    //var demZoomPoint = demPrecinct.geometry.coordinates[0][0][0];
+    var lDemId = parties.topDem[i]._leaflet_id;
+    var lRepId = parties.topRep[i]._leaflet_id;
 
     var demVotes = parseInt(demPrecinct.properties.dem_p*100);
     var repVotes = parseInt(repPrecinct.properties.rep_p*100);
@@ -137,7 +135,8 @@ function createRankDiv(parties) {
     // Add the tables
     $rankTableDem.append(`
       <tr class="rank-row" 
-          data-precinct=${demPrecinct.properties.CTYSOSID}>
+          data-precinct=${demPrecinct.properties.CTYSOSID}
+          data-lid=${lDemId}>
         <td class="rank">${demCounter}</td>
         <td class="neighborhood">
           <div>
@@ -155,7 +154,8 @@ function createRankDiv(parties) {
 
     $rankTableRep.append(`
       <tr class="rank-row"
-          data-precinct=${repPrecinct.properties.CTYSOSID}>
+          data-precinct=${repPrecinct.properties.CTYSOSID}
+          data-lid=${lRepId}>
         <td class="rank">${repCounter}</td>
         <td class="neightborhood"
           <div>

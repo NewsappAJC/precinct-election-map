@@ -1,6 +1,7 @@
 #!/Users/jcox/.virtualenvs/election/bin/python
 
 # Standard lib imports
+from sys import argv
 import os
 from time import sleep
 import re
@@ -20,14 +21,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+#script, url = argv
+
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/42277/113204/en/md_data.html?cid=5000&'
+CONTEST_URL = 'http://results.enr.clarityelections.com/GA/63991/182895/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'dem': 'BARACK OBAMA (I)D', 'rep': 'MITT ROMNEY (R)'}
+CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
 PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 
@@ -93,7 +96,6 @@ class Parser(object):
         # Have to do this instead of looping through county objects because
         # Selenium will throw a StaleElementReferenceException
         for i in range(num_counties):
-            driver.get(self.main_url)
             sleep(1.1)
 
             # Get links from each county row
@@ -133,6 +135,7 @@ class Parser(object):
             split_url = driver.current_url.split('/')
             base_url = ('/').join(split_url[:-2])
             self.county_urls.append([county_name.upper(), base_url, rep_votes, dem_votes])
+            driver.get(self.main_url)
 
         # After looping through all the counties, close the driver
         driver.quit()
@@ -140,20 +143,16 @@ class Parser(object):
         x = pd.DataFrame(self.county_urls)
         x.to_csv('county_urls.csv', encoding='utf-8', index=False)
 
-        self._get_precincts()
         return
 
-    def _get_precincts(self):
+    def get_precincts(self):
         """
         Get JSON data from the endpoints listed in :county_urls: and parse
         the precinct-level election results from each one
         """
         self.precinct_results = [] # Reset the precinct results
 
-        r = csv.reader(open('2012county_urls.csv'))
-        county_urls = [i for i in r][1:]
-
-        for county_name, base_url, rep_votes, dem_votes in county_urls:
+        for county_name, base_url, rep_votes, dem_votes in self.county_urls:
             logging.info('Getting precinct details from {}'.format(base_url))
 
             # Candidate names and votes are stored in separate files. God knows
@@ -183,11 +182,10 @@ class Parser(object):
                 data = {'precinct': precinct, 'county': county_name}
                 total = 0
                 for candidate, count in zip(candidates, votes):
-                    print candidate.split()[0]
                     if candidate == CANDIDATES['rep']:
                         total += int(count)
                         data['rep_votes'] = int(count)
-                    elif candidate.split()[0] == 'BARACK':
+                    elif candidate == CANDIDATES['dem']:
                         data['dem_votes'] = int(count)
                         total += int(count)
                 data['total'] = total
@@ -195,7 +193,8 @@ class Parser(object):
                 self.precinct_results.append(data)
 
         votes = pd.DataFrame(self.precinct_results)
-        votes.to_csv('votes_data_complete2012.csv', index=False, encoding='utf-8')
+        votes.to_csv(VOTES_TMP, index=False, encoding='utf-8')
+        return
 
 class ResultSnapshot(Parser):
     """
@@ -219,7 +218,8 @@ class ResultSnapshot(Parser):
         precinct5 = re.sub(re.compile(r'AVONDALE HIGH - 05|AVONDALE HIGH - 04'), 'AVONDALE HIGH', precinct4)
         precinct6 = re.sub(re.compile(r'CHAMBLEE 2'), 'CHAMBLEE', precinct5)
         precinct7 = re.sub(re.compile(r'WADSWORTH ELEM - 04'), 'WADSWORTH ELEM', precinct6)
-        return precinct7.strip().upper()[:20] # Restrict to 20 chars
+        precinct8 = re.sub(re.compile(r'CP06A'), 'CP06', precinct7)
+        return precinct8.strip().upper()[:20] # Restrict to 20 chars
 
     def _get_income(self, row):
         if row['avg_income'] < 50000:
@@ -276,12 +276,14 @@ class ResultSnapshot(Parser):
         stats = pd.read_csv(statsf, index_col=False)
 
         fvotes = self._clean_vote_stats(votes)
+        pdb.set_trace()
 
         merged = stats.merge(fvotes,
             left_on='ajc_precinct',
             right_on='precinct',
             how='outer',
             indicator=True)
+        pdb.set_trace()
 
         # Drop precincts with null values for the election results
         merged = merged[pd.notnull(merged['rep_votes'])]
@@ -292,6 +294,7 @@ class ResultSnapshot(Parser):
 
         logging.info('Writing precinct information to csv {}'.format(outf))
         self.merged_precincts.to_csv(outf)
+        self.unmerged_precincts.to_csv('unmerged.csv', index=False)
         return
 
     def aggregate_stats(self, statsfile=STATS_FILE):
@@ -419,5 +422,10 @@ class ResultSnapshot(Parser):
 
 if __name__ == '__main__':
     p = ResultSnapshot(contest_url=CONTEST_URL)
-    p._get_precincts()
+    r = csv.reader(open('county_urls.csv'))
+    p.county_urls = [i for i in r][1:]
+    p.get_precincts()
+    p.merge_votes()
+    p.aggregate_stats()
+    p.update_map()
 

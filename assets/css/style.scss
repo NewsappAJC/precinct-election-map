@@ -65,8 +65,8 @@ BEGIN PAGE STYLES
 html, body {
   margin: 0;
   box-sizing: border-box;
-  height: 100%;
   overflow: auto;
+  position: relative;
 }
 
 #main {
@@ -177,7 +177,7 @@ BEGIN SUMMARY TABLE STYLE
 }
 
 #info {
-  position: absolute;
+  position: fixed;
   width: 200px;
   z-index: 999999;
   font-family: 'Arial';
@@ -205,7 +205,6 @@ BEGIN SUMMARY TABLE STYLE
 
 #info-title, #close-button {
   top: 5px;
-  position: absolute;
 }
 
 .gop-party-tag, .dem-party-tag {
@@ -547,4 +546,22 @@ BEGIN RANKING TABLE
 .instructions {
   font-size: .8em;
   color: #999999;
+}
+
+#info-legend-holder {
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  height: 150px;
+  width: 300px;
+  z-index: 999999;
+  font-family: 'Arial';
+  font-size: .8em;
+  background: white;
+  border-radius: 5px;
+  padding: 6px 8px;
+  opacity: .9;
+  tr {
+    line-height: 1.5;
+  }
 }

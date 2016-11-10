@@ -7,6 +7,13 @@ var candidates = {
 }
 
 export default function(el, props, year) {
+
+  // Set the title
+  $('#info-title').html(`<span class="eln-title">${props.PRECINCT_N} 
+      <span class="sub-county">
+        ${props.COUNTY_NAM} COUNTY
+  </span>`);
+
   /* Helper function */
   function wCommas(string_) {
       return string_.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

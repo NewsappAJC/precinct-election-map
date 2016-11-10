@@ -23,7 +23,8 @@ var autocomplete,
     $2016toggle = $('#2016-toggle'),
     $metaHolder = $('meta-holder'),
     $metaReporting = $('#meta-reporting'),
-    $metaLastUpdated = $('#meta-last-updated');
+    $metaLastUpdated = $('#meta-last-updated'),
+    $stickyTable = $('#info-legend-holder');
 
 // State
 var selectedBucket = 'all', // Holds demographic filters
@@ -204,6 +205,7 @@ function generateLayers() {
 
   // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
+    // Add an id to the feature so we can access it later
     if (!layer.feature.properties.rep_votes && !layer.feature.properties.dem_votes) {
       map.removeLayer(layer);
     };
@@ -226,24 +228,19 @@ function generateLayers() {
         stickyOn = false;
       } else {
         stickyOn = false; //the tooltip won't move if this is true
-        placeInfo(e.originalEvent); //move it to the new spot
+        // We use absolute positioning for the div after click so that it 
+        // doesn't scroll with the window
         highlight();
-        stickyOn = true;
+        toggleSticky(true)
       }
     } else if(!stickyOn || stickyOn && pathID === $selectedPrecinct.attr('id')){ //if sticky, don't highlight others on hover
       highlight();
     }
     function highlight(){
       if ($(window).width() > MOBILE_WIDTH) {
-        $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
-            <span class="sub-county">
-              ${layer.feature.properties.COUNTY_NAM} COUNTY
-        </span>`);
-
-        updateTable('#info-data', layer.feature.properties, year); //this updates the tooltip table
+        updateTable('#info-legend', layer.feature.properties, year); //this updates the tooltip table
         toggleStrokes(pathID);
         $selectedPrecinct = $(`#${pathID}`);
-        $infoTip.show();
       }
     }
   };
@@ -260,6 +257,21 @@ function generateLayers() {
   * End helper functions 
   ***********************/
 };
+
+
+function toggleSticky(sticky) {
+  if (sticky) {
+    stickyOn = true;
+    $stickyTable.show();
+    $infoTip.hide();
+  }
+  else {
+    stickyOn = false;
+    $stickyTable.hide();
+    $infoTip.show();
+  }
+};
+
 
 /**************************************
  * Push precincts from .json file to a list of
@@ -280,6 +292,11 @@ function addPrecincts(layer) {
 function createMap() {
   // Add the geoJSON layer to the map
   geojson.addTo(map); 
+
+  // Set IDs for every path in the map
+  geojson.eachLayer(function (layer) {
+    layer._path.id = layer.feature.properties['CTYSOSID'];
+  });
 
   $('#county-select').change(function() {
     var value = $(this).val();
@@ -366,7 +383,6 @@ function updateFilter(filterInput) {
 
   // Loop through features in the geoJSON layer (i.e. the precincts)
   geojson.eachLayer(function (layer) {
-    layer._path.id = layer.feature.properties['CTYSOSID'];
     var layerRace = layer.feature.properties['race'],
         layerCounty = layer.feature.properties.COUNTY_NAM,
         layerIncome;
@@ -419,10 +435,15 @@ function updateFilter(filterInput) {
   // the table at the bottom of the page
   $('.rank-row').each(function() {
     $(this).on('click', function(e) {
-      stickyOn = true;
+      var id = this.dataset.precinct;
+      toggleStrokes(id);
 
-      toggleStrokes(this.dataset.precinct);
-      $infoTip.hide()
+      $('#info-legend').show()
+      var l = geojson.getLayer(this.dataset.lid);
+      updateTable('#info-legend', l.feature.properties, year); //this updates the tooltip table
+
+      // Zoom the map out so that the precinct will be in frame
+      map.setView({ lat: 33.74, lng: -84.38}, 10);
     });
   });
 } // End updateFilter()
@@ -484,7 +505,7 @@ function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
     if ($(window).width() > MOBILE_WIDTH) {
-      placeInfo(e);
+      placeInfo(e.clientX, e.clientY);
     };
   });
 };
@@ -494,25 +515,18 @@ function createInfo() {
  * Set the X and Y coordinates
  * of the infobox
  * ****************************/
-function placeInfo(e) {
+function placeInfo(x, y) {
   var $map = $('#map'),
       mapWidth = $map.width();
 
   // Move the info tip above the mouse if the user is at the bottom of the screen
   if(!stickyOn){ //only update position if not sticky 
-    var x = e.clientX,
-        y = e.clientY;
     //if ($mapWidth > MOBILE_WIDTH || e.type == "click") {
     $infoTip.css({left: x + 50, top: y - 20})
-
-    if (y > ($(window).height() - 140)) {
-      $infoTip.css({top: y - 100})
-    }; //I don't think this works in the iFrame
 
     if (x > (mapWidth - 200)) {
       $infoTip.css({left: mapWidth - 200, top: y + 50})
     };
-      //};
   }
 
   // Event handler to change display of tooltip for mobile or desktop on
