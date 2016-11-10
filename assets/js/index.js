@@ -84,7 +84,11 @@ function initInput() {
  * and load the relevant aggregated data
 **************************************/
 $2012toggle.on('click', function() {
+  // Reset values
   year = 2012;
+  selectedCounty='all counties';
+  selectedBucket='all';
+
   $(this).removeClass('inactive-year-toggle');
   $2016toggle.addClass('inactive-year-toggle');
   geojson.clearLayers();
@@ -94,7 +98,11 @@ $2012toggle.on('click', function() {
 })
 
 $2016toggle.on('click', function() {
+  // Reset values
   year = 2016;
+  selectedCounty='all counties';
+  selectedBucket='all';
+
   $(this).removeClass('inactive-year-toggle');
   $2012toggle.addClass('inactive-year-toggle');
   geojson.clearLayers();

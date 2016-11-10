@@ -25,9 +25,9 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/182505/en/md_data.html?cid=5000&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/42277/113204/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
+CANDIDATES = {'dem': 'BARACK OBAMA (I)D', 'rep': 'MITT ROMNEY (R)'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
 PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 
@@ -136,6 +136,10 @@ class Parser(object):
 
         # After looping through all the counties, close the driver
         driver.quit()
+
+        x = pd.DataFrame(self.county_urls)
+        x.to_csv('county_urls.csv', encoding='utf-8', index=False)
+
         self._get_precincts()
         return
 
@@ -145,7 +149,11 @@ class Parser(object):
         the precinct-level election results from each one
         """
         self.precinct_results = [] # Reset the precinct results
-        for county_name, base_url, rep_votes, dem_votes in self.county_urls:
+
+        r = csv.reader(open('2012county_urls.csv'))
+        county_urls = [i for i in r][1:]
+
+        for county_name, base_url, rep_votes, dem_votes in county_urls:
             logging.info('Getting precinct details from {}'.format(base_url))
 
             # Candidate names and votes are stored in separate files. God knows
@@ -175,10 +183,11 @@ class Parser(object):
                 data = {'precinct': precinct, 'county': county_name}
                 total = 0
                 for candidate, count in zip(candidates, votes):
+                    print candidate.split()[0]
                     if candidate == CANDIDATES['rep']:
                         total += int(count)
                         data['rep_votes'] = int(count)
-                    elif candidate == CANDIDATES['dem']:
+                    elif candidate.split()[0] == 'BARACK':
                         data['dem_votes'] = int(count)
                         total += int(count)
                 data['total'] = total
@@ -186,7 +195,7 @@ class Parser(object):
                 self.precinct_results.append(data)
 
         votes = pd.DataFrame(self.precinct_results)
-        votes.to_csv('votes_data_complete.csv', index=False)
+        votes.to_csv('votes_data_complete2012.csv', index=False, encoding='utf-8')
 
 class ResultSnapshot(Parser):
     """
@@ -410,5 +419,5 @@ class ResultSnapshot(Parser):
 
 if __name__ == '__main__':
     p = ResultSnapshot(contest_url=CONTEST_URL)
-    p.get_county_urls()
+    p._get_precincts()
 

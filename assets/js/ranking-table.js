@@ -64,14 +64,14 @@ export default function(activePrecincts, county, filter, year) {
       // Check that the coordinates are always nested like this
       var prop = p.feature.properties.rep_p
       // Handle undefined values
-      if (prop === undefined) {
+      if (prop === undefined || p.feature.properties.rep_votes < 50) {
         return 0;
       };
       return prop;
     }).reverse();
     sortedPrecinctsDem = _.sortBy(activePrecincts, function(p) {
       var prop = p.feature.properties.dem_p
-      if (prop === undefined) {
+      if (prop === undefined || p.feature.properties.dem_votes < 50) {
         return 0;
       };
       return prop;

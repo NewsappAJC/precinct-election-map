@@ -134,7 +134,9 @@ def merge_votes():
             if pd.isnull(row[field]):
                 continue
             data[county][field][party] = row[field]
-            data[county]['all'][party] += row[field]
+
+            if field in ['high', 'mid', 'low']:
+                data[county]['all'][party] += row[field]
             # It's impossible to use default dict for the below, because the factory can't
             # generate both dicts and ints by default
             try: 
