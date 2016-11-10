@@ -24,9 +24,9 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 
 # Alter for any given race on a clarityelection.com site
-CONTEST_URL = r'http://results.enr.clarityelections.com/GA/58980/163369/en/md_data.html?cid=51&'
+CONTEST_URL = r'http://results.enr.clarityelections.com/GA/63991/182505/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
-CANDIDATES = {'rep': 'HILLARY CLINTON', 'dem': 'BERNIE SANDERS'}
+CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
 PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 
@@ -37,7 +37,7 @@ VOTES_TMP = '/tmp/vote_data.csv'
 
 MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
 METADATA_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_metadata.json')
-AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats')
+AGG_STATS_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014agg_stats.json')
 # End constants
 
 # Configure logging
@@ -87,16 +87,23 @@ class Parser(object):
         logging.info('Getting detail page URLs for {}'.format(string_counties))
 
         # Get a list of all counties on the contest summary page
-        selector = 'table.vts-data > tbody > tr > td.alignLeft:not(.total)'
+        selector = 'table.vts-data > tbody > tr'
         num_counties = len(driver.find_elements_by_css_selector(selector)) - 1
 
         # Have to do this instead of looping through county objects because
         # Selenium will throw a StaleElementReferenceException
         for i in range(num_counties):
+            driver.get(self.main_url)
             # Get links from each county row
             county = driver.find_elements_by_css_selector(selector)[i]
             links = county.find_elements_by_tag_name('a')
-            county_name = links[0].get_attribute('id')
+
+            try: 
+                county_name = links[0].get_attribute('id')
+                rep_votes = county.find_elements_by_css_selector('td')[2].text
+                dem_votes = county.find_elements_by_css_selector('td')[3].text
+            except IndexError:
+                continue
 
             # Skip counties not in the list supplied by the user. If no list 
             # is provided then loop through all the counties
@@ -117,14 +124,10 @@ class Parser(object):
             # Remove cruft at the end of URL and append it to our list of URLs
             split_url = driver.current_url.split('/')
             base_url = ('/').join(split_url[:-2])
-            self.county_urls.append([county_name.upper(), base_url])
-
-
-            # Navigate back to the contest's home page
-            driver.get(self.main_url)
+            self.county_urls.append([county_name.upper(), base_url, rep_votes, dem_votes])
 
         # After looping through all the counties, close the driver
-        driver.close()
+        driver.quit()
         return
 
     def get_precincts(self):
@@ -133,7 +136,7 @@ class Parser(object):
         the precinct-level election results from each one
         """
         self.precinct_results = [] # Reset the precinct results
-        for county_name, base_url in self.county_urls:
+        for county_name, base_url, rep_votes, dem_votes in self.county_urls:
             logging.info('Getting precinct details from {}'.format(base_url))
 
             # Candidate names and votes are stored in separate files. God knows
@@ -162,13 +165,14 @@ class Parser(object):
                 data = {'precinct': precinct, 'county': county_name}
                 total = 0
                 for candidate, count in zip(candidates, votes):
-                    total += float(count)
                     if candidate == CANDIDATES['rep']:
+                        total += int(count)
                         data['rep_votes'] = int(count)
                     elif candidate == CANDIDATES['dem']:
                         data['dem_votes'] = int(count)
-
+                        total += int(count)
                 data['total'] = total
+
                 self.precinct_results.append(data)
 
 class ResultSnapshot(Parser):
@@ -291,7 +295,7 @@ class ResultSnapshot(Parser):
         dems['party'] = 'dem_votes'
         demsf = dems.reset_index()
 
-        c = pd.concat([repsf, demsf])
+        combined = pd.concat([repsf, demsf])
 
         # Create a nested defaultdict
         data = defaultdict(lambda: defaultdict(dict))
@@ -304,9 +308,11 @@ class ResultSnapshot(Parser):
                   'low']
 
         # Create a nested JSON object
-        for i, row in c.iterrows():
+        for i, row in combined.iterrows():
             county = row['county']
             party = row['party']
+
+            county_res = [x[2:] for x in self.county_urls if x[0] == county.upper()][0]
             data[county]['all'][party] = 0
 
             for field in fields:
@@ -315,7 +321,10 @@ class ResultSnapshot(Parser):
                 if pd.isnull(row[field]):
                     continue
                 data[county][field][party] = row[field]
-                data[county]['all'][party] += row[field]
+
+                if field in ['high', 'mid', 'low']:
+                    data[county]['all']['rep_votes'] = float(county_res[0])
+                    data[county]['all']['dem_votes'] = float(county_res[1])
                 # It's impossible to use default dict for the below, because the factory can't
                 # generate both dicts and ints by default
                 try: 
@@ -324,8 +333,8 @@ class ResultSnapshot(Parser):
                     data['ALL COUNTIES'][field][party] = 0
 
         # Lastly, calculate summary stats for counties
-        data['ALL COUNTIES']['all']['rep_votes'] = merged['rep_votes'].sum()
-        data['ALL COUNTIES']['all']['dem_votes'] = merged['dem_votes'].sum()
+        data['ALL COUNTIES']['all']['rep_votes'] = sum([float(x[2]) for x in self.county_urls])
+        data['ALL COUNTIES']['all']['dem_votes'] = sum([float(x[3]) for x in self.county_urls])
 
         logging.info('Writing aggregated stats to {}'.format(AGG_STATS_OUTPUT))
 
@@ -367,7 +376,8 @@ class ResultSnapshot(Parser):
                     match[x] = float(match[x])
                 map_['features'][i]['properties'] = match
 
-                reporting += 1
+                if int(match['dem_votes']) != 0 or int(match['rep_votes']) != 0:
+                    reporting += 1
 
             # Catch cases where the map has precincts that aren't in the voter
             # files
