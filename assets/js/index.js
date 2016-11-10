@@ -337,6 +337,8 @@ function updateTitle(feature) {
  * (county, demographic filter, or both)
 **************************************/
 function updateFilter(filterInput) {
+  $infoTip.hide(); //in case of sticky tooltip
+  stickyOn = false;
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
   var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties', 'all counties']
@@ -542,7 +544,9 @@ function toggleMobile() {
  * Pan the map to an address selected by
  * the user
  * **************************************/
-function onPlaceChanged() {
+function onPlaceChanged() { //should probably update this highlight rather than zoom
+  $infoTip.hide(); //in case it's sticky
+  stickyOn = false;
   var lat = autocomplete.getPlace().geometry.location.lat();
   var lng = autocomplete.getPlace().geometry.location.lng();
   map.setView(new L.LatLng(lat, lng), 15);
