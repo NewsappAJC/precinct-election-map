@@ -38,6 +38,8 @@ var selectedBucket = 'all', // Holds demographic filters
     lastUpdated,
     precinctsReporting;
 
+var $selectedPrecinct; //so we can deselect it when another is chosen without looping through everything
+var stickyOn = false; //whether or not a precinct has been clicked
 
 /**************************************
  * Create a Leaflet map instance and get map
@@ -195,8 +197,8 @@ function getAggregatedData() {
 function generateLayers() {
   geojson = L.geoJson(features, {
       onEachFeature: onEachFeature,
-      style: function(feature) { 
-        return setColor(feature)
+      style: function(feature) {
+        return setColor(feature);
       }
   });
 
@@ -206,78 +208,53 @@ function generateLayers() {
       map.removeLayer(layer);
     };
     layer.on({
-      click: zoomToFeature,
-      mouseover: highlightFeature,
+      click: targetFeature,
+      mouseover: targetFeature,
       mouseout: resetStyle
-    })
+    });
   };
 
   /*********************** 
   * Begin helper functions for Geojson
   ************************/
-  function highlightFeature(e) {
-    var layer = e.target;
+  function targetFeature(e) {
+    var layer = e.target,
+        pathID = layer._path.id;
 
-    if ($(window).width() > MOBILE_WIDTH) {
-      $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
-          <span class="sub-county">
-            ${layer.feature.properties.COUNTY_NAM} COUNTY
-        </span>`)
-      updateTable('#info-data', layer.feature.properties, year);
-
-      geojson.eachLayer(function (layer) {
-        layer.setStyle({opacity: .5, weight: 1, color: 'white'})
-      })
-
-      layer.setStyle({
-        weight: 3,
-        opacity: 1,
-        color: 'black'
-      });
-
-      $infoTip.show();
-    };
-  };
-
-  function zoomToFeature(e) {
-    var layer = e.target;
-
-    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
-        <span class="sub-county">
-          ${layer.feature.properties.COUNTY_NAM} COUNTY
-      </span>`)
-    updateTable('#info-data', layer.feature.properties, year);
-
-    geojson.eachLayer(function (layer) {
-      layer.setStyle({opacity: .5, weight: 1, color: 'white'})
-    })
-
-    layer.setStyle({
-      weight: 3,
-      opacity: 1,
-      color: 'black'
-    });
-
-    highlightFeature(e);
-    if ($(window).width() > MOBILE_WIDTH) { // it's distracting to zoom on mobile
-      map.fitBounds(e.target.getBounds());
-      return
+    if(e.type === "click"){
+      if(stickyOn && pathID === $selectedPrecinct.attr('id')){ //stop being sticky if sticky element is clicked
+        stickyOn = false;
+      } else {
+        stickyOn = false; //the tooltip won't move if this is true
+        placeInfo(e.originalEvent); //move it to the new spot
+        highlight();
+        stickyOn = true;
+      }
+    } else if(!stickyOn || stickyOn && pathID === $selectedPrecinct.attr('id')){ //if sticky, don't highlight others on hover
+      highlight();
     }
-    var coords = {x: e.originalEvent.clientX, y: e.originalEvent.clientY, click:true };
-    placeInfo(coords)
-    $infoTip.show();
+    function highlight(){
+      if ($(window).width() > MOBILE_WIDTH) {
+        $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} 
+            <span class="sub-county">
+              ${layer.feature.properties.COUNTY_NAM} COUNTY
+        </span>`);
+
+        updateTable('#info-data', layer.feature.properties, year); //this updates the tooltip table
+        toggleStrokes(pathID);
+        $selectedPrecinct = $(`#${pathID}`);
+        $infoTip.show();
+      }
+    }
   };
 
   function resetStyle(e) {
-    if ($(window).width() > MOBILE_WIDTH) {
-      $infoTip.hide();
-    };
-
-    e.target.setStyle({
-      opacity: .5,
-      weight: 1,
-      color: 'white'
-    })
+    if(!stickyOn){
+      if ($(window).width() > MOBILE_WIDTH) {
+        $infoTip.hide();
+      };
+      toggleStrokes();
+    }
   };
   /**********************
   * End helper functions 
@@ -324,8 +301,7 @@ function createMap() {
 function addFilterListeners() {
   $('.filter-bar, .filter-selected, #demographic-select').each(function() {
     $(this).on('change click', function(e) {
-      console.log('filter clicked')
-      // Inelegant way of getting the minimaps instead of the select box.
+      // Inelegant way of getting the minimaps instead of the select box. < it's not the minimaps but it has to do with the demographic filters not sure how - E
       var value = this.dataset.filter || $(this).val();
       updateFilter(value);
       $filterSelect.val(value);
@@ -369,6 +345,8 @@ function updateTitle(feature) {
  * (county, demographic filter, or both)
 **************************************/
 function updateFilter(filterInput) {
+  $infoTip.hide(); //in case of sticky tooltip
+  stickyOn = false;
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
   var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties', 'all counties']
@@ -389,6 +367,7 @@ function updateFilter(filterInput) {
 
   // Loop through features in the geoJSON layer (i.e. the precincts)
   geojson.eachLayer(function (layer) {
+    layer._path.id = layer.feature.properties['CTYSOSID'];
     var layerRace = layer.feature.properties['race'],
         layerCounty = layer.feature.properties.COUNTY_NAM,
         layerIncome;
@@ -412,20 +391,23 @@ function updateFilter(filterInput) {
       layerIncome = 'high'
     }
 
+    var $path = $(layer._path);
     if (layerCounty === fcounty || fcounty === 'ALL COUNTIES') {
       if (layerRace === selectedBucket ||
         layerIncome === selectedBucket ||
         selectedBucket === 'all') {
 
         layer.setStyle(setColor(layer.feature));
+        toggleStrokes();
         activePrecincts.push(layer);
+        $path.removeClass('precinct-hidden');
       }
       else {
-        layer.setStyle({fillOpacity: 0});
+       $path.addClass('precinct-hidden');
       };
     }
     else {
-      layer.setStyle({fillOpacity: 0});
+      $path.addClass('precinct-hidden');
     };
   });
 
@@ -437,15 +419,25 @@ function updateFilter(filterInput) {
   // Add zoom functionality when user clicks one of the top precincts in 
   // the table at the bottom of the page
   $('.rank-row').each(function() {
-    $(this).on('click', function() {
-        var lng = parseFloat(this.dataset['x']),
-            lat = parseFloat(this.dataset['y']);
-      console.log(lat + ' ' + lng)
-      map.setView({lat: lat, lng: lng}, 14);
+    $(this).on('click', function(e) {
+      stickyOn = true;
+
+      toggleStrokes(this.dataset.precinct);
+      $infoTip.hide()
     });
   });
 } // End updateFilter()
 
+//deselect previously active precinct and select new one
+function toggleStrokes(activeID){
+  if ($selectedPrecinct !== undefined){
+    $selectedPrecinct.removeClass('precinct-selected');
+  }
+  if(activeID){
+    $selectedPrecinct = $('#'+activeID);
+    $selectedPrecinct.addClass('precinct-selected');
+  }
+}
 
 /**************************************
  * Return an object with appropriate 
@@ -454,13 +446,12 @@ function updateFilter(filterInput) {
 **************************************/
 function setColor(feature) {
   // Set default styles
+  //if you don't set these you will see flashes of default blue stuff
   var style = {
-    stroke: 'white',
-    color: 'white',
-    fillOpacity: .5,
     fillColor: 'white',
-    opacity: .5,
-    weight: 1
+    fillOpacity: 0,
+    stroke: 'white',
+    className: 'precinct-default'
   };
 
   var rep = feature.properties.rep_votes,
@@ -469,7 +460,6 @@ function setColor(feature) {
   if (!rep && !dem) {
     return style;
   };
-
   var party = rep > dem ? 'Republican' : 'Democrat';
 
   switch (party) {
@@ -482,6 +472,7 @@ function setColor(feature) {
       break;
     }
   };
+
   return style;
 };
 
@@ -494,8 +485,7 @@ function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
   $('#map').bind('mousemove', function(e) {
     if ($(window).width() > MOBILE_WIDTH) {
-      var dets = {x: e.pageX, y: e.pageY, click: false};
-      placeInfo(dets);
+      placeInfo(e);
     };
   });
 };
@@ -506,19 +496,25 @@ function createInfo() {
  * of the infobox
  * ****************************/
 function placeInfo(e) {
+  var $map = $('#map'),
+      mapWidth = $map.width();
+
   // Move the info tip above the mouse if the user is at the bottom of the screen
-  if ($(window).width() > MOBILE_WIDTH || e.click) {
+  if(!stickyOn){ //only update position if not sticky 
+    var x = e.clientX,
+        y = e.clientY;
+    //if ($mapWidth > MOBILE_WIDTH || e.type == "click") {
+    $infoTip.css({left: x + 50, top: y - 20})
 
-    $infoTip.css({left: e.x, top: e.y + 20})
+    if (y > ($(window).height() - 140)) {
+      $infoTip.css({top: y - 100})
+    }; //I don't think this works in the iFrame
 
-    if (e.y > ($(window).height() - 120)) {
-      $infoTip.css({top: e.y - 100})
+    if (x > (mapWidth - 200)) {
+      $infoTip.css({left: mapWidth - 200, top: y + 50})
     };
-
-    if (e.x > ($(window).width() - 200)) {
-      $infoTip.css({left: $(window).width() - 200})
-    };
-  };
+      //};
+  }
 
   // Event handler to change display of tooltip for mobile or desktop on
   // window resize
@@ -527,12 +523,12 @@ function placeInfo(e) {
     toggleMobile();
   });
 
-  // Hide info tip when close button is clicked
+  // Hide info tip when mobile close button is clicked
   $closeButton.on('click', function() {
     $infoTip.hide();
   })
-};
 
+};
 
 /**************************************
  * Hover the precinct infobox or fix it to 
@@ -547,7 +543,7 @@ function toggleMobile() {
   }
   else {
     $closeButton.hide();
-    $infoTip.toggleClass('follow', true);
+    $infoTip.toggleClass('follow', true); //does this do something?
   };
 };
 
@@ -556,7 +552,9 @@ function toggleMobile() {
  * Pan the map to an address selected by
  * the user
  * **************************************/
-function onPlaceChanged() {
+function onPlaceChanged() { //should probably update this highlight rather than zoom
+  $infoTip.hide(); //in case it's sticky
+  stickyOn = false;
   var lat = autocomplete.getPlace().geometry.location.lat();
   var lng = autocomplete.getPlace().geometry.location.lng();
   map.setView(new L.LatLng(lat, lng), 15);
@@ -574,4 +572,3 @@ function main() {
 
 
 main();
-

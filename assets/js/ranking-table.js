@@ -102,7 +102,8 @@ function createRankDiv(parties) {
   $rankTableDem.html('');
 
   // Set starting value to 101 so that first 
-  // election result is guaranteed to be a smaller vale
+  // election result is guaranteed to be a smaller value
+  //but what is it for? And what is the "first" election result and why do we want it to be smaller anyway? 
   var prevDem = 101,
       prevRep = 101,
       demCounter = 0,
@@ -116,8 +117,8 @@ function createRankDiv(parties) {
 
     // Yeah, getting the first point is arbitrary, but calculating the 
     // center of each precinct would require a little more work
-    var repZoomPoint = repPrecinct.geometry.coordinates[0][0][0];
-    var demZoomPoint = demPrecinct.geometry.coordinates[0][0][0];
+    //var repZoomPoint = repPrecinct.geometry.coordinates[0][0][0];
+    //var demZoomPoint = demPrecinct.geometry.coordinates[0][0][0];
 
     var demVotes = parseInt(demPrecinct.properties.dem_p*100);
     var repVotes = parseInt(repPrecinct.properties.rep_p*100);
@@ -136,8 +137,7 @@ function createRankDiv(parties) {
     // Add the tables
     $rankTableDem.append(`
       <tr class="rank-row" 
-          data-x=${demPrecinct.properties.XCOORD}
-          data-y=${demPrecinct.properties.YCOORD}>
+          data-precinct=${demPrecinct.properties.CTYSOSID}>
         <td class="rank">${demCounter}</td>
         <td class="neighborhood">
           <div>
@@ -155,8 +155,7 @@ function createRankDiv(parties) {
 
     $rankTableRep.append(`
       <tr class="rank-row"
-          data-x=${repPrecinct.properties.XCOORD}
-          data-y=${repPrecinct.properties.YCOORD}>
+          data-precinct=${repPrecinct.properties.CTYSOSID}>
         <td class="rank">${repCounter}</td>
         <td class="neightborhood"
           <div>
