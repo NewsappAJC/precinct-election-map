@@ -197,7 +197,7 @@ function generateLayers() {
       map.removeLayer(layer);
     };
     layer.on({
-      click: zoomToFeature,
+      click: targetFeature,
       mouseover: targetFeature,
       mouseout: resetStyle
     });
@@ -210,9 +210,16 @@ function generateLayers() {
     var layer = e.target,
         pathID = layer._path.id;
 
-    if(stickyOn && pathID === $selectedPrecinct.attr('id')){
-      highlight();
-    } else if (!stickyOn){
+    if(e.type === "click"){
+      if(stickyOn && pathID === $selectedPrecinct.attr('id')){ //stop being sticky if sticky element is clicked
+        stickyOn = false;
+      } else {
+        stickyOn = false; //the tooltip won't move if this is true
+        placeInfo(e.originalEvent); //move it to the new spot
+        highlight();
+        stickyOn = true;
+      }
+    } else if(!stickyOn || stickyOn && pathID === $selectedPrecinct.attr('id')){ //if sticky, don't highlight others on hover
       highlight();
     }
     function highlight(){
@@ -221,38 +228,13 @@ function generateLayers() {
             <span class="sub-county">
               ${layer.feature.properties.COUNTY_NAM} COUNTY
         </span>`);
-        updateTable('#info-data', layer.feature.properties, year); //this only works when filtering
 
-        $selectedPrecinct = $(layer._path);
+        updateTable('#info-data', layer.feature.properties, year); //this updates the tooltip table
         toggleStrokes(pathID);
+        $selectedPrecinct = $(`#${pathID}`);
         $infoTip.show();
       }
     }
-  };
-
-  function zoomToFeature(e) {
-    //triggered on precinct shape click
-    var layer = e.target,
-        pathID = layer._path.id;
-
-    /*$('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N}
-        <span class="sub-county">
-          ${layer.feature.properties.COUNTY_NAM} COUNTY
-      </span>`)*/
-    updateTable('#info-data', layer.feature.properties, year); //this doesn't work
-
-    if(stickyOn && pathID == $selectedPrecinct.attr('id')){
-      //stop being sticky if sticky element is clicked
-      stickyOn = false;
-    } else {
-      stickyOn = false; //or the tooltip won't move
-      placeInfo(e.originalEvent, true);
-      $infoTip.show();
-      stickyOn = true;
-    }
-
-    toggleStrokes(pathID);
-    targetFeature(e);
   };
 
   function resetStyle(e) {
@@ -443,6 +425,7 @@ function toggleStrokes(activeID){
     $selectedPrecinct.addClass('precinct-selected');
   }
 }
+
 /**************************************
  * Return an object with appropriate 
  * styles given the vote distribution 
