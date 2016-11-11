@@ -538,18 +538,18 @@ function placeInfo(x, y) {
     $infoTip.hide();
     toggleMobile();
   });
-
-  // Hide info tip when mobile close button is clicked
-  $closeButton.on('click', function() {
-    $infoTip.hide();
-  })
-
 };
 
 /**************************************
  * Hover the precinct infobox or fix it to 
  * the screen depending on the size of
  * the display
+// Hide info tip when mobile close button is clicked
+$closeButton.on('click', function() {
+  toggleSticky(false);
+  toggleStrokes();
+});
+
 /****************************************
  * stickyOn freezes tooltip and selected
  * feature and displays close button via class
