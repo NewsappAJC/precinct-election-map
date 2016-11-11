@@ -6,39 +6,45 @@ See the `data_cleaning` dir for the scripts used to get the vote data, combine i
 
 Published: Nov. 8 2016
 
-Lives Here: TKTK
+Lives Here: [http://www.myajc.com/atlanta-neighborhood-2016-presidential-election-results-map/](http://www.myajc.com/atlanta-neighborhood-2016-presidential-election-results-map/)
 
-Hosted Here: TKTK
+Hosted Here: [http://ajcnewsapps.s3-website-us-east-1.amazonaws.com/2016/precinct-election-map/](http://ajcnewsapps.s3-website-us-east-1.amazonaws.com/2016/precinct-election-map/)
 
 Installation
 ---
+Run the following commands from the top level directory of the app.
+
 Install node dependencies
 `npm install`
 
-Install Python dependencies (if you don't have virtualenv it's a good idea to install it)
+Install nvm and use the right version of Node
+`npm install -g nvm`
+`nvm use`
+
+Install Python dependencies (if you don't have [virtualenv](https://virtualenv.pypa.io/en/stable/) it's a good idea to install it)
 `pip install -r requirements.txt`
 
 Setup
 ---
 To run the scraper and regenerate the map with data from a Clarity elections site:
 
-1. Edit the constants at the top of `clarity_live.py` to fit the parameters of the race you're interested in scraping.
+1. Edit the constants at the top of `clarity_live.py` to fit the parameters of the race you're interested in scraping. The scraper should work for race data provided by Clarity, a vendor used by more than 20 states to show live precinct-level results.
 2. You may need to install PhantomJS separately and pass the path to the binary in the `clarity_live.py` script. [Get PhantomJS](phantomjs.org)
-3. Run the `clarity_live.py` script to grab the most recent results and regenerate the map: `python data_cleaning/2016/clarity_live.py`
+3. Run the `clarity_live.py` script to grab the most recent results and regenerate the map: `npm run update_data`. You must have a recent version of Firefox installed. Make sure to check that Selenium is compatible with your Firefox installation. Pauses have been added to avoid Selenium crashing so the script can take a little while to run. The script is far from perfect so it may throw errors.
 
 Run the development server
 `npm run serve-dev`
 
-
 Deployment
 ---
-To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession. Use `npm run deploy-staging` to deploy to the staging environment. 
+To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession. Use `npm run deploy-staging` to deploy to the staging environment.
 
-If you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578)
+If you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578).
 
 Notes
 ---
-We aren't keeping the voting data and demographic statistics separate from the geographic coordinates because that information needs to be accessible in each feature's array of `properties`. It may be possible to keep those separate.
+* Frontend code lives in the `assets` directory
+* The python scripts used to collect data and update the map live in the `data_cleaning` directory
 
 Data
 ---

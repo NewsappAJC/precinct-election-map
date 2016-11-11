@@ -1,5 +1,3 @@
-#!/Users/jcox/.virtualenvs/election/bin/python
-
 # Standard lib imports
 from sys import argv
 import os
@@ -21,8 +19,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-#script, url = argv
-
 # Constants
 DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
@@ -30,6 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(DIR)) # Root directory of the project
 # Alter for any given race on a clarityelection.com site
 CONTEST_URL = 'http://results.enr.clarityelections.com/GA/63991/182895/en/md_data.html?cid=5000&'
 COUNTIES = ['CLAYTON', 'FULTON', 'GWINNETT', 'DEKALB', 'COBB']
+LAST_COUNTY = 'Worth' # Used to check that all counties on the main page have loaded from AJAX request
 CANDIDATES = {'dem': 'HILLARY CLINTON', 'rep': 'DONALD J. TRUMP'}
 TOTAL_PRECINCTS = 914 # The number of precincts in the reapportionment office's map
 PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
@@ -38,6 +35,7 @@ PHANTOM_JS_INSTALLATION = '/Users/jcox/Desktop/phantomjs/bin/phantomjs'
 STATS_FILE = os.path.join(DIR, 'ajc_precincts_merged_centers.csv')
 MAP_INPUT = os.path.join(DIR, '2014_income_race_centers.json')
 VOTES_TMP = '/tmp/vote_data.csv'
+UNMERGED_TMP = '/tmp/unmerged.csv'
 
 MAP_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_precincts_income_raceUPDATE.json')
 METADATA_OUTPUT = os.path.join(BASE_DIR, 'assets', 'data', '2014_metadata.json')
@@ -73,10 +71,10 @@ class Parser(object):
         driver.get(self.main_url)
         return driver
 
-    def get_county_urls(self, input_counties=None, delay=10):
+    def get_county_urls(self, input_counties=COUNTIES, delay=5):
         """
         Use Selenium to get the dynamically generated URLs for each county's 
-        detail page, and append the URLs to self.county_urls.
+        detail page by simulating clicks, and append the URLs to self.county_urls.
         """
         self.county_urls = [] # Reset county URLs each time the scraper runs
         logging.info('Creating Selenium driver and accessing Clarity')
@@ -87,38 +85,54 @@ class Parser(object):
         except TypeError: 
             string_counties = 'All counties'
 
-        logging.info('Getting detail page URLs for {}'.format(string_counties))
+        print 'Getting detail page URLs for {}'.format(string_counties)
+
+        # Wait until counties have loaded through AJAX to run script
+        # Yes it's hacky but using WebDriverWait wasn't working
+        sleep(2)
 
         # Get a list of all counties on the contest summary page
         selector = 'table.vts-data > tbody > tr'
-        num_counties = len(driver.find_elements_by_css_selector(selector)) - 1
+        all_counties = driver.find_elements_by_css_selector(selector) 
 
-        # Have to do this instead of looping through county objects because
-        # Selenium will throw a StaleElementReferenceException
-        for i in range(num_counties):
-            sleep(1.1)
-
-            # Get links from each county row
-            county = driver.find_elements_by_css_selector(selector)[i]
-            # Because Selenium fucking sucks
+        # Generate a list of county names
+        counties = []
+        for i, county in enumerate(all_counties):
             try:
                 links = county.find_elements_by_tag_name('a')
+                name = links[0].get_attribute('id')
+                counties.append(name)
+            # Some of the rows in the table are just headers
             except:
-                x = driver.find_elements_by_css_selector(selector)[i]
-                county = x
-                links = county.find_elements_by_tag_name('a')
+                counties.append(None)
 
-            try: 
-                county_name = links[0].get_attribute('id')
-                rep_votes = county.find_elements_by_css_selector('td')[2].text
-                dem_votes = county.find_elements_by_css_selector('td')[3].text
-            except IndexError:
+        # Have to loop through names instead of looping through DOM elements because
+        # Selenium will throw a StaleElementReferenceException
+        for i, name in enumerate(counties):
+            # Because the page loads through AJAX wait until the information for 
+            # the county is loaded
+            if name: 
+                if input_counties is not None and name.upper() not in input_counties:
+                    continue
+                try:
+                    check = EC.presence_of_element_located((By.ID, name))
+                    WebDriverWait(driver, delay).until(check)
+                except TimeoutException:
+                    print 'Home page took too long to load'
+                    print 'Stopping scraper. Your data has not been added'
+                    return
+            else:
                 continue
 
-            # Skip counties not in the list supplied by the user. If no list 
-            # is provided then loop through all the counties
-            if input_counties is not None and county_name.upper() not in input_counties:
-                continue
+            sleep(.5) # Because, inexplicably, it takes a second after the to load the data after the precinct name loads
+
+            # Get links from the county row
+            county = driver.find_elements_by_css_selector(selector)[i]
+            links = county.find_elements_by_tag_name('a')
+
+            county_name = name
+            rep_votes = county.find_elements_by_css_selector('td')[2].text
+            dem_votes = county.find_elements_by_css_selector('td')[3].text
 
             # The URL for each county is generated by Clarity on each page visit
             # Emulating a click is a sure bet to get to the detail page
@@ -129,19 +143,22 @@ class Parser(object):
                 check = EC.presence_of_element_located((By.ID, 'precinctDetailLabel'))
                 WebDriverWait(driver, delay).until(check)
             except TimeoutException:
-                print 'Page took too long to load'
+                print 'Page took too long to load. Trying to add precincts anyway'
 
             # Remove cruft at the end of URL and append it to our list of URLs
             split_url = driver.current_url.split('/')
             base_url = ('/').join(split_url[:-2])
             self.county_urls.append([county_name.upper(), base_url, rep_votes, dem_votes])
+
+            print '{} county precincts added'.format(county_name)
             driver.get(self.main_url)
 
-        # After looping through all the counties, close the driver
+        # After looping through all the counties, close Firefox
         driver.quit()
 
         x = pd.DataFrame(self.county_urls)
-        x.to_csv('county_urls.csv', encoding='utf-8', index=False)
+        # Save the county urls to the tmp directory so they can be reused on future passes
+        x.to_csv('/tmp/county_urls.csv', encoding='utf-8', index=False)
 
         return
 
@@ -276,25 +293,23 @@ class ResultSnapshot(Parser):
         stats = pd.read_csv(statsf, index_col=False)
 
         fvotes = self._clean_vote_stats(votes)
-        pdb.set_trace()
 
         merged = stats.merge(fvotes,
             left_on='ajc_precinct',
             right_on='precinct',
-            how='outer',
+            how='left',
             indicator=True)
-        pdb.set_trace()
+
+        # Write unmerged precincts to a CSV. Check this to see why you're
+        # missing them
+        self.unmerged_precincts = merged[merged._merge != 'both']
+        self.unmerged_precincts.to_csv(UNMERGED_TMP, index=False)
 
         # Drop precincts with null values for the election results
-        merged = merged[pd.notnull(merged['rep_votes'])]
-        merged = merged[pd.notnull(merged['dem_votes'])]
-
-        self.unmerged_precincts = merged[merged._merge != 'both']
         self.merged_precincts = merged[merged._merge == 'both']
 
         logging.info('Writing precinct information to csv {}'.format(outf))
         self.merged_precincts.to_csv(outf)
-        self.unmerged_precincts.to_csv('unmerged.csv', index=False)
         return
 
     def aggregate_stats(self, statsfile=STATS_FILE):
@@ -422,8 +437,7 @@ class ResultSnapshot(Parser):
 
 if __name__ == '__main__':
     p = ResultSnapshot(contest_url=CONTEST_URL)
-    r = csv.reader(open('county_urls.csv'))
-    p.county_urls = [i for i in r][1:]
+    p.get_county_urls()
     p.get_precincts()
     p.merge_votes()
     p.aggregate_stats()

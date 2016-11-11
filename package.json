@@ -9,7 +9,8 @@
     "serve-prod": "gulp serve --production",
     "build-prod": "rimraf ./dist/prod && gulp build --production",
     "deploy-staging": "rimraf ./dist/dev && gulp deploy --staging",
-    "deploy-production": "rimraf ./dist/prod && gulp deploy --production"
+    "deploy-production": "rimraf ./dist/prod && gulp deploy --production",
+    "update-data": "python data_cleaning/2016/clarity_live.py"
   },
   "repository": {
     "type": "git",
