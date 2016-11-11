@@ -176,8 +176,9 @@ BEGIN SUMMARY TABLE STYLE
   }
 }
 
-#info {
-  position: fixed;
+#info, #info-legend-holder {
+  display: none;
+  position: absolute;
   width: 200px;
   z-index: 999999;
   font-family: 'Arial';
@@ -189,22 +190,28 @@ BEGIN SUMMARY TABLE STYLE
   tr {
     line-height: 1.5;
   }
+  @media (max-width: $mobile-width) {
+    height: 150px;
+    width: 300px;
+    z-index: 999999;
+    opacity: .9;
+    max-width: 100%;
+  }
+}
+#info-legend-holder {
+  left: 25px;
+  bottom: 10px;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
-  right: 20px;
-  display: none;
+  right: 10px;
   cursor: pointer;
-}
-
-.info-data {
-  margin-top: 30px;
-}
-
-.info-title, .close-button {
   top: 5px;
+  #info & {
+    display: none;
+  }
 }
 
 .gop-party-tag, .dem-party-tag {
@@ -548,20 +555,4 @@ BEGIN RANKING TABLE
   color: #999999;
 }
 
-#info-legend-holder {
-  position: absolute;
-  left: 10px;
-  bottom: 0;
-  height: 150px;
-  width: 300px;
-  z-index: 999999;
-  font-family: 'Arial';
-  font-size: .8em;
-  background: white;
-  border-radius: 5px;
-  padding: 6px 8px;
-  opacity: .9;
-  tr {
-    line-height: 1.5;
-  }
-}
+
