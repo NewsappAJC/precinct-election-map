@@ -494,7 +494,7 @@ function setColor(feature) {
     return style;
   };
   var party = rep > dem ? 'Republican' : 'Democrat';
-  if (rep == dem) party = 'tie';
+  if (rep === dem) party = 'tie';
 
   switch (party) {
     case 'Republican': {
