@@ -60,7 +60,7 @@ export default function(activePrecincts, county, filter, year) {
      </span>
   `)
   if (activePrecincts.length >= 10) {
-    sortedPrecinctsRep = _.sortBy(activePrecincts, function(p) {
+    sortedPrecinctsRep = _.sortBy(activePrecincts, function(p) { //why not combine these?? THey do the same thing
       // Check that the coordinates are always nested like this
       var prop = p.feature.properties.rep_p
       // Handle undefined values

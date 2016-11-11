@@ -207,7 +207,7 @@ function generateLayers() {
 
   // Add event handlers to precinct features to change tooltips
   function onEachFeature(feature, layer) {
-    // Add an id to the feature so we can access it later
+    // Add an id to the feature so we can access it later //<-- guess this moved?
     if (!layer.feature.properties.rep_votes && !layer.feature.properties.dem_votes) {
       map.removeLayer(layer);
     };
@@ -506,11 +506,11 @@ function setColor(feature) {
  * **************************************/
 function createInfo() {
   // Event handler to change position of tooltip depending on mouse position (on desktop only)
-  $('#map').bind('mousemove', function(e) {
-    if ($(window).width() > MOBILE_WIDTH) {
+  if (!isMobile()) {
+    $map.bind('mousemove', function(e) {
       placeInfo(e.clientX, e.clientY);
-    };
-  });
+    });
+  };
 };
 
 
@@ -519,12 +519,10 @@ function createInfo() {
  * of the infobox
  * ****************************/
 function placeInfo(x, y) {
-  var $map = $('#map'),
-      mapWidth = $map.width();
+  var mapWidth = $map.width();
 
   // Move the info tip above the mouse if the user is at the bottom of the screen
   if(!stickyOn){ //only update position if not sticky 
-    //if ($mapWidth > MOBILE_WIDTH || e.type == "click") {
     $infoTip.css({left: x + 50, top: y - 20})
 
     if (x > (mapWidth - 200)) {
@@ -535,15 +533,10 @@ function placeInfo(x, y) {
   // Event handler to change display of tooltip for mobile or desktop on
   // window resize
   $(window).resize(function() {
-    $infoTip.hide();
     toggleMobile();
   });
 };
 
-/**************************************
- * Hover the precinct infobox or fix it to 
- * the screen depending on the size of
- * the display
 // Hide info tip when mobile close button is clicked
 $closeButton.on('click', function() {
   toggleSticky(false);
@@ -582,7 +575,6 @@ function onPlaceChanged() { //should probably update this highlight rather than 
 
 function main() {
   getMetadata();
-  toggleMobile();
   getTiles();
   initInput();
   getPrecincts(addPrecincts, year);
