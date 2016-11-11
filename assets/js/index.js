@@ -422,14 +422,24 @@ function updateFilter(filterInput) {
 
 //deselect previously active precinct and select new one
 function toggleStrokes(activeID){
+  var changed = false; //toggleStrokes runs on mousemove so don't want to update DOM constantly unless element changed
   if ($selectedPrecinct !== undefined){
-    $selectedPrecinct.removeClass('precinct-selected');
+    changed = $selectedPrecinct.attr('id') !== activeID;
+    if(changed){
+      $selectedPrecinct.removeClass('precinct-selected');
+    }
   }
   if(activeID){
-    $selectedPrecinct = $('#'+activeID);
-    $selectedPrecinct.addClass('precinct-selected');
+    if(changed){
+      $selectedPrecinct = $('#'+activeID);
+      //path borders overlap - avoid weirdness by moving highlighted element to top
+      //SVG does not support Z-index, so it needs to be moved up in the DOM
+      var shape = $selectedPrecinct.detach();
+      $("svg").append(shape);
+      $selectedPrecinct.addClass('precinct-selected');
+    }
   }
-}
+} //toggleStrokes
 
 /**************************************
  * Return an object with appropriate 
