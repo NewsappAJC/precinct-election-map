@@ -440,15 +440,13 @@ function updateFilter(filterInput) {
   // the table at the bottom of the page
   $('.rank-row').each(function() {
     $(this).on('click', function(e) {
-      var id = this.dataset.precinct;
-      toggleStrokes(id);
-
-      $('#info-legend').show()
+      //var id = this.dataset.precinct;
       var l = geojson.getLayer(this.dataset.lid);
-      updateTable('#info-legend', l.feature.properties, year); //this updates the tooltip table
 
       // Zoom the map out so that the precinct will be in frame
-      map.setView({ lat: 33.74, lng: -84.38}, 10);
+      //map.setView({ lat: 33.74, lng: -84.38}, 10);
+
+      l.fire('click', {fixed: true});
     });
   });
 } // End updateFilter()
