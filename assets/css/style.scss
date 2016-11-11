@@ -139,7 +139,7 @@ END MAP STYLES
 /************************
 BEGIN SUMMARY TABLE STYLE
 *************************/
-#results-summary {
+.results-summary {
   top: 0;
   right: 0;
   width: 100%;
@@ -168,7 +168,7 @@ BEGIN SUMMARY TABLE STYLE
   }
 }
 
-#results-summary-title, .section-title {
+.results-summary-title, .section-title {
   font-size: 1.5em;
   font-family: 'Arial';
   @media (max-width: 400px) {
@@ -191,7 +191,7 @@ BEGIN SUMMARY TABLE STYLE
   }
 }
 
-#close-button {
+.close-button {
   position: absolute;
   top: 10px;
   right: 20px;
@@ -199,11 +199,11 @@ BEGIN SUMMARY TABLE STYLE
   cursor: pointer;
 }
 
-#info-data {
+.info-data {
   margin-top: 30px;
 }
 
-#info-title, #close-button {
+.info-title, .close-button {
   top: 5px;
 }
 

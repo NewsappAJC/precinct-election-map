@@ -238,9 +238,13 @@ function generateLayers() {
     }
     function highlight(){
       if ($(window).width() > MOBILE_WIDTH) {
-        updateTable('#info-legend', layer.feature.properties, year); //this updates the tooltip table
         toggleStrokes(pathID);
         $selectedPrecinct = $(`#${pathID}`);
+      var str = `<span class="eln-title">${layer.feature.properties.PRECINCT_N} </span>
+            <span class="sub-county">${layer.feature.properties.COUNTY_NAM} COUNTY </span>`;
+        var $info = $('#info');
+        $stickyTable.find('.info-title').html(str);
+        updateTable($stickyTable.find('.info-legend'), layer.feature.properties, year); //this updates the tooltip table
       }
     }
   };
