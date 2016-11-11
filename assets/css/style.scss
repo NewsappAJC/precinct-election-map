@@ -54,7 +54,7 @@ Begin mixins
     padding: 3px;
   }
 }
-
+$mobile-width: 600px;
 /********
 End mixins
 *********/
@@ -176,7 +176,7 @@ BEGIN SUMMARY TABLE STYLE
   }
 }
 
-#info, #info-legend-holder {
+#info {
   display: none;
   position: absolute;
   width: 200px;
@@ -190,17 +190,20 @@ BEGIN SUMMARY TABLE STYLE
   tr {
     line-height: 1.5;
   }
-  @media (max-width: $mobile-width) {
-    height: 150px;
-    width: 300px;
-    z-index: 999999;
-    opacity: .9;
-    max-width: 100%;
+  &.fixed {
+    left: 25px !important; //because the inline styles we have to use to set dynamic position will override them otherwise
+    top: auto !important;
+    bottom: 10px;
+    @media (max-width: $mobile-width) {
+      height: 100px;
+      opacity: .9;
+      width: 100%;
+      left: 0 !important;
+      bottom: 0;
+      border-radius: 0;
+      border: 1px solid linen;
+    }
   }
-}
-#info-legend-holder {
-  left: 25px;
-  bottom: 10px;
 }
 
 .close-button {
@@ -528,7 +531,7 @@ BEGIN RANKING TABLE
   font-size: 2em;
   font-weight: bold;
   text-align: right;
-  @media (max-width: 600px) {
+  @media (max-width: $mobile-width) {
     text-align: center;
   }
 }

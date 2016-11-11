@@ -8,8 +8,11 @@ import updateTable from './table-generator';
 import updateRankings from './ranking-table';
 
 // Constants
-var MOBILE_WIDTH = 600;
-
+var MOBILE_WIDTH = 600,
+    WIN_WIDTH = $(window).width(),
+    isMobile = function(){ //this is a function so we can update on resize
+     return MOBILE_WIDTH >= WIN_WIDTH;
+    }
 // DOM refs
 var autocomplete,
     $infoTip = $('#info'),
@@ -23,8 +26,7 @@ var autocomplete,
     $2016toggle = $('#2016-toggle'),
     $metaHolder = $('meta-holder'),
     $metaReporting = $('#meta-reporting'),
-    $metaLastUpdated = $('#meta-last-updated'),
-    $stickyTable = $('#info-legend-holder');
+    $metaLastUpdated = $('#meta-last-updated');
 
 // State
 var selectedBucket = 'all', // Holds demographic filters
@@ -39,9 +41,9 @@ var selectedBucket = 'all', // Holds demographic filters
     lastUpdated,
     precinctsReporting;
 
-var $selectedPrecinct; //so we can deselect it when another is chosen without looping through everything
-var stickyOn = false; //whether or not a precinct has been clicked
-
+var $selectedPrecinct, //so we can deselect it when another is chosen without looping through everything
+    stickyOn = false, //whether or not a precinct has been clicked
+    legendFixed = false;
 /**************************************
  * Create a Leaflet map instance and get map
  * tiles from OpenStreetMap
@@ -216,66 +218,66 @@ function generateLayers() {
     });
   };
 
-  /*********************** 
-  * Begin helper functions for Geojson
-  ************************/
-  function targetFeature(e) {
-    var layer = e.target,
-        pathID = layer._path.id;
+  
+};
 
-    if(e.type === "click"){
-      if(stickyOn && pathID === $selectedPrecinct.attr('id')){ //stop being sticky if sticky element is clicked
-        stickyOn = false;
-      } else {
-        stickyOn = false; //the tooltip won't move if this is true
-        // We use absolute positioning for the div after click so that it 
-        // doesn't scroll with the window
-        highlight();
-        toggleSticky(true)
-      }
-    } else if(!stickyOn || stickyOn && pathID === $selectedPrecinct.attr('id')){ //if sticky, don't highlight others on hover
+/*********************** 
+* Begin helper functions for Geojson
+************************/
+function targetFeature(e) {
+  var layer = e.target,
+      pathID = layer._path.id;
+
+  if(e.type === "click"){
+    if(stickyOn && pathID === $selectedPrecinct.attr('id')){ //stop being sticky if sticky element is clicked
+      toggleSticky(false);
+    } else { //make sticky or stay sticky and move
+      stickyOn = false; //the tooltip won't move if this is true - position is set in highlight()
       highlight();
+      toggleSticky(true);
     }
-    function highlight(){
-      if ($(window).width() > MOBILE_WIDTH) {
-        toggleStrokes(pathID);
-        $selectedPrecinct = $(`#${pathID}`);
-      var str = `<span class="eln-title">${layer.feature.properties.PRECINCT_N} </span>
-            <span class="sub-county">${layer.feature.properties.COUNTY_NAM} COUNTY </span>`;
-        var $info = $('#info');
-        $stickyTable.find('.info-title').html(str);
-        updateTable($stickyTable.find('.info-legend'), layer.feature.properties, year); //this updates the tooltip table
+  } else if(!stickyOn){ //highlight on hover unless stickyOn
+    highlight();
+  }
+  function highlight(){
+    //for positioning reasons we need the tooltip to be in different containers
+    //depending on whether it is fixed to map bottom or following mouse
+    if (!isMobile() && !e.fixed) { //desktop + event not fixed
+      if(legendFixed){ //if legend currently fixed but event target is not, unfix it
+        var tmp = $infoTip.detach();
+        $('body').append(tmp);
+        $infoTip.removeClass('fixed');
+        legendFixed = false;
+      }
+      placeInfo(e.originalEvent.clientX, e.originalEvent.clientY); //placeInfo already firing but needs to be called while stickyOn is false for the position to change
+    } else { //mobile or event fixed
+      if(!legendFixed){ //if legend not fixed but event is, fix it
+        var tmp = $infoTip.detach();
+        $map.append(tmp)
+        $infoTip.addClass('fixed');
+        legendFixed = true;
       }
     }
-  };
-
-  function resetStyle(e) {
-    if(!stickyOn){
-      if ($(window).width() > MOBILE_WIDTH) {
-        $infoTip.hide();
-      };
-      toggleStrokes();
-    }
-  };
-  /**********************
-  * End helper functions 
-  ***********************/
-};
-
-
-function toggleSticky(sticky) {
-  if (sticky) {
-    stickyOn = true;
-    $stickyTable.show();
-    $infoTip.hide();
-  }
-  else {
-    stickyOn = false;
-    $stickyTable.hide();
+    $('#info-title').html(`<span class="eln-title">${layer.feature.properties.PRECINCT_N} </span>
+    <span class="sub-county">${layer.feature.properties.COUNTY_NAM} COUNTY </span>`);
+    updateTable($('#info-data'), layer.feature.properties, year); //this updates the tooltip table
+    toggleStrokes(pathID);
     $infoTip.show();
+    $selectedPrecinct = $('#'+pathID);
   }
 };
 
+function resetStyle(e) {
+  if(!stickyOn){
+    if (!isMobile()) {
+      $infoTip.hide();
+    };
+    toggleStrokes();
+  }
+};
+/**********************
+* End helper functions 
+***********************/
 
 /**************************************
  * Push precincts from .json file to a list of
@@ -309,7 +311,6 @@ function createMap() {
   })
 
   createInfo(); // Create the info box that displays precinct information
-  $infoTip.hide(); // Infotip is hidden until one of the precincts is clicked
 }; 
 
 
@@ -366,7 +367,7 @@ function updateTitle(feature) {
 **************************************/
 function updateFilter(filterInput) {
   $infoTip.hide(); //in case of sticky tooltip
-  stickyOn = false;
+  toggleSticky(false);
   // County filters and demographic filters are both set by this function, 
   // so we need to check if the given filter is a county or not
   var counties = ['Clayton', 'DeKalb', 'Fulton', 'Gwinnett', 'Cobb', 'All counties', 'all counties']
@@ -551,18 +552,21 @@ function placeInfo(x, y) {
  * Hover the precinct infobox or fix it to 
  * the screen depending on the size of
  * the display
+/****************************************
+ * stickyOn freezes tooltip and selected
+ * feature and displays close button via class
  * **************************************/
-function toggleMobile() {
-  if ($(window).width() < MOBILE_WIDTH) {
-    $closeButton.show();
-    $infoTip.css({left: '', top: ''}); // Remove css styles added by mousemove event handler
-    $infoTip.toggleClass('follow', false);
+function toggleSticky(on){
+  if(on){
+    $infoTip.addClass('sticky');
+    stickyOn = true;
+    $infoTip.show();
+  } else {
+    $infoTip.removeClass('sticky');
+    stickyOn = false;
+    $infoTip.hide();
   }
-  else {
-    $closeButton.hide();
-    $infoTip.toggleClass('follow', true); //does this do something?
-  };
-};
+}
 
 
 /**************************************
@@ -571,7 +575,7 @@ function toggleMobile() {
  * **************************************/
 function onPlaceChanged() { //should probably update this highlight rather than zoom
   $infoTip.hide(); //in case it's sticky
-  stickyOn = false;
+  toggleSticky(false);
   var lat = autocomplete.getPlace().geometry.location.lat();
   var lng = autocomplete.getPlace().geometry.location.lng();
   map.setView(new L.LatLng(lat, lng), 15);
