@@ -154,7 +154,7 @@ gulp.task('publish', function(){
   a child directory of a bucket or it will 
   delete everything else in the bucket
   *********************************************/
-  return gulp.src(PROD + '**\/*')
+  return gulp.src(ENV + '**\/*')
     //because we are targeting a child path of a bucket we need to modify the path the reflect that
     .pipe(rename(function(filePath) {
       filePath.dirname = path.join(s3_subdir, filePath.dirname);

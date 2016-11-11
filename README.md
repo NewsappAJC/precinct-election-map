@@ -32,7 +32,7 @@ Run the development server
 
 Deployment
 ---
-To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession.
+To deploy the map with live updates on election night, simply start a cronjob that runs `python data_cleaning/2016/clarity_live.py` and `npm run deploy-production` in succession. Use `npm run deploy-staging` to deploy to the staging environment. 
 
 If you run into trouble with the shell process spawned by cron not being able to access the virtualenv, follow the instructions in [this StackOverflow answer](http://stackoverflow.com/a/2924295/4599578)
 
