@@ -1,6 +1,7 @@
 // Third party libraries
 import * as L from 'leaflet';
 import $ from 'jquery';
+import pym from 'pym.js';
 
 // Local modules
 import makeFilters from './filters';
@@ -12,7 +13,9 @@ var MOBILE_WIDTH = 600,
     WIN_WIDTH = $(window).width(),
     isMobile = function(){ //this is a function so we can update on resize
      return MOBILE_WIDTH >= WIN_WIDTH;
-    }
+    },
+    pymChild = new pym.Child();
+
 // DOM refs
 var autocomplete,
     $infoTip = $('#info'),
@@ -44,6 +47,8 @@ var selectedBucket = 'all', // Holds demographic filters
 var $selectedPrecinct, //so we can deselect it when another is chosen without looping through everything
     stickyOn = false, //whether or not a precinct has been clicked
     legendFixed = false;
+
+
 /**************************************
  * Create a Leaflet map instance and get map
  * tiles from OpenStreetMap
@@ -218,6 +223,7 @@ function generateLayers() {
     });
   };
 
+  pymChild.sendHeight()
   
 };
 
@@ -543,12 +549,6 @@ function placeInfo(x, y) {
       $infoTip.css({left: mapWidth - 200, top: y + 50})
     };
   }
-
-  // Event handler to change display of tooltip for mobile or desktop on
-  // window resize
-  $(window).resize(function() {
-    toggleMobile();
-  });
 };
 
 // Hide info tip when mobile close button is clicked
@@ -595,5 +595,5 @@ function main() {
   map._onResize(); // Bug http://stackoverflow.com/questions/24547468/leaflet-map-on-hide-div
 };
 
+main()
 
-main();

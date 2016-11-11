@@ -48,6 +48,7 @@
     "merge-stream": "^1.0.0",
     "node-sass": "^3.8.0",
     "path": "^0.12.7",
+    "pym.js": "^1.1.1",
     "rename": "^1.0.3",
     "s3-deploy": "^0.6.1",
     "style-loader": "^0.13.1",
