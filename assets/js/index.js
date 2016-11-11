@@ -494,6 +494,7 @@ function setColor(feature) {
     return style;
   };
   var party = rep > dem ? 'Republican' : 'Democrat';
+  if (rep == dem) party = 'tie';
 
   switch (party) {
     case 'Republican': {
@@ -503,6 +504,9 @@ function setColor(feature) {
     case 'Democrat': {
       style.fillColor = '#0040FF';
       break;
+    }
+    case 'tie': {
+      style.fillColor = '#6724e2';
     }
   };
 
